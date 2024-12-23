@@ -1,0 +1,99 @@
+Caminho do motor = C:/Users/kurier.juridico1/PycharmProjects/framework/arquivos/bases/DJAL_01022018_04042018/Motores de Inferencia/Multinomial Naive Bayes/11-02-2019_13;38;24/
+Nome da base = DJAL
+Período da base = 01/02/2018 - 04/04/2018
+Classificador = Multinomial Naive Bayes
+Data do treino = 11/02/2019
+Horário do treino = 13:38:24
+
+PROCESSO_RC 
+
+Acurácia: 0.98
+
+Precisão: 0.0
+
+Recall: 0.0
+
+F1: 0.0
+
+F1:              precision    recall  f1-score   support
+
+          0       0.98      1.00      0.99       834
+          1       0.00      0.00      0.00        20
+
+avg / total       0.95      0.98      0.97       854
+
+
+Matriz de Confusão 
+[[834   0]
+
+[ 20   0]]
+
+TIPODEPROCESSO_RC 
+
+Acurácia: 0.5
+
+Precisão: 0.0
+
+Recall: 0.0
+
+F1: 0.0
+
+F1:              precision    recall  f1-score   support
+
+          0       0.50      1.00      0.67         1
+          1       0.00      0.00      0.00         1
+
+avg / total       0.25      0.50      0.33         2
+
+
+Matriz de Confusão 
+[[1 0]
+
+[1 0]]
+
+VARA_RC 
+
+Acurácia: 1.0
+
+Precisão: 1.0
+
+Recall: 1.0
+
+F1: 1.0
+
+F1:              precision    recall  f1-score   support
+
+          0       1.00      1.00      1.00        42
+          1       1.00      1.00      1.00         3
+
+avg / total       1.00      1.00      1.00        45
+
+
+Matriz de Confusão 
+[[42  0]
+
+[ 0  3]]
+
+ORGAO_RC 
+
+Acurácia: 0.5
+
+Precisão: 0.0
+
+Recall: 0.0
+
+F1: 0.0
+
+F1:              precision    recall  f1-score   support
+
+          0       0.50      1.00      0.67         3
+          1       0.00      0.00      0.00         3
+
+avg / total       0.25      0.50      0.33         6
+
+
+Matriz de Confusão 
+[[3 0]
+
+[3 0]]
+

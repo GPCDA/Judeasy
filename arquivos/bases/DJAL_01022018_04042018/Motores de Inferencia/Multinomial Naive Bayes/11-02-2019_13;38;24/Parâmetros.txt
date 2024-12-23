@@ -1,0 +1,1 @@
+alpha=1,treino_tam=0.66,teste_tam=0.33,folds_tam=5,fit_prior=True,divisao=percent_split,vec_tipo=countvec

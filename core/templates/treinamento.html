@@ -1,0 +1,2576 @@
+<!-- INÍCIO DA TAB "TREINAMENTO" -->
+<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+	{% if message %}
+    	<div id="erro" class='alert alert-danger'><span style='color: #FFBF00; font-size: 16px;'><i class='fa fa-warning'></i></span> {{ message }}</div>
+	{% endif %}
+	<div id="errointernet"></div>
+	<div class="jarviswidget" id="wid-id-5">
+		<header><h2><strong>Classificadores </strong></h2></header>
+		<div class="widget-body">
+			{% csrf_token %}
+			<label class="select col-xs-8 col-sm-6 col-md-4 col-lg-3">
+				<select id="classifik" class="form-control">
+					<option value="0"></option>
+					<option value="1" data-id="decisionTree" >Decision Tree</option>
+					<option value="2" data-id="bernoulli" >Bernoulli Naive Bayes</option>
+					<option value="3" data-id="ensemble" >Static Ensemble Selection</option>
+					<option value="12" data-id="dinamicEnsemble" >Dynamic Ensemble Selection</option>
+					<option value="4" data-id="kNearestNeighbors" >K-Nearest Neighbors</option>
+					<option value="5" data-id="linearSupportVectorMachine" >Linear Support Vector Machine</option>
+					<option value="6" data-id="multilayerPerceptron" >Multilayer Perceptron</option>
+					<option value="7" data-id="multinomialNaiveBayes" >Multinomial Naive Bayes</option>
+					<option value="8" data-id="randomForest" >Random Forest</option>
+					<option value="9" data-id="logisticRegression" >Logistic Regression</option>
+					<option value="10" data-id="gradientDescent" >Stochastic Gradient Descent</option>
+					<option value="11" data-id="supportVectorMachine" >Support Vector Machine</option>
+				</select>
+			</label>
+
+			<br>
+
+			<!-- ADICIONANDO CONTEÚDO DE ERRO AO NÃO SELECIONAR ALGUM CLASSIFICADOR -->
+			<div class="note note-error col-xs-6 col-sm-6 col-md-9 col-lg-9" id="erro_select_classificador" style="margin-left:12px"></div>	
+			<!-- ADICIONANDO CONTEÚDO DE ERRO AO NÃO SELECIONAR ALGUM CLASSIFICADOR -->
+
+		</div>
+
+	</div>
+</article>
+
+
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" >
+	<form id="resultados" >
+		<div class="jarviswidget" id="wid-id-10" data-parametros="" data-etiquetas="{{ etiquetas_escolhidas_global }}" data-classificador="">
+			<header><h2><strong>Parâmetros</strong></h2>
+				<div align="right" href="#" class="ajuda" id="ajuda-treinamento" title="" >
+					<i class="fa fa-question-circle fa-md"></i>
+				</div>
+			</header>
+			<div id="parametros_classificador">
+
+
+			</div>
+
+		</div>
+
+		<div class="jarviswidget" style="display: none" id="divEnsembleClassico">
+
+			<header><h2><strong>Ensemble Clássico</strong></h2></header>
+
+			<div id="ensembleClassicoParametros">
+
+
+
+			</div>
+
+		</div>
+
+		<div class="row">
+			<div class="col-xs-6 col-sm-6 col-md-6">
+				<a onclick="voltarPP()" href="#" aria-expanded="true"> <button id="voltar-treinamento" type="button" class="btn btn-primary">Voltar</button> </a>
+			</div>
+			<div align="right" class="col-xs-6 col-sm-6 col-md-6">
+				<a href="#" aria-expanded="true"> <button type="submit" id="button_avançar_resultados" class="btn btn-primary btn_carrega_conteudo">Avançar</button> </a>
+			</div>
+		</div>
+	</form>
+</div>
+
+
+<div class="modal fade" id="ajuda_treinamento" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+				<h4 class="modal-title">Ajuda</h4>
+			</div>
+
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-lg-11">
+						<h4>Treinamento</h4><br>
+						<p>No treinamento, você deve escolher qual algoritmo de aprendizado de máquina utilizará para
+						treinar o seu modelo, a partir de uma base de dados anteriormente escolhida.</p>
+						<p>Opções:</p>
+						<strong>1. Classificadores:</strong>
+						<p>Você deve escolher entre as 12 opções de classificadores disponíveis, sendo recomedado, conforme
+						a pesquisa realizada, que o Dynamic Ensemble Selection seja o classificador escolhido.</p>
+
+						<strong>2. Parâmetros :</strong>
+						<p>Cada classificador possui seu próprio conjunto de parâmetros, são métricas que podem
+						ser ajustadas a fim de obter melhores resultados, para saber mais sobre cada algoritmo em particular
+							e como o ajuste de métricas funciona, visite: https://scikit-learn.org/.</p>
+
+
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button id="" class="btn btn-primary" data-dismiss="modal">
+					OK
+				</button>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+		
+<!-- FIM DA TAB "TREINAMENTO" -->
+
+<script type="text/javascript">
+
+$("#ajuda-treinamento").click(function(){
+  $("#ajuda_treinamento").modal();
+});
+
+$(document).ready(function(){
+	setInterval(function(){
+							var online = navigator.onLine;
+							if(online == false){
+								document.getElementById("errointernet").className = "alert alert-danger";
+								$("#errointernet").html("<span style='color: #FFBF00; font-size: 16px;'><i class='fa fa-warning'></i></span> Atenção! A conexão com a internet foi perdida.");
+							}else{
+								document.getElementById("errointernet").className = "";
+								$("#errointernet").html(" ")
+							}
+						}, 1000);
+});
+
+$(document).ready(function(){
+    if(!mainBaseName){
+     document.getElementById("classifik").disabled = true;
+     document.getElementById("voltar-treinamento").disabled = true;
+     }
+});
+
+
+	var decisionTreeChoosedInputs = [];
+	var decisionTreeChoosedSelects = [];
+
+	var bernoulliChoosedInputs = [];
+	var bernoulliChoosedSelects = [];
+
+	var knnChoosedInputs = [];
+	var knnChoosedSelects = [];
+
+	var linearSvmChoosedInputs = [];
+	var linearSvmChoosedSelects = [];
+
+	var multilayerPerceptronChoosedInputs = [];
+	var multilayerPerceptronChoosedSelects = [];
+
+	var multinomialNbChoosedInputs = [];
+	var multinomialNbChoosedSelects = [];
+
+	var randomForestChoosedInputs = [];
+	var randomForestChoosedSelects = [];
+
+	var logisticRegressionChoosedInputs = [];
+	var logisticRegressionChoosedSelects = [];
+
+	var gradientDescentChoosedInputs = [];
+	var gradientDescentChoosedSelects = [];
+
+	var svmChoosedInputs = [];
+	var svmChoosedSelects = [];
+
+	var perceptronChoosedInputs = [];
+	var perceptronChoosedSelects = [];
+
+	var myMethod = "voting";
+	var selectedClassifier = "";
+	var isDynamicEnsemble = false;
+
+	// Função que permite apenas números e "."
+	function somenteNumeros(num) {
+    	var er = /[^0-9.]/;
+        er.lastIndex = 0;
+        var campo = num;
+        if (er.test(campo.value)) {
+          campo.value = "";
+        }
+    }
+
+    // Função que permite apenas números INTEIROS
+    function somenteNumerosApartirDeUm(num) {
+    	var er = /[^1-9.]/;
+        er.lastIndex = 0;
+        var campo = num;
+        if (er.test(campo.value)) {
+          campo.value = "";
+        }
+    }
+
+    // Função que permite apenas números INTEIROS
+    function somenteNumerosInteiros(num) {
+    	var er = /[^0-9]/;
+        er.lastIndex = 0;
+        var campo = num;
+        if (er.test(campo.value)) {
+          campo.value = "";
+        }
+    }
+
+    // Função que permite apenas números INTEIROS a partir de 1
+    function somenteNumerosInteirosApartirDeUm(num) {
+    	var er = /[^1-9]/;
+        er.lastIndex = 0;
+        var campo = num;
+        if (er.test(campo.value)) {
+          campo.value = "";
+        }
+    }
+
+    function carregarInformacoes() {
+
+    	// INÍCIO da função para gerar as divs dos parâmetros, automaticamente, ao clicar no botão
+		$(".buttonShowModal").on('click', function(e) {
+
+			e.preventDefault();
+
+			//Apagando todos os parâmetros do classificador anterior, caso existam
+			$("#editarParametros").empty();
+
+			$("#erro_save_params").empty();
+
+			$("#modalEditarParametrosEnsemble").modal({backdrop: 'static', show: true});
+
+			if (this.id == "votingDecisionTreeButton") {
+
+				selectedClassifier = "decisionTree";
+
+				//Montando o HTML, com os parâmetros, do classificador escolhido
+				$("#editarParametros").html('<div id="decisionTree" class="widget-body" style="display: none"> ');
+
+				var var1 = '<div class="col-lg-4 col-md-4 col-sm-4"><label for="criterion1"> Criterion </label>  <br><select id="criterion1" class="Decision Tree" data-id="criterion"><option value="gini">gini</option><option value="entropy">entropy</option></select> </div>';
+
+				var var2 = '<div class="col-lg-4 col-md-4 col-sm-4"><label for="splitter"> Splitter </label> <br><select id="splitter" class="Decision Tree" data-id="splitter"><option value="best">best</option><option value="random">random</option></select> </div>';
+
+				var var3 = '<div class="col-lg-4 col-md-4 col-sm-4"><label for="max_depth1" style="text-align:center" data-toggle="tooltip" title="O valor de Max_depth deve ser None ou um número inteiro">Max_depth</label> <br><input type="text" id="max_depth1" required="required" value="None" class="Decision Tree" data-id="max_depth"><br><br></div>';
+
+				$("#editarParametros").append(var1, var2, var3);
+
+				$("#modalEnsembleTitle").html("Decision Tree");
+
+				if (decisionTreeChoosedInputs.length != 0) {
+
+					$("#max_depth1").val(decisionTreeChoosedInputs[0].split("= ")[1]);
+					$("#criterion1").val(decisionTreeChoosedSelects[0].split("= ")[1]);
+					$("#splitter").val(decisionTreeChoosedSelects[1].split("= ")[1]);
+
+				}
+
+			}
+
+			else if (this.id == "votingBernoulliButton") {
+
+				selectedClassifier = "bernoulli";
+
+				//Montando o HTML, com os parâmetros, do classificador escolhido
+				$("#editarParametros").html('<div id="bernoulli" class="widget-body" style="display: none">');
+				
+				var var1 = '<div class="col-lg-3 col-md-3 col-sm-4"><label for="alpha2" data-toggle="tooltip" title="O valor de Alpha pode ser qualquer número que o usuário desejar, inclusive zero, apesar de não ser o ideal"> Alpha </label> <br><input type="text" id="alpha2" required="required" value="1" data-id="alpha" onkeyup="somenteNumeros(this);"></div>';
+
+				$("#editarParametros").append(var1);
+
+				$("#modalEnsembleTitle").html("Bernoulli");
+
+				if (bernoulliChoosedInputs.length != 0) {
+
+					$("#alpha2").val(bernoulliChoosedInputs[0].split("= ")[1]);
+
+				}
+
+			}
+
+			else if (this.id == "votingKNNButton") {
+
+				selectedClassifier = "knn";
+
+				//Montando o HTML, com os parâmetros, do classificador escolhido
+				$("#editarParametros").html('<div id="kNearestNeighbors" class="widget-body" style="display: none">');
+
+				var var1 = '<div class="col-lg-3 col-md-4 col-sm-4"><label for="k" data-toggle="tooltip" title="O valor de k pode ser qualquer número inteiro, a partir de 1">K</label> <br><input type="text" id="k" required="required" value="5" data-id="k" onkeyup="somenteNumerosInteiros(this);"><br><br></div>';
+
+				var var2 = '<div class="col-lg-3 col-md-4 col-sm-4"><label for="metrica"> Métrica </label>  <br><select id="metrica" data-id="metrica"><option value="euclidean">euclidean</option><option value="manhattan">manhattan</option></select> </div>';
+
+				$("#editarParametros").append(var1, var2);
+
+				$("#modalEnsembleTitle").html("K-Nearest Neighbors");
+
+				if (knnChoosedInputs.length != 0) {
+
+					$("#k").val(knnChoosedInputs[0].split("= ")[1]);
+					$("#metrica").val(knnChoosedSelects[0].split("= ")[1]);
+
+				}
+
+			}
+
+			else if (this.id == "votingLinearSVMButton") {
+
+
+				selectedClassifier = "linearSVM";
+
+				//Montando o HTML, com os parâmetros, do classificador escolhido
+				$("#editarParametros").html('<div id="linearSupportVectorMachine" class="widget-body" style="display: none">');
+
+				var var1 = '<div class="col-lg-4 col-md-4 col-sm-4"><label for="penalty4"> Penalty </label>  <br><select id="penalty4" data-id="penalty"><option value="l2">l2</option><option id="caso_particular_l1" value="l1">l1</option></select> </div>';
+
+				var var2 = '<div class="col-lg-4 col-md-4 col-sm-4"><label for="loss4"> Loss </label>  <br><select id="loss4" data-id="loss"><option value="squared_hinge">squared_hinge</option><option id="caso_particular_hinge" value="hinge">hinge</option></select> </div>';
+
+				var var3 = '<div class="col-lg-4 col-md-4 col-sm-4"><label for="c4"  data-toggle="tooltip" title="O valor de C pode ser qualquer número que você desejar">C</label> <br><input type="text" id="c4" required="required" value="1" data-id="c" onkeyup="somenteNumeros(this);"><br><br></div>';
+
+				$("#editarParametros").append(var1, var2, var3);
+
+				//  The combination of penalty='l1' and loss='hinge' is not supported
+				$("#penalty4").on('change', function() { 
+					if(this.value == "l1") {
+						$("#caso_particular_hinge").prop("disabled", true);
+						$("#caso_particular_hinge").prop("selected", false);
+					} else {
+						$("#caso_particular_hinge").prop("disabled", false);
+					}
+				});
+				//  The combination of penalty='l1' and loss='hinge' is not supported
+				$("#loss4").on('change', function() { 
+					if(this.value == "hinge") {
+						$("#caso_particular_l1").prop("disabled", true);
+						$("#caso_particular_l1").prop("selected", false);
+					} else {
+						$("#caso_particular_l1").prop("disabled", false);
+					}
+				});
+
+				$("#modalEnsembleTitle").html("Linear Support Vector Machine");
+
+				if (linearSvmChoosedInputs.length != 0) {
+
+					$("#c4").val(linearSvmChoosedInputs[0].split("= ")[1]);
+					$("#penalty4").val(linearSvmChoosedSelects[0].split("= ")[1]);
+					$("#loss4").val(linearSvmChoosedSelects[1].split("= ")[1]);
+
+				}
+
+			}
+
+			else if (this.id == "votingMultilayerPerceptronButton") {
+
+				selectedClassifier = "multilayerPerceptron";
+
+				$("#editarParametros").html('<div id="multilayerPerceptron" class="widget-body" style="display: none">');
+
+				var var1 = '<div class="col-lg-3 col-md-3 col-sm-3"><label for="hidden_layer_sizes" data-toggle="tooltip" title="O valor de Hidden_layer_sizes pode ser um número inteiro qualquer">Hidden_layer_sizes</label> <br><input type="text" id="hidden_layer_sizes" required="required" value="100" data-id="hidden_layer_sizes" onkeyup="somenteNumerosInteiros(this);"><br><br></div>';
+
+				var var2 = '<div class="col-lg-3 col-md-3 col-sm-3"><label for="activation"> Activation </label>  <br><select id="activation" data-id="activation"><option value="relu">relu</option><option value="identity">identity</option><option value="logistic">logistic</option><option value="tanh">tanh</option></select> </div>';
+
+				var var3 = '<div class="col-lg-3 col-md-3 col-sm-3"><label for="solver5"> Solver </label>  <br><select id="solver5" data-id="solver"><option value="adam">adam</option><option value="lbfgs">lbfgs</option><option value="sgd">sgd</option></select> </div>';
+
+				var var4 = '<div class="col-lg-3 col-md-3 col-sm-3"><label for="learning_rate"> Learning_rate </label>  <br><select id="learning_rate" data-id="learning_rate"><option value="constant">constant</option><option value="invscaling">invscaling</option><option value="adaptive">adaptive</option></select> </div>';
+
+				var var5 = '<div class="col-lg-12 col-md-12 col-sm-12"><label for="learning_rate_init" data-toggle="tooltip" title="O valor de Learning_rate_init poder ser qualquer número decimal">Learning_rate_init</label> <br><input type="text" id="learning_rate_init" required="required" value="0.001" data-id="learning_rate_init" onkeyup="somenteNumeros(this);"><br><br></div>';
+
+
+				$("#editarParametros").append(var1, var2, var3, var4, var5);
+
+				$("#modalEnsembleTitle").html("Multilayer Perceptron");
+
+				if (multilayerPerceptronChoosedInputs.length != 0) {
+
+					$("#hidden_layer_sizes").val(multilayerPerceptronChoosedInputs[0].split("= ")[1]);
+					$("#learning_rate_init").val(multilayerPerceptronChoosedInputs[4].split("= ")[1]);
+					$("#activation").val(multilayerPerceptronChoosedSelects[0].split("= ")[1]);
+					$("#solver5").val(multilayerPerceptronChoosedSelects[1].split("= ")[1]);
+					$("#learning_rate").val(multilayerPerceptronChoosedSelects[3].split("= ")[1]);
+
+				}
+
+			}
+
+			else if (this.id == "votingMultinomialNBButton") {
+
+				selectedClassifier = "multinomialNaiveBayes";
+
+				//Montando o HTML, com os parâmetros, do classificador escolhido
+				$("#editarParametros").html('<div id="multinomialNaiveBayes" class="widget-body" style="display: none">');
+				
+				var var1 = '<div class="col-lg-3 col-md-4 col-sm-4"> <label for="alpha6"  data-toggle="tooltip" title="O valor de Alpha poder ser qualquer número maior que zero"> Alpha </label> <br> <input type="text" id="alpha6" required="required" value="1" data-id="alpha" onkeyup="somenteNumeros(this);"></div>';
+
+				var var2 = '<div class="col-lg-3 col-md-4 col-sm-4"><label for="fit_prior"> Fit_prior </label>  <br><select id="fit_prior" data-id="fit_prior"><option value="True">True</option><option value="False">False</option></select></div>';
+
+				$("#editarParametros").append(var1, var2);
+
+				$("#modalEnsembleTitle").html("Multinomial Naive Bayes");
+
+				if (multinomialNbChoosedInputs.length != 0) {
+
+					$("#alpha6").val(multinomialNbChoosedInputs[0].split("= ")[1]);
+					$("#fit_prior").val(multinomialNbChoosedSelects[0].split("= ")[1]);
+
+				}
+
+			}
+
+			else if (this.id == "votingRandomForestButton") {
+
+				selectedClassifier = "randomForest";
+
+				//Montando o HTML, com os parâmetros, do classificador escolhido
+				$("#editarParametros").html('<div id="randomForest" class="widget-body" style="display: none">');
+				
+				var var1 = '<div class="col-lg-3 col-md-4 col-sm-4"><label for="n_estimators" data-toggle="tooltip" title="O valor de N_estimators pode ser um número inteiro qualquer, maior que zero.">N_estimators</label> <br><input type="text" id="n_estimators" required="required" value="10" data-id="n_estimators" onkeyup="somenteNumerosInteiros(this);"><br><br></div>';
+
+				var var2 = '<div class="col-lg-3 col-md-4 col-sm-4"><label for="criterion7"> Criterion </label>  <br><select id="criterion7" data-id="criterion"><option value="gini">gini</option><option value="entropy">entropy</option></select> </div>';
+
+				var var3 = '<div class="col-lg-3 col-md-4 col-sm-4"><label for="max_depth7"  data-toggle="tooltip" title="O valor de Max_depth pode ser um número inteiro qualquer ou None.">Max_depth</label> <br><input type="text" id="max_depth7" required="required" value="None" data-id="max_depth"><br><br></div>';
+
+				$("#editarParametros").append(var1, var2, var3);
+
+				$("#modalEnsembleTitle").html("Random Forest");
+
+				if (randomForestChoosedInputs.length != 0) {
+
+					$("#n_estimators").val(randomForestChoosedInputs[0].split("= ")[1]);
+					$("#max_depth7").val(randomForestChoosedInputs[1].split("= ")[1]);
+					$("#criterion7").val(randomForestChoosedSelects[0].split("= ")[1]);
+
+				}
+
+			}
+
+			else if (this.id == "votingLogisticRegressionButton") {
+
+
+				selectedClassifier = "logisticRegression";
+
+				//Montando o HTML, com os parâmetros, do classificador escolhido
+				$("#editarParametros").html('<div id="logisticRegression" class="widget-body" style="display: none">');
+
+				var var1 = '<div class="col-lg-3 col-md-4 col-sm-4"><label for="penalty8"> Penalty </label>  <br><select id="penalty8" data-id="penalty"><option value="l2">l2</option><option id="caso_particular" value="l1">l1</option></select> </div>';
+
+				var var2 = '<div class="col-lg-3 col-md-4 col-sm-4"><label for="solver8"> Solver </label>  <br><select id="solver8" data-id="solver"><option value="liblinear">liblinear</option><option value="lbfgs">lbfgs</option><option value="sag">sag</option><option value="saga">saga</option></select> </div>';
+
+				var var3 = '<div class="col-lg-3 col-md-4 col-sm-4"><label for="c8" data-toggle="tooltip" title="O valor de C pode ser qualquer número que você desejar">C</label> <br><input type="text" id="c8" value="1" data-id="c" required="required" onkeyup="somenteNumeros(this);"><br><br></div>';
+
+				$("#editarParametros").append(var1, var2, var3);
+
+				// Ao escolher a opção "sag", no parâmetro "solver" de regressão logística, a única opção de "Penalty" é o "l2"
+				$("#solver8").on('click', function() { 
+					if(this.value == "sag" || this.value == "lbfgs") {
+						$("#caso_particular").prop("disabled", true);
+						$("#caso_particular").prop("selected", false);
+					} else {
+						$("#caso_particular").prop("disabled", false);
+					}
+				});
+
+				$("#modalEnsembleTitle").html("Logistic Regression");
+
+				if (logisticRegressionChoosedInputs.length != 0) {
+
+					$("#c8").val(logisticRegressionChoosedInputs[0].split("= ")[1]);
+					$("#treino_tam8").val(logisticRegressionChoosedInputs[1].split("= ")[1]);
+					$("#penalty8").val(logisticRegressionChoosedSelects[0].split("= ")[1]);
+					$("#solver8").val(logisticRegressionChoosedSelects[1].split("= ")[1]);
+
+				}
+
+			}
+
+			else if (this.id == "votingSGDButton") {
+
+				selectedClassifier = "sgd";
+
+				//Montando o HTML, com os parâmetros, do classificador escolhido
+				$("#editarParametros").html('<div id="gradientDescent" class="widget-body" style="display: none">');
+
+				var var1 = '<div class="col-lg-3 col-md-4 col-sm-4"><label for="loss9"> Loss </label>  <br><select id="loss9" data-id="loss"><option value="hinge">hinge</option><option value="log">log</option><option value="modified_huber">modified_huber</option><option value="squared_hinge">squared_hinge</option><option value="perceptron">perceptron</option><option value="squared_loss">squared_loss</option><option value="huber">huber</option><option value="epsilon_insensitive">epsilon_insensitive</option><option value="squared_epsilon_insensitive">squared_epsilon_insensitive</option></select> </div>';
+
+				var var2 = '<div class="col-lg-3 col-md-4 col-sm-4"><label for="penalty9"> Penalty </label>  <br><select id="penalty9" data-id="penalty"><option value="l2">l2</option><option value="l1">l1</option><option value="elasticnet">elasticnet</option></select> </div>';
+
+				var var3 = '<div class="col-lg-3 col-md-4 col-sm-4"><label for="max_iter" data-toggle="tooltip" title="O valor de Max_iter pode ser um número inteiro qualquer">Max_iter</label> <br><input type="text" id="max_iter" required="required" value="1000" data-id="max_iter" onkeyup="somenteNumerosInteiros(this);"><br><br></div>';
+
+				$("#editarParametros").append(var1, var2, var3);
+
+				$("#modalEnsembleTitle").html("Gradient Descent SGD");
+
+				if (gradientDescentChoosedInputs.length != 0) {
+
+					$("#max_iter").val(gradientDescentChoosedInputs[0].split("= ")[1]);
+					$("#loss9").val(gradientDescentChoosedSelects[0].split("= ")[1]);
+					$("#penalty9").val(gradientDescentChoosedSelects[1].split("= ")[1]);
+
+				}
+				
+			}
+
+			else if (this.id == "votingSVMButton") {
+
+				selectedClassifier = "supportVectorMachine";
+
+				//Apagando todos os parâmetros do classificador anterior, caso existam
+				$("#editarParametros").empty();
+
+				//Montando o HTML, com os parâmetros, do classificador escolhido
+				$("#editarParametros").html('<div id="supportVectorMachine" class="widget-body" style="display: none">');
+
+				var var1 = '<div class="col-lg-3 col-md-4 col-sm-4"><label for="gamma" data-toggle="tooltip" title="O valor de Gamma pode ser qualquer número que você desejar ou a palavra "auto"">Gamma</label> <br><input type="text" id="gamma" required="required" value="auto" data-id="gamma" onkeyup="somenteNumeros(this);"><br><br></div>';
+
+				var var2 = '<div class="col-lg-3 col-md-4 col-sm-4"><label for="kernel"> Kernel </label>  <br><select id="kernel" data-id="kernel"><option value="rbf">rbf</option><option value="linear">linear</option><option value="poly">poly</option><option value="sigmoid">sigmoid</option></select> </div>';
+
+				var var3 = '<div class="col-lg-3 col-md-4 col-sm-4"><label for="c10" data-toggle="tooltip" title="O valor de C pode ser qualquer número que você desejar">C</label> <br><input type="text" id="c10" required="required" value="1" data-id="c" onkeyup="somenteNumeros(this);"><br><br></div>';
+
+
+				$("#editarParametros").append(var1, var2, var3);
+
+				$("#modalEnsembleTitle").html("Support Vector Machine");
+
+				if (svmChoosedInputs.length != 0) {
+
+					$("#gamma").val(svmChoosedInputs[0].split("= ")[1]);
+					$("#c10").val(svmChoosedInputs[1].split("= ")[1]);
+					$("#kernel").val(svmChoosedChoosedSelects[0].split("= ")[1]);
+
+				}
+
+			}
+
+			else if (this.id == "noVotingPerceptronButton") {
+
+				selectedClassifier = "perceptron";
+
+				//Apagando todos os parâmetros do classificador anterior, caso existam
+				$("#editarParametros").empty();
+
+				//Montando o HTML, com os parâmetros, do classificador escolhido
+				$("#editarParametros").html('<div id="perceptron" class="widget-body" style="display: none">');
+
+				var var1 = '<div class="col-lg-3 col-md-4 col-sm-4"><label for="penalty12"> Penalty </label>  <br><select id="penalty" data-id="penalty"><option value="l2">l2</option><option value="l1">l1</option><option value="elasticnet">elasticnet</option></select> </div>';
+
+				var var2 = '<div class="col-lg-3 col-md-4 col-sm-4"> <label for="alpha12" data-toggle="tooltip" title="O valor de Alpha poder ser qualquer número maior que zero"> Alpha </label> <br> <input type="text" id="alpha12" required="required" value="0.0001" data-id="alpha" onkeyup="somenteNumeros(this);"></div>';
+
+
+				$("#editarParametros").append(var1, var2);
+
+				$("#modalEnsembleTitle").html("Perceptron");
+
+				if (svmChoosedInputs.length != 0) {
+
+					$("#alpha").val(perceptronChoosedInputs[0].split("= ")[1]);
+					$("#penalty").val(perceptronChoosedChoosedSelects[0].split("= ")[1]);
+
+				}
+
+			}
+
+		});
+		// FIM da função para gerar as divs dos parâmetros, automaticamente, ao clicar no botão
+
+    }
+
+
+	$('select').on('change', function() {
+
+		if (this.id == 'classifik') {
+
+			$("#divEnsembleClassico").hide();
+
+			isDynamicEnsemble = false;
+
+			if (this.value == 0) {
+				//Caso o usuário mude o seletor para nenhuma opção, o botão de avançar trava
+				if($("#button_avançar_resultados").prop('disabled') == false) {
+					$("#button_avançar_resultados").prop('disabled', true);
+					//Apagando todos os parâmetros do classificador anterior, caso existam
+					$("#parametros_classificador").empty();
+				}
+			} else {
+				//Caso o usuário mude o seletor para uma opção de técnica qualquer válida, o botão de avançar é liberado
+				$("#button_avançar_resultados").prop('disabled', false);
+			}
+
+			if (this.value == 1) {
+
+				//Apagando todos os parâmetros do classificador anterior, caso existam
+				$("#parametros_classificador").empty();
+
+				//Montando o HTML, com os parâmetros, do classificador escolhido
+				$("#parametros_classificador").html('<div id="decisionTree" class="widget-body" style="display: none"> ');
+
+				var var1 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="criterion1"> Criterion </label>  <br><select id="criterion1" class="Decision Tree" data-id="criterion"><option value="gini">gini</option><option value="entropy">entropy</option></select> </div>';
+
+				var var2 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="splitter"> Splitter </label> <br><select id="splitter" class="Decision Tree" data-id="splitter"><option value="best">best</option><option value="random">random</option></select> </div>';
+
+				var var3 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="max_depth1" style="text-align:center" data-toggle="tooltip" title="O valor de Max_depth deve ser None ou um número inteiro">Max_depth</label> <br><input type="text" id="max_depth1" required="required" value="None" class="Decision Tree" data-id="max_depth"><br><br></div>';
+
+				var var4 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="divisao1"> Divisão </label>  <br><select id="divisao1" class="Decision Tree" data-id="divisao"><option value="percent_split">Percentage Split</option><option value="cross_val">Cross Validation</option></select> </div>';
+
+				var var5 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="treino_tam1" data-toggle="tooltip" title="O valor de Treino_tam deve ser um decimal entre 0 e 1">Conjunto de Treino</label> <br><input type="text" id="treino_tam1" required="required" value="0.66" class="Decision Tree" data-id="treino_tam" onkeyup="somenteNumeros(this);"><br><br></div>';
+
+				var var6 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="teste_tam1" data-toggle="tooltip" title="O valor de Teste_tam deve ser um decimal entre 0 e 1">Conjunto de Teste</label> <br><input type="text" id="teste_tam1" required="required" value="0.33" class="Decision Tree" data-id="teste_tam" onkeyup="somenteNumeros(this);"><br><br></div>';
+
+				var var7 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="folds_tam1" data-toggle="tooltip" title="O valor de Folds_tam deve ser um número inteiro">Quantidade de Folds</label> <br><input type="text" id="folds_tam1" required="required" value="5" class="Decision Tree" data-id="folds_tam" onkeyup="somenteNumerosInteiros(this);"><br><br></div>';
+
+				var var8 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="vec_tipo1"> Vec_tipo </label>  <br><select id="vec_tipo1" required="required" class="Decision Tree" data-id="vec_tipo"><option value="countvec">CountVectorizer</option><option value="tdidf_transf">TfidfTransformer</option></select> </div> </div>';
+
+				$("#parametros_classificador").append(var1, var2, var3, var4, var8, var5, var6, var7);
+				
+	  		}
+
+	  		else if (this.value == 2) {
+
+				//Apagando todos os parâmetros do classificador anterior, caso existam
+				$("#parametros_classificador").empty();
+
+				//Montando o HTML, com os parâmetros, do classificador escolhido
+				$("#parametros_classificador").html('<div id="bernoulli" class="widget-body" style="display: none">');
+				
+				var var1 = '<div class="col-lg-2 col-md-3 col-sm-4"><label for="alpha2" data-toggle="tooltip" title="O valor de Alpha pode ser qualquer número que o usuário desejar, inclusive zero, apesar de não ser o ideal"> Alpha </label> <br><input type="text" id="alpha2" required="required" value="1" data-id="alpha" onkeyup="somenteNumeros(this);"></div>';
+
+				var var2 = '<div class="col-lg-2 col-md-3 col-sm-4"><label for="divisao2"> Divisão </label>  <br><select id="divisao2" data-id="divisao"><option value="percent_split" >Percentage Split</option><option value="cross_val">Cross Validation</option></select> </div>';
+
+				var var3 = '<div class="col-lg-2 col-md-3 col-sm-4" ><label for="treino_tam2" data-toggle="tooltip" title="O valor de Treino_tam deve ser um decimal entre 0 e 1">Conjunto de Treino</label> <br><input type="text" id="treino_tam2" required="required" value="0.66" data-id="treino_tam" onkeyup="somenteNumeros(this);"><br><br></div>';
+
+				var var4 = '<div class="col-lg-2 col-md-3 col-sm-4"><label for="teste_tam2" data-toggle="tooltip" title="O valor de Teste_tam deve ser um decimal entre 0 e 1">Conjunto de Teste</label> <br><input type="text" id="teste_tam2" required="required" value="0.33" data-id="teste_tam" onkeyup="somenteNumeros(this);"><br><br></div>';
+
+				var var5 = '<div class="col-lg-2 col-md-3 col-sm-4"><label for="folds_tam2" data-toggle="tooltip" title="O valor de Folds_tam deve ser um número inteiro">Quantidade de Folds</label> <br><input type="text" id="folds_tam2" required="required" value="5" data-id="folds_tam" onkeyup="somenteNumerosInteiros(this);"><br><br></div>';
+
+				var var6 = '<div class="col-lg-2 col-md-3 col-sm-4"><label for="vec_tipo2"> Vec_tipo </label>  <br><select id="vec_tipo2" required="required" data-id="vec_tipo"><option value="countvec">CountVectorizer</option><option value="tdidf_transf">TfidfTransformer</option></select> </div> </div>';
+
+				$("#parametros_classificador").append(var1, var2, var6, var3, var4, var5);
+				
+	  		}
+
+	  		else if (this.value == 3) {
+
+				//Apagando todos os parâmetros do classificador anterior, caso existam
+				$("#parametros_classificador").empty();
+
+				//Apagando todos os parâmetros da div Ensemble Clássico, caso existam
+				$('#ensembleClassicoParametros').empty();
+
+				$('#ensembleClassicoParametros').prev().children().eq(0).children().eq(0).text("Ensemble Clássico");
+
+				//Montando o HTML, com os parâmetros, do classificador escolhido
+				$("#parametros_classificador").html('<div id="ensemble" class="widget-body" style="display: none">');
+
+				var var1 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="metodo"> Método </label> <br><select id="metodoEnsemble" data-id="metodoEnsemble"><option value="voting">Voting</option><option value="adaboost">Adaboost</option><option value="bagging">Bagging</option><option value="extraTrees">Extra Trees</option><option value="gradientboosting">Gradient Boosting</option><option value="randomForest">Random Forest</option></select> </div>';
+
+				var var2 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="divisao11"> Divisão </label>  <br><select id="divisao11" data-id="divisao"><option value="percent_split">Percentage Split</option><option value="cross_val">Cross Validation</option></select> </div>';
+
+				var var3 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="treino_tam11" data-toggle="tooltip" title="O valor de Treino_tam deve ser um decimal entre 0 e 1">Conjunto de Treino</label> <br><input type="text" id="treino_tam11" required="required" value="0.66" data-id="treino_tam" onkeyup="somenteNumeros(this);"><br><br></div>';
+
+				var var4 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="teste_tam11" data-toggle="tooltip" title="O valor de Teste_tam deve ser um decimal entre 0 e 1">Conjunto de Teste</label> <br><input type="text" id="teste_tam11" required="required" value="0.33" data-id="teste_tam" onkeyup="somenteNumeros(this);"><br><br></div>';
+
+				var var5 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="folds_tam11"  data-toggle="tooltip" title="O valor de Folds_tam deve ser um número inteiro">Quantidade de Folds</label> <br><input type="text" id="folds_tam11" required="required" value="5" data-id="folds_tam" onkeyup="somenteNumerosInteiros(this);"><br><br></div>';
+
+				var var6 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="vec_tipo11"> Vec_tipo </label>  <br><select id="vec_tipo11" required="required" data-id="vec_tipo"><option value="countvec">CountVectorizer</option><option value="tdidf_transf">TfidfTransformer</option></select>  </div> </div>';
+
+				$("#parametros_classificador").append(var1, var2, var6, var3, var4, var5);
+
+				// Ao selecionar a opção de ensemble clássico, mostrar no front sua respectiva DIV.
+				$("#divEnsembleClassico").show();
+
+				// Ao selecionar a opção de ensemble clássico, carregar no front os parâmetros do método "Voting", o default do Ensemble Clássico
+				var var1Voting = '<div class="col-lg-4 col-md-4 col-sm-4"> <input type="checkbox" id="votingDecisionTree" name="votingClassifiers" class="votingClassifiers"> <label for="votingDecisionTree">Decision Tree</label> <button title="Editar parâmetros" class="btn btn-info btn-xs buttonShowModal" disabled id="votingDecisionTreeButton"><span class="fa fa-lg fa-edit" ></span></button> </div>'
+
+				var var2Voting = '<div class="col-lg-4 col-md-4 col-sm-4"> <input type="checkbox" id="votingBernoulli" name="votingClassifiers" class="votingClassifiers"> <label for="votingBernoulli">Bernoulli</label> <button title="Editar parâmetros" class="btn btn-info btn-xs buttonShowModal" disabled id="votingBernoulliButton"><span class="fa fa-lg fa-edit"></span></button> </div>'
+
+				var var3Voting = '<div class="col-lg-4 col-md-4 col-sm-4"> <input type="checkbox" id="votingKNN" name="votingClassifiers" class="votingClassifiers"> <label for="votingKNN">K-Nearest Neighbors</label> <button title="Editar parâmetros" class="btn btn-info btn-xs buttonShowModal" disabled id="votingKNNButton"><span class="fa fa-lg fa-edit"></span></button> </div>'
+
+				var var4Voting = '<div class="col-lg-4 col-md-4 col-sm-4"> <input type="checkbox" id="votingLinearSVM" name="votingClassifiers" class="votingClassifiers"> <label for="votingLinearSVM">Linear Support Vector Machine</label> <button title="Editar parâmetros" class="btn btn-info btn-xs buttonShowModal" disabled id="votingLinearSVMButton"><span class="fa fa-lg fa-edit"></span></button> </div>'
+
+				var var5Voting = '<div class="col-lg-4 col-md-4 col-sm-4"> <input type="checkbox" id="votingMultilayerPerceptron" name="votingClassifiers" class="votingClassifiers"> <label for="votingMultilayerPerceptron">Multilayer Perceptron</label> <button title="Editar parâmetros" class="btn btn-info btn-xs buttonShowModal" disabled id="votingMultilayerPerceptronButton"><span class="fa fa-lg fa-edit"></span></button> </div>'
+
+				var var6Voting = '<div class="col-lg-4 col-md-4 col-sm-4"> <input type="checkbox" id="votingMultinomialNB" name="votingClassifiers" class="votingClassifiers"> <label for="votingMultinomialNB">Multinomial Naive Bayes</label> <button title="Editar parâmetros" class="btn btn-info btn-xs buttonShowModal" disabled id="votingMultinomialNBButton"><span class="fa fa-lg fa-edit"></span></button> </div>'
+
+				var var7Voting = '<div class="col-lg-4 col-md-4 col-sm-4"> <input type="checkbox" id="votingRandomForest" name="votingClassifiers" class="votingClassifiers"> <label for="votingRandomForest">Random Forest</label> <button title="Editar parâmetros" class="btn btn-info btn-xs buttonShowModal" disabled id="votingRandomForestButton"><span class="fa fa-lg fa-edit"></span></button> </div>'
+
+				var var8Voting = '<div class="col-lg-4 col-md-4 col-sm-4"> <input type="checkbox" id="votingLogisticRegression" name="votingClassifiers" class="votingClassifiers"> <label for="votingLogisticRegression">Logistic Regression</label> <button title="Editar parâmetros" class="btn btn-info btn-xs buttonShowModal" disabled id="votingLogisticRegressionButton"><span class="fa fa-lg fa-edit"></span></button> </div>'
+
+				var var9Voting = '<div class="col-lg-4 col-md-4 col-sm-4"> <input type="checkbox" id="votingSGD" name="votingClassifiers" class="votingClassifiers"> <label for="votingSGD">Gradient Descent SGD</label> <button title="Editar parâmetros" class="btn btn-info btn-xs buttonShowModal" disabled id="votingSGDButton"><span class="fa fa-lg fa-edit"></span></button> </div>'
+
+				var var10Voting = '<div class="col-lg-4 col-md-4 col-sm-4"> <input type="checkbox" id="votingSVM" name="votingClassifiers" class="votingClassifiers"> <label for="votingSVM">Support Vector Machine</label> <button title="Editar parâmetros" class="btn btn-info btn-xs buttonShowModal" disabled id="votingSVMButton"><span class="fa fa-lg fa-edit"></span></button> <hr> </div>'
+
+				var varParamVoting = '<div class="col-lg-12 col-md-12 col-sm-12"><label for="voting"> Voting </label> <br><select id="voting" data-id="voting"><option value="hard">hard</option><option value="soft">soft</option></select> <hr> </div>';
+
+				// Inserindo as variáveis na div de parâmetros do ensemble clássico, com "voting" como método default
+				$('#ensembleClassicoParametros').append(var1Voting, var2Voting, var3Voting, var4Voting, var5Voting, var6Voting, var7Voting, var8Voting, var9Voting, var10Voting, varParamVoting);
+
+				// Função para habilitar e desabilitar botão do respectivo algoritmo
+				$("input[type='checkbox']").change(function() {
+				    if(this.checked) {
+				        let myId = "#" + this.id;
+				        $(myId).next().next().attr("disabled", false);
+				    } else {
+				    	let myId = "#" + this.id;
+				        $(myId).next().next().attr("disabled", true);
+				    }
+				});
+
+				// Função ao mudar o método do ensemble clássico (muda os parâmetros)
+				$('#metodoEnsemble').on('change', function() {
+
+					decisionTreeChoosedInputs = [];
+					decisionTreeChoosedSelects = [];
+
+					bernoulliChoosedInputs = [];
+					bernoulliChoosedSelects = [];
+
+					knnChoosedInputs = [];
+					knnChoosedSelects = [];
+
+					linearSvmChoosedInputs = [];
+					linearSvmChoosedSelects = [];
+
+					multilayerPerceptronChoosedInputs = [];
+					multilayerPerceptronChoosedSelects = [];
+
+					multinomialNbChoosedInputs = [];
+					multinomialNbChoosedSelects = [];
+
+					randomForestChoosedInputs = [];
+					randomForestChoosedSelects = [];
+
+					logisticRegressionChoosedInputs = [];
+					logisticRegressionChoosedSelects = [];
+
+					gradientDescentChoosedInputs = [];
+					gradientDescentChoosedSelects = [];
+
+					svmChoosedInputs = [];
+					svmChoosedSelects = [];
+
+					// Esvaziando a DIV de parâmetros do ensemble clássico, ao trocar o seu método
+					$('#ensembleClassicoParametros').empty();
+
+					if(this.value == "voting") {
+
+						myMethod = "voting";
+
+						// Inserindo as variáveis na div de parâmetros do ensemble clássico, com "voting" como método default
+						$('#ensembleClassicoParametros').append(var1Voting, var2Voting, var3Voting, var4Voting, var5Voting, var6Voting, var7Voting, var8Voting, var9Voting, var10Voting, varParamVoting);
+
+						$("input[type='checkbox']").change(function() {
+						    if(this.checked) {
+						        let myId = "#" + this.id;
+						        $(myId).next().next().attr("disabled", false);
+						    } else {
+						    	let myId = "#" + this.id;
+						        $(myId).next().next().attr("disabled", true);
+						    }
+						});
+
+						$(".buttonShowModal").on('click', function(e) {
+							carregarInformacoes();
+						});
+					}
+
+					else if(this.value == "adaboost") {
+
+						myMethod = "adaboost";
+
+						var var1 = '<div class="col-lg-4 col-md-4 col-sm-4"><label for="adaboostClassifiers"> Base_estimator </label>  <br><select id="adaboostClassifiers" data-id="adaboostClassifiers" class="adaboostOrBagging"><option value="decisionTreeDefault"></option><option value="decisionTree">Decision Tree</option><option value="bernoulli">Bernoulli</option><option value="knn">K-Nearest Neighbors</option><option value="linearSVM">Linear Support Vector Machine</option><option value="multilayerPerceptron">Multilayer Perceptron</option><option value="multinomialNaiveBayes">Multinomial Naive Bayes</option><option value="randomForest">Random Forest</option><option value="logisticRegression">Logistic Regression</option><option value="sgd">Gradient Descent SGD</option><option value="supportVectorMachine">Support Vector Machine</option> </select> <button id="buttonEnsembleAdaboostOrBagging" title="Editar parâmetros" class="btn btn-info btn-xs buttonAdaboostOrBagging buttonShowModal" disabled><span class="fa fa-lg fa-edit"></span></button> </div>';
+
+						var var2 = '<div class="col-lg-4 col-md-4 col-sm-4"><label for="n_estimators2" data-toggle="tooltip" title="O valor de N_estimators pode ser um número inteiro qualquer, maior que zero.">N_estimators</label> <br><input type="text" id="n_estimators2" required="required" value="50" data-id="n_estimators" onkeyup="somenteNumerosInteiros(this);"><br><br></div>';
+
+						var var3 = '<div class="col-lg-4 col-md-4 col-sm-4"><label for="learning_rate2" data-toggle="tooltip" title="O valor de Learning_rate poder ser qualquer número decimal.">Learning_rate</label> <br><input type="text" id="learning_rate2" required="required" value="1.0" data-id="learning_rate_init" onkeyup="somenteNumeros(this);"><br><br></div>';
+
+						var var4 = '<div class="col-lg-4 col-md-4 col-sm-4"><label for="algorithm" data-toggle="tooltip" title="O valor de Algorithm é SAMME por padrão.">Algorithm</label> <br><input type="text" id="algorithm" required="required" value="SAMME" data-id="algorithm" disabled><br><br></div>';
+
+						var var5 = '<div class="col-lg-4 col-md-4 col-sm-4"><label for="random_state" data-toggle="tooltip" title="O valor de Random_state é NONE por padrão.">Random_state</label> <br><input type="text" id="random_state" required="required" value="NONE" data-id="random_state" disabled><br><br></div>';
+
+						// Inserindo as variáveis na div de parâmetros do ensemble clássico, com "adaboost" como método
+						$('#ensembleClassicoParametros').append(var1, var2, var3, var4, var5);
+
+						// Função para habilitar ou desabilitar o botão de editar parâmetros, ao escolher um classificador (Base_estimator para Adaboost e Bagging)
+						$('select').on('change', function() {
+							if (this.id == "adaboostClassifiers" || this.id == "baggingClassifiers") {
+								if (this.value == "decisionTreeDefault") {
+									$(".buttonAdaboostOrBagging").attr('disabled', true);
+								} else {
+									$(".buttonAdaboostOrBagging").attr('disabled', false);
+								}
+							}
+						});
+
+					}
+
+					else if(this.value == "bagging") {
+
+						myMethod = "bagging";
+
+						var var1 = '<div class="col-lg-3 col-md-4 col-sm-4"><label for="baggingClassifiers"> Base_estimator </label>  <br><select id="baggingClassifiers" data-id="baggingClassifiers" class="adaboostOrBagging"><option value="decisionTreeDefault"></option><option value="decisionTree">Decision Tree</option><option value="bernoulli">Bernoulli</option><option value="knn">K-Nearest Neighbors</option><option value="linearSVM">Linear Support Vector Machine</option><option value="multilayerPerceptron">Multilayer Perceptron</option><option value="multinomialNaiveBayes">Multinomial Naive Bayes</option><option value="randomForest">Random Forest</option><option value="logisticRegression">Logistic Regression</option><option value="sgd">Gradient Descent SGD</option><option value="supportVectorMachine">Support Vector Machine</option> </select> <button id="buttonEnsembleAdaboostOrBagging" title="Editar parâmetros" class="btn btn-info btn-xs buttonAdaboostOrBagging buttonShowModal" disabled><span class="fa fa-lg fa-edit"></span></button> </div>';
+
+						var var2 = '<div class="col-lg-3 col-md-4 col-sm-4"><label for="n_estimators3" data-toggle="tooltip" title="O valor de N_estimators pode ser um número inteiro qualquer, maior que zero.">N_estimators</label> <br><input type="text" id="n_estimators3" required="required" value="10" data-id="n_estimators" onkeyup="somenteNumerosInteiros(this);"><br><br></div>';
+
+						var var3 = '<div class="col-lg-3 col-md-4 col-sm-4"><label for="max_samples" data-toggle="tooltip" title="O valor de Max_samples é 1 por padrão.">Max_samples</label> <br><input type="text" id="max_samples" required="required" value="1" data-id="max_samples" onkeyup="somenteNumeros(this);"><br><br></div>';
+
+						var var4 = '<div class="col-lg-3 col-md-4 col-sm-4"><label for="max_features" data-toggle="tooltip" title="O valor de Max_features é 1 por padrão.">Max_features</label> <br><input type="text" id="max_features" required="required" value="1" data-id="max_features" onkeyup="somenteNumeros(this);"><br><br></div>';
+
+						var var5 = '<div class="col-lg-3 col-md-4 col-sm-4"><label for="bootstrap"> Bootstrap </label> <br><select id="bootstrap" data-id="bootstrap"><option value="true">True</option><option value="false">False</option></select> </div>';
+
+						var var6 = '<div class="col-lg-3 col-md-4 col-sm-4"><label for="bootstrap_features"> Bootstrap_features </label> <br><select id="bootstrap_features" data-id="bootstrap_features"><option value="false">False</option><option value="true">True</option></select> </div>';
+
+						var var7 = '<div class="col-lg-3 col-md-4 col-sm-4"><label for="oob_score"> Oob_score </label> <br><select id="oob_score" data-id="oob_score"><option value="false">False</option><option value="true">True</option></select> </div>';
+
+						var var8 = '<div class="col-lg-3 col-md-4 col-sm-4"><label for="random_state2" data-toggle="tooltip" title="O valor de Random_state é NONE por padrão.">Random_state</label> <br><input type="text" id="random_state2" required="required" value="NONE" data-id="random_state" disabled><br><br></div>';
+
+						// Inserindo as variáveis na div de parâmetros do ensemble clássico, com "bagging" como método
+						$('#ensembleClassicoParametros').append(var1, var2, var3, var4, var5, var6, var7, var8);
+
+						// Função para habilitar ou desabilitar o botão de editar parâmetros, ao escolher um classificador (Base_estimator para Adaboost e Bagging)
+						$('select').on('change', function() {
+							if (this.id == "adaboostClassifiers" || this.id == "baggingClassifiers") {
+								if (this.value == "decisionTreeDefault") {
+									$(".buttonAdaboostOrBagging").attr('disabled', true);
+								} else {
+									$(".buttonAdaboostOrBagging").attr('disabled', false);
+								}
+							}
+						});	
+
+					}
+
+					else if (this.value == "extraTrees") {
+
+						myMethod = "extraTrees";
+
+						var var1 = '<div class="col-lg-3 col-md-4 col-sm-4"><label for="n_estimators4" data-toggle="tooltip" title="O valor de N_estimators pode ser um número inteiro qualquer, maior que zero.">N_estimators</label> <br><input type="text" id="n_estimators4" required="required" value="10" data-id="n_estimators" onkeyup="somenteNumerosInteiros(this);"><br><br></div>';
+
+						var var2 = '<div class="col-lg-3 col-md-4 col-sm-4"><label for="criterion3"> Criterion </label> <br><select id="criterion3" data-id="criterion"><option value="gini">gini</option><option value="entropy">entropy</option></select> </div>';
+
+						var var3 = '<div class="col-lg-3 col-md-4 col-sm-4"><label for="max_depth3" style="text-align:center" data-toggle="tooltip" title="O valor de Max_depth deve ser None ou um número inteiro.">Max_depth</label> <br><input type="text" id="max_depth3" required="required" value="None" data-id="max_depth"><br><br></div>';
+
+						var var4 = '<div class="col-lg-3 col-md-4 col-sm-4"><label for="bootstrap"> Bootstrap </label> <br><select id="bootstrap" data-id="bootstrap"><option value="false">False</option><option value="true">True</option></select> </div>';
+
+						// Inserindo as variáveis na div de parâmetros do ensemble clássico, com "extraTrees" como método
+						$('#ensembleClassicoParametros').append(var1, var2, var3, var4);
+
+					}
+
+					else if (this.value == "gradientboosting") {
+
+						myMethod = "gradientboosting";
+
+						var var1 = '<div class="col-lg-3 col-md-4 col-sm-4"><label for="loss3"> Loss </label> <br><select id="loss3" data-id="loss"><option value="deviance">deviance</option><option value="exponential">exponential</option></select> </div>';
+
+						var var2 = '<div class="col-lg-3 col-md-4 col-sm-4"><label for="learning_rate3" data-toggle="tooltip" title="O valor de Learning_rate poder ser qualquer número decimal.">Learning_rate</label> <br><input type="text" id="learning_rate3" required="required" value="0.1" data-id="learning_rate_init" onkeyup="somenteNumeros(this);"><br><br></div>';
+
+						var var3 = '<div class="col-lg-3 col-md-4 col-sm-4"><label for="n_estimators3" data-toggle="tooltip" title="O valor de N_estimators pode ser um número inteiro qualquer, maior que zero.">N_estimators</label> <br><input type="text" id="n_estimators3" required="required" value="100" data-id="n_estimators" onkeyup="somenteNumerosInteiros(this);"><br><br></div>';
+
+						var var4 = '<div class="col-lg-3 col-md-4 col-sm-4"><label for="subsample" data-toggle="tooltip" title="O valor de Subsample poder ser qualquer número decimal.">Subsample</label> <br><input type="text" id="subsample" required="required" value="1.0" data-id="subsample" onkeyup="somenteNumeros(this);"><br><br></div>';
+
+						var var5 = '<div class="col-lg-3 col-md-4 col-sm-4"><label for="criterion3" data-toggle="tooltip" title="O valor de Criterion é friedman_mse por padrão.">Criterion</label> <br><input type="text" id="criterion3" required="required" value="friedman_mse" data-id="criterion" disabled><br><br></div>';
+
+						var var6 = '<div class="col-lg-3 col-md-4 col-sm-4"><label for="max_depth3" style="text-align:center" data-toggle="tooltip" title="O valor de Max_depth pode ser qualquer número inteiro.">Max_depth</label> <br><input type="text" id="max_depth3" required="required" value="3" data-id="max_depth"><br><br></div>';
+
+
+						// Inserindo as variáveis na div de parâmetros do ensemble clássico, com "gradientBoosting" como método
+						$('#ensembleClassicoParametros').append(var1, var2, var3, var4, var5, var6);
+
+					}
+
+					else if (this.value == "randomForest") {
+
+						myMethod = "randomForest"
+
+						var var1 = '<div class="col-lg-3 col-md-4 col-sm-4"><label for="n_estimators4" data-toggle="tooltip" title="O valor de N_estimators pode ser um número inteiro qualquer, maior que zero.">N_estimators</label> <br><input type="text" id="n_estimators4" required="required" value="10" data-id="n_estimators" onkeyup="somenteNumerosInteiros(this);"><br><br></div>';
+
+						var var2 = '<div class="col-lg-3 col-md-4 col-sm-4"><label for="criterion3"> Criterion </label> <br><select id="criterion3" data-id="criterion"><option value="gini">gini</option><option value="entropy">entropy</option></select> </div>';
+
+						var var3 = '<div class="col-lg-3 col-md-4 col-sm-4"><label for="max_depth3" style="text-align:center" data-toggle="tooltip" title="O valor de Max_depth deve ser None ou um número inteiro.">Max_depth</label> <br><input type="text" id="max_depth3" required="required" value="None" data-id="max_depth"><br><br></div>';
+
+						var var4 = '<div class="col-lg-3 col-md-4 col-sm-4"><label for="bootstrap"> Bootstrap </label> <br><select id="bootstrap" data-id="bootstrap"><option value="false">False</option><option value="true">True</option></select> </div>';
+
+						// Inserindo as variáveis na div de parâmetros do ensemble clássico, com "randomForest" como método
+						$('#ensembleClassicoParametros').append(var1, var2, var3, var4);
+
+					}
+
+					$('select').on('change', function() {
+
+						if (this.id == "adaboostClassifiers" || this.id == "baggingClassifiers") {
+							selectedClassifier = this.value;
+
+							// INÍCIO da função para gerar as divs dos parâmetros, automaticamente, ao clicar no botão
+							$(".buttonShowModal").on('click', function(e) {
+
+								e.preventDefault();
+
+								//Apagando todos os parâmetros do classificador anterior, caso existam
+								$("#editarParametros").empty();
+
+								$("#modalEditarParametrosEnsemble").modal({backdrop: 'static', show: true});
+
+								if (selectedClassifier == "decisionTree") {
+
+									//Montando o HTML, com os parâmetros, do classificador escolhido
+									$("#editarParametros").html('<div id="decisionTree" class="widget-body" style="display: none"> ');
+
+									var var1 = '<div class="col-lg-4 col-md-4 col-sm-4"><label for="criterion1"> Criterion </label>  <br><select id="criterion1" class="Decision Tree" data-id="criterion"><option value="gini">gini</option><option value="entropy">entropy</option></select> </div>';
+
+									var var2 = '<div class="col-lg-4 col-md-4 col-sm-4"><label for="splitter"> Splitter </label> <br><select id="splitter" class="Decision Tree" data-id="splitter"><option value="best">best</option><option value="random">random</option></select> </div>';
+
+									var var3 = '<div class="col-lg-4 col-md-4 col-sm-4"><label for="max_depth1" style="text-align:center" data-toggle="tooltip" title="O valor de Max_depth deve ser None ou um número inteiro">Max_depth</label> <br><input type="text" id="max_depth1" required="required" value="None" class="Decision Tree" data-id="max_depth"><br><br></div>';
+
+									$("#editarParametros").append(var1, var2, var3,);
+
+									$("#modalEnsembleTitle").html("Decision Tree");
+
+									if (decisionTreeChoosedInputs.length != 0) {
+
+										$("#max_depth1").val(decisionTreeChoosedInputs[0].split("= ")[1]);
+										$("#criterion1").val(decisionTreeChoosedSelects[0].split("= ")[1]);
+										$("#splitter").val(decisionTreeChoosedSelects[1].split("= ")[1]);
+
+									}
+
+								}
+
+								else if (selectedClassifier == "bernoulli") {
+
+									//Montando o HTML, com os parâmetros, do classificador escolhido
+									$("#editarParametros").html('<div id="bernoulli" class="widget-body" style="display: none">');
+									
+									var var1 = '<div class="col-lg-3 col-md-3 col-sm-4"><label for="alpha2" data-toggle="tooltip" title="O valor de Alpha pode ser qualquer número que o usuário desejar, inclusive zero, apesar de não ser o ideal"> Alpha </label> <br><input type="text" id="alpha2" required="required" value="1" data-id="alpha" onkeyup="somenteNumeros(this);"></div>';
+
+									$("#editarParametros").append(var1);
+
+									$("#modalEnsembleTitle").html("Bernoulli");
+
+
+									if (bernoulliChoosedInputs.length != 0) {
+
+										$("#alpha2").val(bernoulliChoosedInputs[0].split("= ")[1]);
+
+									}
+
+								}
+
+								else if (selectedClassifier == "knn") {
+
+									//Montando o HTML, com os parâmetros, do classificador escolhido
+									$("#editarParametros").html('<div id="kNearestNeighbors" class="widget-body" style="display: none">');
+
+									var var1 = '<div class="col-lg-3 col-md-3 col-sm-4"><label for="k" data-toggle="tooltip" title="O valor de k pode ser qualquer número inteiro, a partir de 1">K</label> <br><input type="text" id="k" required="required" value="5" data-id="k" onkeyup="somenteNumerosInteiros(this);"><br><br></div>';
+
+									var var2 = '<div class="col-lg-3 col-md-3 col-sm-4"><label for="metrica"> Métrica </label>  <br><select id="metrica" data-id="metrica"><option value="euclidean">euclidean</option><option value="manhattan">manhattan</option></select> </div>';
+
+									$("#editarParametros").append(var1, var2);
+
+									$("#modalEnsembleTitle").html("K-Nearest Neighbors");
+
+									if (knnChoosedInputs.length != 0) {
+
+										$("#k").val(knnChoosedInputs[0].split("= ")[1]);
+										$("#metrica").val(knnChoosedSelects[0].split("= ")[1]);
+
+									}
+
+								}
+
+								else if (selectedClassifier == "linearSVM") {
+
+									//Montando o HTML, com os parâmetros, do classificador escolhido
+									$("#editarParametros").html('<div id="linearSupportVectorMachine" class="widget-body" style="display: none">');
+
+									var var1 = '<div class="col-lg-4 col-md-4 col-sm-4"><label for="penalty4"> Penalty </label>  <br><select id="penalty4" data-id="penalty"><option value="l2">l2</option><option id="caso_particular_l1" value="l1">l1</option></select> </div>';
+
+									var var2 = '<div class="col-lg-4 col-md-4 col-sm-4"><label for="loss4"> Loss </label>  <br><select id="loss4" data-id="loss"><option value="squared_hinge">squared_hinge</option><option id="caso_particular_hinge" value="hinge">hinge</option></select> </div>';
+
+									var var3 = '<div class="col-lg-4 col-md-4 col-sm-4"><label for="c4"  data-toggle="tooltip" title="O valor de C pode ser qualquer número que você desejar">C</label> <br><input type="text" id="c4" required="required" value="1" data-id="c" onkeyup="somenteNumeros(this);"><br><br></div>';
+
+									$("#editarParametros").append(var1, var2, var3);
+
+									//  The combination of penalty='l1' and loss='hinge' is not supported
+									$("#penalty4").on('change', function() { 
+										if(this.value == "l1") {
+											$("#caso_particular_hinge").prop("disabled", true);
+											$("#caso_particular_hinge").prop("selected", false);
+										} else {
+											$("#caso_particular_hinge").prop("disabled", false);
+										}
+									});
+									//  The combination of penalty='l1' and loss='hinge' is not supported
+									$("#loss4").on('change', function() { 
+										if(this.value == "hinge") {
+											$("#caso_particular_l1").prop("disabled", true);
+											$("#caso_particular_l1").prop("selected", false);
+										} else {
+											$("#caso_particular_l1").prop("disabled", false);
+										}
+									});
+
+									$("#modalEnsembleTitle").html("Linear Support Vector Machine");
+
+									if (linearSvmChoosedInputs.length != 0) {
+
+										$("#c4").val(linearSvmChoosedInputs[0].split("= ")[1]);
+										$("#penalty4").val(linearSvmChoosedSelects[0].split("= ")[1]);
+										$("#loss4").val(linearSvmChoosedSelects[1].split("= ")[1]);
+
+									}
+
+								}
+
+								else if (selectedClassifier == "multilayerPerceptron") {
+
+									$("#editarParametros").html('<div id="multilayerPerceptron" class="widget-body" style="display: none">');
+
+									var var1 = '<div class="col-lg-3 col-md-3 col-sm-3"><label for="hidden_layer_sizes" data-toggle="tooltip" title="O valor de Hidden_layer_sizes pode ser um número inteiro qualquer">Hidden_layer_sizes</label> <br><input type="text" id="hidden_layer_sizes" required="required" value="100" data-id="hidden_layer_sizes" onkeyup="somenteNumerosInteiros(this);"><br><br></div>';
+
+									var var2 = '<div class="col-lg-3 col-md-3 col-sm-3"><label for="activation"> Activation </label> <br><select id="activation" data-id="activation"><option value="relu">relu</option><option value="identity">identity</option><option value="logistic">logistic</option><option value="tanh">tanh</option></select> </div>';
+
+									var var3 = '<div class="col-lg-3 col-md-3 col-sm-3"><label for="solver5"> Solver </label>  <br><select id="solver5" data-id="solver"><option value="adam">adam</option><option value="lbfgs">lbfgs</option><option value="sgd">sgd</option></select> </div>';
+
+									var var4 = '<div class="col-lg-3 col-md-3 col-sm-3"><label for="learning_rate"> Learning_rate </label>  <br><select id="learning_rate" data-id="learning_rate"><option value="constant">constant</option><option value="invscaling">invscaling</option><option value="adaptive">adaptive</option></select> </div>';
+
+									var var5 = '<div class="col-lg-12 col-md-12 col-sm-12"><label for="learning_rate_init" data-toggle="tooltip" title="O valor de Learning_rate_init poder ser qualquer número decimal">Learning_rate_init</label> <br><input type="text" id="learning_rate_init" required="required" value="0.001" data-id="learning_rate_init" onkeyup="somenteNumeros(this);"><br><br></div>';
+
+									$("#editarParametros").append(var1, var2, var3, var4, var5);
+
+									$("#modalEnsembleTitle").html("Multilayer Perceptron");
+
+									if (multilayerPerceptronChoosedInputs.length != 0) {
+
+										$("#hidden_layer_sizes").val(multilayerPerceptronChoosedInputs[0].split("= ")[1]);
+										$("#learning_rate_init").val(multilayerPerceptronChoosedInputs[4].split("= ")[1]);
+										$("#activation").val(multilayerPerceptronChoosedSelects[0].split("= ")[1]);
+										$("#solver5").val(multilayerPerceptronChoosedSelects[1].split("= ")[1]);
+										$("#learning_rate").val(multilayerPerceptronChoosedSelects[3].split("= ")[1]);
+
+									}
+
+								}
+
+								else if (selectedClassifier == "multinomialNaiveBayes") {
+
+									//Montando o HTML, com os parâmetros, do classificador escolhido
+									$("#editarParametros").html('<div id="multinomialNaiveBayes" class="widget-body" style="display: none">');
+									
+									var var1 = '<div class="col-lg-4 col-md-4 col-sm-4"> <label for="alpha6" data-toggle="tooltip" title="O valor de Learning_rate_init poder ser qualquer número maior que zero"> Alpha </label> <br> <input type="text" id="alpha6" required="required" value="1" data-id="alpha" onkeyup="somenteNumeros(this);"></div>';
+
+									var var2 = '<div class="col-lg-4 col-md-4 col-sm-4"><label for="fit_prior"> Fit_prior </label>  <br><select id="fit_prior" data-id="fit_prior"><option value="True">True</option><option value="False">False</option></select></div>';
+
+									$("#editarParametros").append(var1, var2);
+
+									$("#modalEnsembleTitle").html("Multinomial Naive Bayes");
+
+									if (multinomialNbChoosedInputs.length != 0) {
+
+										$("#alpha6").val(multinomialNbChoosedInputs[0].split("= ")[1]);
+										$("#fit_prior").val(multinomialNbChoosedSelects[0].split("= ")[1]);
+
+									}
+
+								}
+
+								else if (selectedClassifier == "randomForest") {
+
+									//Montando o HTML, com os parâmetros, do classificador escolhido
+									$("#editarParametros").html('<div id="randomForest" class="widget-body" style="display: none">');
+									
+									var var1 = '<div class="col-lg-4 col-md-4 col-sm-4"><label for="n_estimators" data-toggle="tooltip" title="O valor de N_estimators pode ser um número inteiro qualquer, maior que zero.">N_estimators</label> <br><input type="text" id="n_estimators" required="required" value="10" data-id="n_estimators" onkeyup="somenteNumerosInteiros(this);"><br><br></div>';
+
+									var var2 = '<div class="col-lg-4 col-md-4 col-sm-4"><label for="criterion7"> Criterion </label>  <br><select id="criterion7" data-id="criterion"><option value="gini">gini</option><option value="entropy">entropy</option></select> </div>';
+
+									var var3 = '<div class="col-lg-4 col-md-4 col-sm-4"><label for="max_depth7"  data-toggle="tooltip" title="O valor de Max_depth pode ser um número inteiro qualquer ou None.">Max_depth</label> <br><input type="text" id="max_depth7" required="required" value="None" data-id="max_depth"><br><br></div>';						
+
+									$("#editarParametros").append(var1, var2, var3);
+
+									$("#modalEnsembleTitle").html("Random Forest");
+
+									if (randomForestChoosedInputs.length != 0) {
+
+										$("#n_estimators").val(randomForestChoosedInputs[0].split("= ")[1]);
+										$("#max_depth7").val(randomForestChoosedInputs[1].split("= ")[1]);
+										$("#criterion7").val(randomForestChoosedSelects[0].split("= ")[1]);
+
+									}
+
+								}
+
+								else if (selectedClassifier == "logisticRegression") {
+
+									//Montando o HTML, com os parâmetros, do classificador escolhido
+									$("#editarParametros").html('<div id="logisticRegression" class="widget-body" style="display: none">');
+
+									var var1 = '<div class="col-lg-4 col-md-4 col-sm-4"><label for="penalty8"> Penalty </label>  <br><select id="penalty8" data-id="penalty"><option value="l2">l2</option><option id="caso_particular" value="l1">l1</option></select> </div>';
+
+									var var2 = '<div class="col-lg-4 col-md-4 col-sm-4"><label for="solver8"> Solver </label>  <br><select id="solver8" data-id="solver"><option value="liblinear">liblinear</option><option value="lbfgs">lbfgs</option><option value="sag">sag</option><option value="saga">saga</option></select> </div>';
+
+									var var3 = '<div class="col-lg-4 col-md-4 col-sm-4"><label for="c8" data-toggle="tooltip" title="O valor de C pode ser qualquer número que você desejar">C</label> <br><input type="text" id="c8" value="1" data-id="c" required="required" onkeyup="somenteNumeros(this);"><br><br></div>';
+
+									$("#editarParametros").append(var1, var2, var3);
+
+									// Ao escolher a opção "sag", no parâmetro "solver" de regressão logística, a única opção de "Penalty" é o "l2"
+									$("#solver8").on('click', function() { 
+										if(this.value == "sag" || this.value == "lbfgs") {
+											$("#caso_particular").prop("disabled", true);
+											$("#caso_particular").prop("selected", false);
+										} else {
+											$("#caso_particular").prop("disabled", false);
+										}
+									});
+
+									$("#modalEnsembleTitle").html("Logistic Regression");
+
+									if (logisticRegressionChoosedInputs.length != 0) {
+
+										$("#c8").val(logisticRegressionChoosedInputs[0].split("= ")[1]);
+										$("#penalty8").val(logisticRegressionChoosedSelects[0].split("= ")[1]);
+										$("#solver8").val(logisticRegressionChoosedSelects[1].split("= ")[1]);
+
+									}
+
+								}
+
+								else if (selectedClassifier == "sgd") {
+
+									//Montando o HTML, com os parâmetros, do classificador escolhido
+									$("#editarParametros").html('<div id="gradientDescent" class="widget-body" style="display: none">');
+
+									var var1 = '<div class="col-lg-4 col-md-4 col-sm-4"><label for="loss9"> Loss </label>  <br><select id="loss9" data-id="loss"><option value="hinge">hinge</option><option value="log">log</option><option value="modified_huber">modified_huber</option><option value="squared_hinge">squared_hinge</option><option value="perceptron">perceptron</option><option value="squared_loss">squared_loss</option><option value="huber">huber</option><option value="epsilon_insensitive">epsilon_insensitive</option><option value="squared_epsilon_insensitive">squared_epsilon_insensitive</option></select> </div>';
+
+									var var2 = '<div class="col-lg-4 col-md-4 col-sm-4"><label for="penalty9"> Penalty </label>  <br><select id="penalty9" data-id="penalty"><option value="l2">l2</option><option value="l1">l1</option><option value="elasticnet">elasticnet</option></select> </div>';
+
+									var var3 = '<div class="col-lg-4 col-md-4 col-sm-4"><label for="max_iter" data-toggle="tooltip" title="O valor de Max_iter pode ser um número inteiro qualquer">Max_iter</label> <br><input type="text" id="max_iter" required="required" value="1000" data-id="max_iter" onkeyup="somenteNumerosInteiros(this);"><br><br></div>';
+
+									$("#editarParametros").append(var1, var2, var3);
+
+									$("#modalEnsembleTitle").html("Gradient Descent SGD");
+
+									if (gradientDescentChoosedInputs.length != 0) {
+
+										$("#max_iter").val(gradientDescentChoosedInputs[0].split("= ")[1]);
+										$("#loss9").val(gradientDescentChoosedSelects[0].split("= ")[1]);
+										$("#penalty9").val(gradientDescentChoosedSelects[1].split("= ")[1]);
+
+									}
+									
+								}
+
+								else if (selectedClassifier == "supportVectorMachine") {
+
+									//Apagando todos os parâmetros do classificador anterior, caso existam
+									$("#editarParametros").empty();
+
+									//Montando o HTML, com os parâmetros, do classificador escolhido
+									$("#editarParametros").html('<div id="supportVectorMachine" class="widget-body" style="display: none">');
+
+									var var1 = '<div class="col-lg-4 col-md-4 col-sm-4"><label for="gamma" data-toggle="tooltip" title="O valor de Gamma pode ser qualquer número que você desejar ou a palavra "auto"">Gamma</label> <br><input type="text" id="gamma" required="required" value="auto" data-id="gamma" onkeyup="somenteNumeros(this);"><br><br></div>';
+
+									var var2 = '<div class="col-lg-4 col-md-4 col-sm-4"><label for="kernel"> Kernel </label>  <br><select id="kernel" data-id="kernel"><option value="rbf">rbf</option><option value="linear">linear</option><option value="poly">poly</option><option value="sigmoid">sigmoid</option></select> </div>';
+
+									var var3 = '<div class="col-lg-4 col-md-4 col-sm-4"><label for="c10" data-toggle="tooltip" title="O valor de C pode ser qualquer número que você desejar">C</label> <br><input type="text" id="c10" required="required" value="1" data-id="c" onkeyup="somenteNumeros(this);"><br><br></div>';
+
+									$("#editarParametros").append(var1, var2, var3);
+
+									$("#modalEnsembleTitle").html("Support Vector Machine");
+
+									if (svmChoosedInputs.length != 0) {
+
+										$("#gamma").val(svmChoosedInputs[0].split("= ")[1]);
+										$("#c10").val(svmChoosedInputs[1].split("= ")[1]);
+										$("#kernel").val(svmChoosedChoosedSelects[0].split("= ")[1]);
+
+									}
+
+								}
+
+							});
+							// FIM da função para gerar as divs dos parâmetros, automaticamente, ao clicar no botão
+
+						} 
+
+					});
+
+				});
+					
+	  		}
+
+	  		else if (this.value == 12) {
+
+	  			//Apagando todos os parâmetros do classificador anterior, caso existam
+				$("#parametros_classificador").empty();
+
+				//Apagando todos os parâmetros da div Ensemble Clássico, caso existam
+				$('#ensembleClassicoParametros').empty();
+
+				isDynamicEnsemble = true;
+
+				$('#ensembleClassicoParametros').prev().children().eq(0).children().eq(0).text("Ensemble Dinâmico");
+
+				//Montando o HTML, com os parâmetros, do classificador escolhido
+				$("#parametros_classificador").html('<div id="dinamicEnsemble" class="widget-body" style="display: none">');
+
+				var var1 = '<div class="col-lg-4 col-md-4 col-sm-4"><label for="algoritmoEnsemble"> Algoritmo </label> <br><select id="algoritmoEnsemble" required="required" data-id="algoritmoDinamico"> <option value=""></option> <option value="exponential">DES-Exponential (DESE)</option> <option value="deskl">Dynamic Ensemble Selection-Kullback-Leibler divergence (DES-KL)</option> <option value="desknn">Dynamic ensemble Selection KNN (DES-KNN)</option> <option value="logarithmic">DES-Logarithmic (DES-L)</option> <option value="minimumdifference">DES - MinimumDifference (DES-MD)</option> <option value="desp"> Dynamic Ensemble Selection performance (DES-P)</option> <option value="knop"> k-Nearest Output Profiles (KNOP)</option> <option value="knorae"> k-Nearest Oracle-Eliminate (KNORA-E)</option> <option value="knorau"> k-Nearest Oracle Union (KNORA-U)</option> <option value="metades"> Meta learning for dynamic ensemble selection (META-DES)</option> <option value="rrc">  Randomized Reference Classifier (RRC)</option> </select> </div>';
+
+				var var2 = '<div class="col-lg-3 col-md-3 col-sm-3"><label for="k12" data-toggle="tooltip" title="O valor de k pode ser qualquer número inteiro, a partir de 1">K</label> <br><input type="text" id="k12" required="required" value="7" data-id="k" onkeyup="somenteNumerosInteiros(this);"><br><br></div>';
+
+				var var3 = '<div class="col-lg-3 col-md-3 col-sm-3"><label for="dfp"> DFP </label> <br><select id="dfp" data-id="dfp"><option value="false">false</option><option value="true">true</option></select> </div>';
+
+				var var4 = '<div class="col-lg-2 col-md-2 col-sm-2"><label for="vec_tipo12"> Vec_tipo </label>  <br><select id="vec_tipo12" required="required" data-id="vec_tipo"><option value="countvec">CountVectorizer</option><option value="tdidf_transf">TfidfTransformer</option></select> </div>';
+
+				var var5 = '<div class="col-lg-12 col-md-12 col-sm-12"></div></div>'
+
+				$("#parametros_classificador").append(var1, var2, var3, var4, var5);
+
+				// Ao selecionar a opção de ensemble clássico, mostrar no front sua respectiva DIV.
+				$("#divEnsembleClassico").show();
+
+				// Ao selecionar a opção de ensemble clássico, carregar no front os parâmetros do método "Voting", o default do Ensemble Clássico
+				var var1dynamicEnsemble = '<div class="col-lg-3 col-md-4 col-sm-4"> <input type="checkbox" id="votingDecisionTree" name="votingClassifiers" class="votingClassifiers"> <label for="votingDecisionTree">Decision Tree</label> <button title="Editar parâmetros" class="btn btn-info btn-xs buttonShowModal" disabled id="votingDecisionTreeButton"><span class="fa fa-lg fa-edit" ></span></button> </div>'
+
+				var var2dynamicEnsemble = '<div class="col-lg-3 col-md-4 col-sm-4"> <input type="checkbox" id="votingBernoulli" name="votingClassifiers" class="votingClassifiers"> <label for="votingBernoulli">Bernoulli</label> <button title="Editar parâmetros" class="btn btn-info btn-xs buttonShowModal" disabled id="votingBernoulliButton"><span class="fa fa-lg fa-edit"></span></button> </div>'
+
+				var var3dynamicEnsemble = '<div class="col-lg-3 col-md-4 col-sm-4"> <input type="checkbox" id="votingKNN" name="dinamicEnsembleClassifiers" class="votingClassifiers"> <label for="votingKNN">K-Nearest Neighbors</label> <button title="Editar parâmetros" class="btn btn-info btn-xs buttonShowModal" disabled id="votingKNNButton"><span class="fa fa-lg fa-edit"></span></button> </div>'
+
+				var var4dynamicEnsemble = '<div class="col-lg-3 col-md-4 col-sm-4"> <input type="checkbox" id="votingLinearSVM" name="votingClassifiers" class="votingClassifiers"> <label for="votingLinearSVM">Linear Support Vector Machine</label> <button title="Editar parâmetros" class="btn btn-info btn-xs buttonShowModal" disabled id="votingLinearSVMButton"><span class="fa fa-lg fa-edit"></span></button> </div>'
+
+				var var5dynamicEnsemble = '<div class="col-lg-3 col-md-4 col-sm-4"> <input type="checkbox" id="votingMultilayerPerceptron" name="votingClassifiers" class="votingClassifiers"> <label for="votingMultilayerPerceptron">Multilayer Perceptron</label> <button title="Editar parâmetros" class="btn btn-info btn-xs buttonShowModal" disabled id="votingMultilayerPerceptronButton"><span class="fa fa-lg fa-edit"></span></button> </div>'
+
+				var var6dynamicEnsemble = '<div class="col-lg-3 col-md-4 col-sm-4"> <input type="checkbox" id="votingMultinomialNB" name="votingClassifiers" class="votingClassifiers"> <label for="votingMultinomialNB">Multinomial Naive Bayes</label> <button title="Editar parâmetros" class="btn btn-info btn-xs buttonShowModal" disabled id="votingMultinomialNBButton"><span class="fa fa-lg fa-edit"></span></button> </div>'
+
+				var var7dynamicEnsemble = '<div class="col-lg-3 col-md-4 col-sm-4"> <input type="checkbox" id="votingRandomForest" name="votingClassifiers" class="votingClassifiers"> <label for="votingRandomForest">Random Forest</label> <button title="Editar parâmetros" class="btn btn-info btn-xs buttonShowModal" disabled id="votingRandomForestButton"><span class="fa fa-lg fa-edit"></span></button> </div>'
+
+				var var8dynamicEnsemble = '<div class="col-lg-3 col-md-4 col-sm-4"> <input type="checkbox" id="votingLogisticRegression" name="votingClassifiers" class="votingClassifiers"> <label for="votingLogisticRegression">Logistic Regression</label> <button title="Editar parâmetros" class="btn btn-info btn-xs buttonShowModal" disabled id="votingLogisticRegressionButton"><span class="fa fa-lg fa-edit"></span></button> </div>'
+
+				var var9dynamicEnsemble = '<div class="col-lg-3 col-md-4 col-sm-4"> <input type="checkbox" id="votingSGD" name="votingClassifiers" class="votingClassifiers"> <label for="votingSGD">Gradient Descent SGD</label> <button title="Editar parâmetros" class="btn btn-info btn-xs buttonShowModal" disabled id="votingSGDButton"><span class="fa fa-lg fa-edit"></span></button> </div>'
+
+				var var10dynamicEnsemble = '<div class="col-lg-3 col-md-4 col-sm-4"> <input type="checkbox" id="votingSVM" name="votingClassifiers" class="votingClassifiers"> <label for="votingSVM">Support Vector Machine</label> <button title="Editar parâmetros" class="btn btn-info btn-xs buttonShowModal" disabled id="votingSVMButton"><span class="fa fa-lg fa-edit"></span></button> </div>'
+
+				var var11dynamicEnsemble = '<div class="col-lg-3 col-md-4 col-sm-4"> <input type="checkbox" id="noVotingPerceptron" name="votingClassifiers" class="votingClassifiers"> <label for="noVotingPerceptron">Perceptron</label> <button title="Editar parâmetros" class="btn btn-info btn-xs buttonShowModal" disabled id="noVotingPerceptronButton"><span class="fa fa-lg fa-edit"></span></button> </div>'
+
+				// Inserindo as variáveis na div de parâmetros do ensemble clássico, com "voting" como método default
+				$('#ensembleClassicoParametros').append(var1dynamicEnsemble, var2dynamicEnsemble, var3dynamicEnsemble, var4dynamicEnsemble, var5dynamicEnsemble, var6dynamicEnsemble, var7dynamicEnsemble, var8dynamicEnsemble, var9dynamicEnsemble, var10dynamicEnsemble, var11dynamicEnsemble);
+				
+				$("input[type='checkbox']").change(function() {
+				    if(this.checked) {
+				        let myId = "#" + this.id;
+				        $(myId).next().next().attr("disabled", false);
+				    } else {
+				    	let myId = "#" + this.id;
+				        $(myId).next().next().attr("disabled", true);
+				    }
+				});
+
+				carregarInformacoes();
+
+	  		}
+
+	  		else if (this.value == 4) {
+
+				//Apagando todos os parâmetros do classificador anterior, caso existam
+				$("#parametros_classificador").empty();
+
+				//Montando o HTML, com os parâmetros, do classificador escolhido
+				$("#parametros_classificador").html('<div id="kNearestNeighbors" class="widget-body" style="display: none">');
+
+				var var1 = '<div class="col-lg-3 col-md-3 col-sm-4"><label for="k" data-toggle="tooltip" title="O valor de k pode ser qualquer número inteiro, a partir de 1">K</label> <br><input type="text" id="k" required="required" value="5" data-id="k" onkeyup="somenteNumerosInteiros(this);"><br><br></div>';
+
+				var var2 = '<div class="col-lg-3 col-md-3 col-sm-4"><label for="metrica"> Métrica </label>  <br><select id="metrica" data-id="metrica"><option value="euclidean">euclidean</option><option value="manhattan">manhattan</option></select> </div>';
+
+				var var3 = '<div class="col-lg-3 col-md-3 col-sm-4"><label for="divisao3"> Divisão </label>  <br><select id="divisao3" data-id="divisao"><option value="percent_split">Percentage Split</option><option value="cross_val">Cross Validation</option></select> </div>';
+
+				var var4 = '<div class="col-lg-3 col-md-3 col-sm-4"><label for="treino_tam3" data-toggle="tooltip" title="O valor de Treino_tam deve ser um decimal entre 0 e 1">Conjunto de Treino</label> <br><input type="text" id="treino_tam3" required="required" value="0.66" data-id="treino_tam" onkeyup="somenteNumeros(this);"><br><br></div>';
+
+				var var5 = '<div class="col-lg-3 col-md-3 col-sm-4"><label for="teste_tam3" data-toggle="tooltip" title="O valor de Teste_tam deve ser um decimal entre 0 e 1">Conjunto de Teste</label> <br><input type="text" id="teste_tam3" required="required" value="0.33" data-id="teste_tam" onkeyup="somenteNumeros(this);"><br><br></div>';
+
+				var var6 = '<div class="col-lg-3 col-md-3 col-sm-4"> <label for="folds_tam3" data-toggle="tooltip" title="O valor de Folds_tam deve ser um número inteiro">Quantidade de Folds</label> <br><input type="text" id="folds_tam3" value="5" required="required" data-id="folds_tam" onkeyup="somenteNumerosInteiros(this);"><br><br></div>';
+
+				var var7 = '<div class="col-lg-3 col-md-3 col-sm-4"><label for="vec_tipo3"> Vec_tipo </label>  <br><select id="vec_tipo3" required="required" required="required" data-id="vec_tipo"><option value="countvec">countvec</option><option value="tdidf_transf">TfidfTransformer</option></select> </div> </div>';
+
+				$("#parametros_classificador").append(var1, var2, var3, var4, var5, var6, var7);
+				
+	  		}
+
+	  		else if (this.value == 5) {
+
+				//Apagando todos os parâmetros do classificador anterior, caso existam
+				$("#parametros_classificador").empty();
+
+				//Montando o HTML, com os parâmetros, do classificador escolhido
+				$("#parametros_classificador").html('<div id="linearSupportVectorMachine" class="widget-body" style="display: none">');
+
+				var var1 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="penalty4"> Penalty </label>  <br><select id="penalty4" data-id="penalty"><option value="l2">l2</option><option value="l1">l1</option></select> </div>';
+
+				var var2 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="loss4"> Loss </label>  <br><select id="loss4" data-id="loss"><option value="squared_hinge">squared_hinge</option><option value="hinge">hinge</option></select> </div>';
+
+				var var3 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="c4"  data-toggle="tooltip" title="O valor de C pode ser qualquer número que você desejar">C</label> <br><input type="text" id="c4" required="required" value="1" data-id="c" onkeyup="somenteNumeros(this);"><br><br></div>';
+
+				var var4 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="divisao4"> Divisão </label>  <br><select id="divisao4" data-id="divisao"><option value="percent_split">Percentage Split</option><option value="cross_val">Cross Validation</option></select> </div>';
+
+				var var5 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="treino_tam4" data-toggle="tooltip" title="O valor de Treino_tam deve ser um decimal entre 0 e 1">Conjunto de Treino</label> <br><input type="text" id="treino_tam4" required="required" value="0.66" data-id="treino_tam" onkeyup="somenteNumeros(this);"><br><br></div>';
+
+				var var6 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="teste_tam4" data-toggle="tooltip" title="O valor de Teste_tam deve ser um decimal entre 0 e 1">Conjunto de Teste</label> <br><input type="text" id="teste_tam4" required="required" value="0.33" data-id="teste_tam" onkeyup="somenteNumeros(this);"><br><br></div>';
+
+				var var7 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="folds_tam4" data-toggle="tooltip" title="O valor de Folds_tam deve ser um número inteiro">Quantidade de Folds</label> <br><input type="text" id="folds_tam4" required="required" value="5" data-id="folds_tam" onkeyup="somenteNumerosInteiros(this);"><br><br></div>';
+
+				var var8 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="vec_tipo4"> Vec_tipo </label>  <br><select id="vec_tipo4" required="required" data-id="vec_tipo"><option value="countvec">CountVectorizer</option><option value="tdidf_transf">tdidf_transf</option></select> </div> </div>';
+
+				$("#parametros_classificador").append(var1, var2, var3, var4, var8, var5, var6, var7);
+				
+	  		}
+
+	  		else if (this.value == 6) {
+
+				//Apagando todos os parâmetros do classificador anterior, caso existam
+				$("#parametros_classificador").empty();
+
+				//Montando o HTML, com os parâmetros, do classificador escolhido
+				$("#parametros_classificador").html('<div id="multilayerPerceptron" class="widget-body" style="display: none">');
+
+				var var1 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="hidden_layer_sizes" data-toggle="tooltip" title="O valor de Hidden_layer_sizes pode ser um número inteiro qualquer">Hidden_layer_sizes</label> <br><input type="text" id="hidden_layer_sizes" required="required" value="100" data-id="hidden_layer_sizes" onkeyup="somenteNumerosInteiros(this);"><br><br></div>';
+
+				var var2 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="activation"> Activation </label>  <br><select id="activation" data-id="activation"><option value="relu">relu</option><option value="identity">identity</option><option value="logistic">logistic</option><option value="tanh">tanh</option></select> </div>';
+
+				var var3 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="solver5"> Solver </label>  <br><select id="solver5" data-id="solver"><option value="adam">adam</option><option value="lbfgs">lbfgs</option><option value="sgd">sgd</option></select> </div>';
+
+				var var4 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="divisao5"> Divisão </label> <br> <select id="divisao5" data-id="divisao"><option value="percent_split">Percentage Split</option><option value="cross_val">Cross Validation</option></select> </div>';
+
+				var var5 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="treino_tam5" data-toggle="tooltip" title="O valor de Treino_tam deve ser um decimal entre 0 e 1">Conjunto de Treino</label> <br><input type="text" id="treino_tam5" required="required" value="0.66" data-id="treino_tam" onkeyup="somenteNumeros(this);"><br><br></div>';
+
+				var var6 = '<div class="col-lg-2 col-md-4 col-sm-4"> <label for="teste_tam5" data-toggle="tooltip" title="O valor de Teste_tam deve ser um decimal entre 0 e 1">Conjunto de Teste</label> <br><input type="text" id="teste_tam5" required="required" value="0.33" data-id="teste_tam" onkeyup="somenteNumeros(this);"><br><br></div>';
+
+				var var7 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="folds_tam5" data-toggle="tooltip" title="O valor de Folds_tam deve ser um número inteiro">Quantidade de Folds</label> <br><input type="text" id="folds_tam5" required="required" value="5" data-id="folds_tam" onkeyup="somenteNumerosInteiros(this);"><br><br></div>';
+
+				var var8 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="learning_rate"> Learning_rate </label>  <br><select id="learning_rate" data-id="learning_rate"><option value="constant">constant</option><option value="invscaling">invscaling</option><option value="adaptive">adaptive</option></select> </div>';
+
+				var var9 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="learning_rate_init" data-toggle="tooltip" title="O valor de Learning_rate_init poder ser qualquer número decimal">Learning_rate_init</label> <br><input type="text" id="learning_rate_init" required="required" value="0.001" data-id="learning_rate_init" onkeyup="somenteNumeros(this);"><br><br></div>';
+
+				var var10 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="vec_tipo5"> Vec_tipo </label>  <br><select id="vec_tipo5" required="required" data-id="vec_tipo"><option value="countvec">CountVectorizer</option><option value="tdidf_transf">TfidfTransformer</option></select> </div> </div>';
+
+				$("#parametros_classificador").append(var1, var2, var3, var4, var5, var6, var7, var8, var10, var9);
+				
+	  		}
+
+	  		else if (this.value == 7) {
+
+				//Apagando todos os parâmetros do classificador anterior, caso existam
+				$("#parametros_classificador").empty();
+
+				//Montando o HTML, com os parâmetros, do classificador escolhido
+				$("#parametros_classificador").html('<div id="multinomialNaiveBayes" class="widget-body" style="display: none">');
+				
+				var var1 = '<div class="col-lg-2 col-md-4 col-sm-4"> <label for="alpha6"  data-toggle="tooltip" title="O valor de Learning_rate_init poder ser qualquer número maior que zero"> Alpha </label> <br> <input type="text" id="alpha6" required="required" value="1" data-id="alpha" onkeyup="somenteNumeros(this);"></div>';
+
+				var var2 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="fit_prior"> Fit_prior </label>  <br><select id="fit_prior" data-id="fit_prior"><option value="True">True</option><option value="False">False</option></select></div>';
+
+				var var3 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="divisao6"> Divisão </label>  <br><select id="divisao6" data-id="divisao"><option value="percent_split">Percentage Split</option><option value="cross_val">Cross Validation</option></select> </div>';
+
+				var var4 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="treino_tam6" data-toggle="tooltip" title="O valor de Treino_tam deve ser um decimal entre 0 e 1">Conjunto de Treino</label> <br><input type="text" id="treino_tam2" required="required" value="0.66" data-id="treino_tam" onkeyup="somenteNumeros(this);"><br><br></div>';
+
+				var var5 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="teste_tam6" data-toggle="tooltip" title="O valor de Teste_tam deve ser um decimal entre 0 e 1">Conjunto de Teste</label> <br><input type="text" id="teste_tam2" required="required" value="0.33" data-id="teste_tam" onkeyup="somenteNumeros(this);"><br><br></div>';
+
+				var var6 = '<div class="col-lg-2 col-md-4 col-sm-4"> <label for="folds_tam6" data-toggle="tooltip" title="O valor de Folds_tam deve ser um número inteiro">Quantidade de Folds</label> <br><input type="text" id="folds_tam6" required="required" value="5" data-id="folds_tam" onkeyup="somenteNumerosInteiros(this);"><br><br></div>';
+
+				var var7 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="vec_tipo6"> Vec_tipo </label>  <br><select id="vec_tipo6" required="required" data-id="vec_tipo"><option value="countvec">CountVectorizer</option><option value="tdidf_transf">TfidfTransformer</option></select> </div></div>';
+
+				$("#parametros_classificador").append(var1, var2, var3, var7, var4, var5, var6);
+				
+	  		}
+
+	  		else if (this.value == 8) {
+
+				//Apagando todos os parâmetros do classificador anterior, caso existam
+				$("#parametros_classificador").empty();
+
+				//Montando o HTML, com os parâmetros, do classificador escolhido
+				$("#parametros_classificador").html('<div id="randomForest" class="widget-body" style="display: none">');
+				
+				var var1 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="n_estimators" data-toggle="tooltip" title="O valor de N_estimators pode ser um número inteiro qualquer, maior que zero.">N_estimators</label> <br><input type="text" id="n_estimators" required="required" value="10" data-id="n_estimators" onkeyup="somenteNumerosInteiros(this);"><br><br></div>';
+
+				var var2 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="criterion7"> Criterion </label>  <br><select id="criterion7" data-id="criterion"><option value="gini">gini</option><option value="entropy">entropy</option></select> </div>';
+
+				var var3 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="max_depth7"  data-toggle="tooltip" title="O valor de Max_depth pode ser um número inteiro qualquer ou None.">Max_depth</label> <br><input type="text" id="max_depth7" required="required" value="None" data-id="max_depth"><br><br></div>';
+
+				var var4 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="divisao7"> Divisão </label>  <br><select id="divisao7" data-id="divisao"><option value="percent_split">Percentage Split</option><option value="cross_val">Cross Validation</option></select> </div>';
+
+				var var5 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="treino_tam7" data-toggle="tooltip" title="O valor de Treino_tam deve ser um decimal entre 0 e 1">Conjunto de Treino</label> <br><input type="text" id="treino_tam7" required="required" value="0.66" data-id="treino_tam" onkeyup="somenteNumeros(this);"><br><br></div>';
+
+				var var6 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="teste_tam7" data-toggle="tooltip" title="O valor de Teste_tam deve ser um decimal entre 0 e 1">Conjunto de Teste</label> <br><input type="text" id="teste_tam7" required="required" value="0.33" data-id="teste_tam" onkeyup="somenteNumeros(this);"><br><br></div>';
+
+				var var7 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="folds_tam7" data-toggle="tooltip" title="O valor de Folds_tam deve ser um número inteiro">Quantidade de Folds</label> <br><input type="text" id="folds_tam7" required="required" value="5" data-id="folds_tam" onkeyup="somenteNumerosInteiros(this);"><br><br></div>';
+
+				var var8 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="vec_tipo7"> Vec_tipo </label>  <br><select id="vec_tipo7" required="required" data-id="vec_tipo"><option value="countvec">CountVectorizer</option><option value="tdidf_transf">TfidfTransformer</option></select> </div></div>';
+
+				$("#parametros_classificador").append(var1, var2, var3, var4, var8, var5, var6, var7);
+				
+	  		}
+
+	  		else if (this.value == 9) {
+
+				//Apagando todos os parâmetros do classificador anterior, caso existam
+				$("#parametros_classificador").empty();
+
+				//Montando o HTML, com os parâmetros, do classificador escolhido
+				$("#parametros_classificador").html('<div id="logisticRegression" class="widget-body" style="display: none">');
+
+				var var1 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="penalty8"> Penalty </label>  <br><select id="penalty8" data-id="penalty"><option value="l2">l2</option><option id="caso_particular" value="l1">l1</option></select> </div>';
+
+				var var2 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="solver8"> Solver </label>  <br><select id="solver8" data-id="solver"><option value="liblinear">liblinear</option><option value="lbfgs">lbfgs</option><option value="sag">sag</option><option value="saga">saga</option></select> </div>';
+
+				var var3 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="c8" data-toggle="tooltip" title="O valor de C pode ser qualquer número que você desejar">C</label> <br><input type="text" id="c8" value="1" data-id="c" required="required" onkeyup="somenteNumeros(this);"><br><br></div>';
+
+				var var4 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="divisao8"> Divisão </label>  <br><select id="divisao8" data-id="divisao"><option value="percent_split">Percentage Split</option><option value="cross_val">Cross Validation</option></select> </div>';
+
+				var var5 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="treino_tam8" data-toggle="tooltip" title="O valor de Treino_tam deve ser um decimal entre 0 e 1">Conjunto de Treino</label> <br><input type="text" id="treino_tam8" required="required" value="0.66" data-id="treino_tam" onkeyup="somenteNumeros(this);"><br><br></div>';
+
+				var var6 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="teste_tam8" data-toggle="tooltip" title="O valor de Teste_tam deve ser um decimal entre 0 e 1">Conjunto de Teste</label> <br><input type="text" id="teste_tam8" required="required" value="0.33" data-id="teste_tam" onkeyup="somenteNumeros(this);"><br><br></div>';
+
+				var var7 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="folds_tam8" data-toggle="tooltip" title="O valor de Folds_tam deve ser um número inteiro">Quantidade de Folds</label> <br><input type="text" id="folds_tam8" required="required" value="5" data-id="folds_tam" onkeyup="somenteNumerosInteiros(this);"><br><br></div>';
+
+				var var8 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="vec_tipo8"> Vec_tipo </label>  <br><select id="vec_tipo8" required="required" data-id="vec_tipo"><option value="countvec">CountVectorizer</option><option value="tdidf_transf">TfidfTransformer</option></select> </div></div>';
+
+				$("#parametros_classificador").append(var1, var2, var3, var4, var8, var5, var6, var7);
+
+				// Ao escolher a opção "sag", no parâmetro "solver" de regressão logística, a única opção de "Penalty" é o "l2"
+				$("#solver8").on('click', function() { 
+					if(this.value == "sag" || this.value == "lbfgs") {
+						$("#caso_particular").prop("disabled", true);
+						$("#caso_particular").prop("selected", false);
+					} else {
+						$("#caso_particular").prop("disabled", false);
+					}
+				});
+				
+	  		}
+
+	  		else if (this.value == 10) {
+
+				//Apagando todos os parâmetros do classificador anterior, caso existam
+				$("#parametros_classificador").empty();
+
+				//Montando o HTML, com os parâmetros, do classificador escolhido
+				$("#parametros_classificador").html('<div id="gradientDescent" class="widget-body" style="display: none">');
+
+				var var1 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="loss9"> Loss </label>  <br><select id="loss9" data-id="loss"><option value="hinge">hinge</option><option value="log">log</option><option value="modified_huber">modified_huber</option><option value="squared_hinge">squared_hinge</option><option value="perceptron">perceptron</option><option value="squared_loss">squared_loss</option><option value="huber">huber</option><option value="epsilon_insensitive">epsilon_insensitive</option><option value="squared_epsilon_insensitive">squared_epsilon_insensitive</option></select> </div>';
+
+				var var2 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="penalty9"> Penalty </label>  <br><select id="penalty9" data-id="penalty"><option value="l2">l2</option><option value="l1">l1</option><option value="elasticnet">elasticnet</option></select> </div>';
+
+				var var3 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="max_iter" data-toggle="tooltip" title="O valor de Max_iter pode ser um número inteiro qualquer">Max_iter</label> <br><input type="text" id="max_iter" required="required" value="1000" data-id="max_iter" onkeyup="somenteNumerosInteiros(this);"><br><br></div>';
+
+				var var4 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="divisao9"> Divisão </label>  <br><select id="divisao9" data-id="divisao"><option value="percent_split">Percentage Split</option><option value="cross_val">Cross Validation</option></select> </div>';
+
+				var var5 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="treino_tam9" data-toggle="tooltip" title="O valor de Treino_tam deve ser um decimal entre 0 e 1">Conjunto de Treino</label> <br><input type="text" id="treino_tam9" required="required" value="0.66" data-id="treino_tam" onkeyup="somenteNumeros(this);"><br><br></div>';
+
+				var var6 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="teste_tam9" data-toggle="tooltip" title="O valor de Teste_tam deve ser um decimal entre 0 e 1">Conjunto de Teste</label> <br><input type="text" id="teste_tam9" required="required" value="0.33" data-id="teste_tam" onkeyup="somenteNumeros(this);"><br><br></div>';
+
+				var var7 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="folds_tam9" data-toggle="tooltip" title="O valor de Folds_tam deve ser um número inteiro">Quantidade de Folds</label> <br><input type="text" id="folds_tam9" required="required" value="5" data-id="folds_tam" onkeyup="somenteNumerosInteiros(this);"><br><br></div>';
+
+				var var8 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="vec_tipo9"> Vec_tipo </label>  <br><select id="vec_tipo9" required="required" data-id="vec_tipo"><option value="countvec">CountVectorizer</option><option value="tdidf_transf">TfidfTransformer</option></select> </div></div>';
+
+				$("#parametros_classificador").append(var1, var2, var3, var4, var8, var5, var6, var7);
+				
+	  		}
+
+	  		else if (this.value == 11) {
+
+				//Apagando todos os parâmetros do classificador anterior, caso existam
+				$("#parametros_classificador").empty();
+
+				//Montando o HTML, com os parâmetros, do classificador escolhido
+				$("#parametros_classificador").html('<div id="supportVectorMachine" class="widget-body" style="display: none">');
+
+				var var1 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="gamma" data-toggle="tooltip" title="O valor de Gamma pode ser qualquer número que você desejar ou a palavra "auto"">Gamma</label> <br><input type="text" id="gamma" required="required" value="auto" data-id="gamma" onkeyup="somenteNumeros(this);"><br><br></div>';
+
+				var var2 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="kernel" data-toggle="tooltip" title="O valor de C pode ser qualquer número que você desejar"> Kernel </label>  <br><select id="kernel" data-id="kernel"><option value="rbf">rbf</option><option value="linear">linear</option><option value="poly">poly</option><option value="sigmoid">sigmoid</option></select> </div>';
+
+				var var3 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="c10" data-toggle="tooltip" title="O valor de C pode ser qualquer número que você desejar">C</label> <br><input type="text" id="c10" required="required" value="1" data-id="c" onkeyup="somenteNumeros(this);"><br><br></div>';
+
+				var var4 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="divisao10"> Divisão </label>  <br><select id="divisao10" data-id="divisao"><option value="percent_split">Percentage Split</option><option value="cross_val">Cross Validation</option></select> </div>';
+
+				var var5 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="treino_tam10" data-toggle="tooltip" title="O valor de Treino_tam deve ser um decimal entre 0 e 1">Conjunto de Treino</label> <br><input type="text" id="treino_tam10" required="required" value="0.66" data-id="treino_tam" onkeyup="somenteNumeros(this);"><br><br></div>';
+
+				var var6 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="teste_tam10" data-toggle="tooltip" title="O valor de Teste_tam deve ser um decimal entre 0 e 1">Conjunto de Teste</label> <br><input type="text" id="teste_tam10" required="required" value="0.33" data-id="teste_tam" onkeyup="somenteNumeros(this);"><br><br></div>';
+
+				var var7 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="folds_tam10" data-toggle="tooltip" title="O valor de Folds_tam deve ser um número inteiro">Quantidade de Folds</label> <br><input type="text" id="folds_tam10" required="required" value="5" data-id="folds_tam" onkeyup="somenteNumerosInteiros(this);"><br><br></div>';
+
+				var var8 = '<div class="col-lg-2 col-md-4 col-sm-4"><label for="vec_tipo10"> Vec_tipo </label>  <br><select id="vec_tipo10" required="required" data-id="vec_tipo"><option value="countvec">CountVectorizer</option><option value="tdidf_transf">TfidfTransformer</option></select> </div></div>';
+
+				$("#parametros_classificador").append(var1, var2, var3, var4, var8, var5, var6, var7);
+
+	  		}
+
+
+	  		var id_divisao = "#" + this.id;
+			var meu_id = "";
+
+			var filhos = $('#parametros_classificador input[type="text"]');
+
+			var posicao = 0;
+
+			for (var cont = 0; cont < filhos.length; cont++) {
+				
+				if (filhos[cont].id.match(/folds_tam/)) {
+					meu_id = "#" + filhos[cont].id;
+					posicao+=1;
+				}
+
+			}
+
+			$(meu_id).toggle();
+			$(meu_id).parent().toggle();
+
+		}
+
+		carregarInformacoes();
+
+	});
+
+	//Função para salvar parâmetros do(s) método(s) escolhido(s) no(s) classificador(es) em listas (inputs).
+	$("#salvarInfoEnsemble").on('click', function(e) {
+
+		//ABAIXO ESTÁ A VALIDAÇÃO DE VALORES DO MODAL DO ENSEMBLE
+
+		var treino_tam;
+    	var teste_tam;
+
+		var choosedInputs = "";
+		var choosedSelects = "";
+
+		// Selecionando os inputs e selects do classificador escolhido, tais quais serão passados para o backend
+		choosedInputs = $('#editarParametros input[type="text"]');
+		choosedSelects =  $('#editarParametros select');
+
+		var erroValidacao = false;
+
+		// Separando os parâmetros tipo input em chave e valor
+		for (var i = 0; i < choosedInputs.length; i++) {
+
+			// Armazenando os valores de "treino_tam" e "teste_tam" para fazer a validação depois
+			if(choosedInputs[i].getAttribute("data-id") == "treino_tam") {
+				treino_tam = parseFloat(choosedInputs[i].value);
+			} else if (choosedInputs[i].getAttribute("data-id") == "teste_tam") {
+				teste_tam = parseFloat(choosedInputs[i].value);
+			} 
+
+			// Se a ténica for "Árvore de decisão", ou "Random Forest", e o atributo max_depth não atender o valor None ou um inteiro
+			if(choosedInputs[i].getAttribute("data-id") == "max_depth" && (choosedInputs[i].value != "None" && isNaN(choosedInputs[i].value))) {
+				erroValidacao = true;
+			}
+
+			// Se a ténica for "Bernoulli", ou "Multinomial NB", e o atributo alpha não for um inteiro
+			if(choosedInputs[i].getAttribute("data-id") == "alpha" && $.isNumeric(choosedInputs[i].value==false || $.isNumeric(choosedInputs[i].value)==false)) { 
+				erroValidacao = true;
+			}
+
+			// Se a ténica for "KNN" e o atributo k não for um número maior ou igual a 1
+			if(choosedInputs[i].getAttribute("data-id") == "k" && (choosedInputs[i].value < 1)) { 
+				erroValidacao = true;
+			}
+
+			// Se a ténica for "Random FOrest" e o atributo k não for um número maior ou igual a 1
+			if(choosedInputs[i].getAttribute("data-id") == "n_estimators" && (choosedInputs[i].value < 1)) { 
+				erroValidacao = true;
+			}
+
+		}
+
+		//console.log(dicionario_parametros);
+
+		// Se a soma de "treino_tam" e "teste_tam" der superior a "1.00", o código não pode prosseguir
+		if ((treino_tam + teste_tam) > 1.00 ){
+
+			if ($('#editarParametros').text().indexOf('A soma de "treino_tam" e "teste_tam" deve ser menor ou igual a 1!') == -1) { 
+
+				$("#editarParametros").append('<div class="note note-error col-lg-12 col-md-12 col-sm-12 id="erro_select_tecnica" style="color:red; margin-left:15px">A soma de "treino_tam" e "teste_tam" deve ser menor ou igual a 1!</div>');
+
+			}
+
+			e.preventDefault();
+
+			return false;
+		} else {
+
+			if ($('#editarParametros').text().indexOf('A soma de "treino_tam" e "teste_tam" deve ser menor ou igual a 1!') != -1) { 
+
+				$("#ensembleClassicoParametros .note-error").remove();
+
+			}
+
+		}
+
+		// Verifica algum erro de validação dos parâmetros (Se existe alguma string ao invés de Inteiro, etc)
+		if (erroValidacao == true){
+
+			if ($('#editarParametros').text().indexOf('Há um erro de validação em algum dos parâmetros acima, verifique!') == -1) {
+
+				$("#editarParametros").append('<div class="note note-error col-lg-12 col-md-12 col-sm-12 id="erro_select_tecnica" style="color:red";>Há um erro de validação em algum dos parâmetros acima, verifique!</div>');
+
+			}
+				
+			e.preventDefault();
+
+			return false;
+		} else {
+
+			if ($('#editarParametros').text().indexOf('Há um erro de validação em algum dos parâmetros acima, verifique!') != -1) {
+
+				$("#editarParametros .note-error").remove();
+
+			}
+
+		}
+
+		//ACIMA ESTÁ A VALIDAÇÃO DE VALORES DO MODAL DO ENSEMBLE
+
+		var hasSomeValueEmpty = false; 
+
+		if (selectedClassifier == "decisionTree") {
+
+			$('#editarParametros input[type="text"]').each(function(index) {
+				if (this.value == "") {
+					$("#erro_save_params").html('<div class="note note-error col-lg-12 col-md-12 col-sm-12 id="erro_select_tecnica" style="color:red; margin-left:25px">Verifique todos os campos acima!</div>');
+					decisionTreeChoosedInputs = [];
+					hasSomeValueEmpty = true;
+					return false;
+				}
+				decisionTreeChoosedInputs[index] = this.getAttribute("data-id") + " = " + this.value;
+			});
+
+			if (hasSomeValueEmpty == false) {
+				$('#editarParametros select').each(function(index) {
+					if (this.value == "") {
+						$("#erro_save_params").html('<div class="note note-error col-lg-12 col-md-12 col-sm-12 id="erro_select_tecnica" style="color:red; margin-left:25px">Verifique todos os campos acima!</div>');
+						decisionTreeChoosedSelects = [];
+						decisionTreeChoosedInputs = [];
+						hasSomeValueEmpty = true;
+						return false;
+					}
+					decisionTreeChoosedSelects[index] = this.getAttribute("data-id") + " = " + this.value;
+				});
+				
+			} 
+
+			if (hasSomeValueEmpty == false) {
+				$("#erro_save_params").empty();
+				$("#modalEditarParametrosEnsemble").modal('hide');
+			}
+				
+		} else if (selectedClassifier == "bernoulli") {
+
+			$('#editarParametros input[type="text"]').each(function(index) {
+				if (this.value == "") {
+					$("#erro_save_params").html('<div class="note note-error col-lg-12 col-md-12 col-sm-12 id="erro_select_tecnica" style="color:red; margin-left:25px">Verifique todos os campos acima!</div>');
+					bernoulliChoosedInputs = [];
+					hasSomeValueEmpty = true;
+					return false;
+				}
+				bernoulliChoosedInputs[index] = this.getAttribute("data-id") + " = " + this.value;
+			});
+
+			if (hasSomeValueEmpty == false) {
+				$('#editarParametros select').each(function(index) {
+					if (this.value == "") {
+						$("#erro_save_params").html('<div class="note note-error col-lg-12 col-md-12 col-sm-12 id="erro_select_tecnica" style="color:red; margin-left:25px">Verifique todos os campos acima!</div>');
+						bernoulliChoosedSelects = [];
+						bernoulliChoosedInputs = [];
+						hasSomeValueEmpty = true;
+						return false;
+					}
+					bernoulliChoosedSelects[index] = this.getAttribute("data-id") + " = " + this.value;
+				});
+			} 
+
+			if (hasSomeValueEmpty == false) {
+				$("#erro_save_params").empty();
+				$("#modalEditarParametrosEnsemble").modal('hide');
+			}
+
+		} else if (selectedClassifier == "knn") {
+
+			$('#editarParametros input[type="text"]').each(function(index) {
+				if (this.value == "") {
+					$("#erro_save_params").html('<div class="note note-error col-lg-12 col-md-12 col-sm-12 id="erro_select_tecnica" style="color:red; margin-left:25px">Verifique todos os campos acima!</div>');
+					knnChoosedInputs = [];
+					hasSomeValueEmpty = true;
+					return false;
+				}
+				knnChoosedInputs[index] = this.getAttribute("data-id") + " = " + this.value;
+			});
+
+			if (hasSomeValueEmpty == false) {
+				$('#editarParametros select').each(function(index) {
+					if (this.value == "") {
+						$("#erro_save_params").html('<div class="note note-error col-lg-12 col-md-12 col-sm-12 id="erro_select_tecnica" style="color:red; margin-left:25px">Verifique todos os campos acima!</div>');
+						knnChoosedSelects = [];
+						knnChoosedInputs = [];
+						hasSomeValueEmpty = true;
+						return false;
+					}
+					knnChoosedSelects[index] = this.getAttribute("data-id") + " = " + this.value;
+				});
+			}
+
+			if (hasSomeValueEmpty == false) {
+				$("#erro_save_params").empty();
+				$("#modalEditarParametrosEnsemble").modal('hide');
+			}
+
+		} else if (selectedClassifier == "linearSVM") {
+
+			$('#editarParametros input[type="text"]').each(function(index) {
+				if (this.value == "") {
+					$("#erro_save_params").html('<div class="note note-error col-lg-12 col-md-12 col-sm-12 id="erro_select_tecnica" style="color:red; margin-left:25px">Verifique todos os campos acima!</div>');
+					linearSvmChoosedInputs = [];
+					hasSomeValueEmpty = true;
+					return false;
+				}
+				linearSvmChoosedInputs[index] = this.getAttribute("data-id") + " = " + this.value;
+			});
+
+			if (hasSomeValueEmpty == false) {
+				$('#editarParametros select').each(function(index) {
+					if (this.value == "") {
+						$("#erro_save_params").html('<div class="note note-error col-lg-12 col-md-12 col-sm-12 id="erro_select_tecnica" style="color:red; margin-left:25px">Verifique todos os campos acima!</div>');
+						linearSvmChoosedSelects = [];
+						linearSvmChoosedInputs = [];
+						hasSomeValueEmpty = true;
+						return false;
+					}
+					linearSvmChoosedSelects[index] = this.getAttribute("data-id") + " = " + this.value;
+				});
+			}
+
+			if (hasSomeValueEmpty == false) {
+				$("#erro_save_params").empty();
+				$("#modalEditarParametrosEnsemble").modal('hide');
+			}
+
+		} else if (selectedClassifier == "multilayerPerceptron") {
+
+			$('#editarParametros input[type="text"]').each(function(index) {
+				if (this.value == "") {
+					$("#erro_save_params").html('<div class="note note-error col-lg-12 col-md-12 col-sm-12 id="erro_select_tecnica" style="color:red; margin-left:25px">Verifique todos os campos acima!</div>');
+					multilayerPerceptronChoosedInputs = [];
+					hasSomeValueEmpty = true;
+					return false;
+				}
+				multilayerPerceptronChoosedInputs[index] = this.getAttribute("data-id") + " = " + this.value;
+			});
+
+			if (hasSomeValueEmpty == false) {
+				$('#editarParametros select').each(function(index) {
+					if (this.value == "") {
+						$("#erro_save_params").html('<div class="note note-error col-lg-12 col-md-12 col-sm-12 id="erro_select_tecnica" style="color:red; margin-left:25px">Verifique todos os campos acima!</div>');
+						multilayerPerceptronChoosedSelects = [];
+						multilayerPerceptronChoosedInputs = [];
+						hasSomeValueEmpty = true;
+						return false;
+					}
+					multilayerPerceptronChoosedSelects[index] = this.getAttribute("data-id") + " = " + this.value;
+				});
+			}
+
+			if (hasSomeValueEmpty == false) {
+				$("#erro_save_params").empty();
+				$("#modalEditarParametrosEnsemble").modal('hide');
+			}
+
+		} else if (selectedClassifier == "multinomialNaiveBayes") {
+
+			$('#editarParametros input[type="text"]').each(function(index) {
+				if (this.value == "") {
+					$("#erro_save_params").html('<div class="note note-error col-lg-12 col-md-12 col-sm-12 id="erro_select_tecnica" style="color:red; margin-left:25px">Verifique todos os campos acima!</div>');
+					multinomialNbChoosedInputs = [];
+					hasSomeValueEmpty = true;
+					return false;
+				}
+				multinomialNbChoosedInputs[index] = this.getAttribute("data-id") + " = " + this.value;
+			});
+
+			if (hasSomeValueEmpty == false) {
+				$('#editarParametros select').each(function(index) {
+					if (this.value == "") {
+						$("#erro_save_params").html('<div class="note note-error col-lg-12 col-md-12 col-sm-12 id="erro_select_tecnica" style="color:red; margin-left:25px">Verifique todos os campos acima!</div>');
+						multinomialNbChoosedSelects = [];
+						multinomialNbChoosedInputs = [];
+						hasSomeValueEmpty = true;
+						return false;
+					}
+					multinomialNbChoosedSelects[index] = this.getAttribute("data-id") + " = " + this.value;
+				});
+			}
+
+			if (hasSomeValueEmpty == false) {
+				$("#erro_save_params").empty();
+				$("#modalEditarParametrosEnsemble").modal('hide');
+			}
+
+		} else if (selectedClassifier == "randomForest") {
+
+			$('#editarParametros input[type="text"]').each(function(index) {
+				if (this.value == "") {
+					$("#erro_save_params").html('<div class="note note-error col-lg-12 col-md-12 col-sm-12 id="erro_select_tecnica" style="color:red; margin-left:25px">Verifique todos os campos acima!</div>');
+					randomForestChoosedInputs = [];
+					hasSomeValueEmpty = true;
+					return false;
+				}
+				randomForestChoosedInputs[index] = this.getAttribute("data-id") + " = " + this.value;
+			});
+
+			if (hasSomeValueEmpty == false) {
+				$('#editarParametros select').each(function(index) {
+					if (this.value == "") {
+						$("#erro_save_params").html('<div class="note note-error col-lg-12 col-md-12 col-sm-12 id="erro_select_tecnica" style="color:red; margin-left:25px">Verifique todos os campos acima!</div>');
+						randomForestChoosedSelects = [];
+						randomForestChoosedInputs = [];
+						hasSomeValueEmpty = true;
+						return false;
+					}
+					randomForestChoosedSelects[index] = this.getAttribute("data-id") + " = " + this.value;
+				});
+			}
+
+			if (hasSomeValueEmpty == false) {
+				$("#erro_save_params").empty();
+				$("#modalEditarParametrosEnsemble").modal('hide');
+			}
+
+		} else if (selectedClassifier == "logisticRegression") {
+
+			$('#editarParametros input[type="text"]').each(function(index) {
+				if (this.value == "") {
+					$("#erro_save_params").html('<div class="note note-error col-lg-12 col-md-12 col-sm-12 id="erro_select_tecnica" style="color:red; margin-left:25px">Verifique todos os campos acima!</div>');
+					logisticRegressionChoosedInputs = [];
+					hasSomeValueEmpty = true;
+					return false;
+				}
+				logisticRegressionChoosedInputs[index] = this.getAttribute("data-id") + " = " + this.value;
+			});
+
+			if (hasSomeValueEmpty == false) {
+				$('#editarParametros select').each(function(index) {
+					if (this.value == "") {
+						$("#erro_save_params").html('<div class="note note-error col-lg-12 col-md-12 col-sm-12 id="erro_select_tecnica" style="color:red; margin-left:25px">Verifique todos os campos acima!</div>');
+						logisticRegressionChoosedSelects = [];
+						logisticRegressionChoosedInputs = [];
+						hasSomeValueEmpty = true;
+						return false;
+					}
+					logisticRegressionChoosedSelects[index] = this.getAttribute("data-id") + " = " + this.value;
+				});
+			}
+
+			if (hasSomeValueEmpty == false) {
+				$("#erro_save_params").empty();
+				$("#modalEditarParametrosEnsemble").modal('hide');
+			}
+
+		} else if (selectedClassifier == "sgd") {
+
+			$('#editarParametros input[type="text"]').each(function(index) {
+				if (this.value == "") {
+					$("#erro_save_params").html('<div class="note note-error col-lg-12 col-md-12 col-sm-12 id="erro_select_tecnica" style="color:red; margin-left:25px">Verifique todos os campos acima!</div>');
+					gradientDescentChoosedInputs = [];
+					hasSomeValueEmpty = true;
+					return false;
+				}
+				gradientDescentChoosedInputs[index] = this.getAttribute("data-id") + " = " + this.value;
+			});
+
+			if (hasSomeValueEmpty == false) {
+				$('#editarParametros select').each(function(index) {
+					if (this.value == "") {
+						$("#erro_save_params").html('<div class="note note-error col-lg-12 col-md-12 col-sm-12 id="erro_select_tecnica" style="color:red; margin-left:25px">Verifique todos os campos acima!</div>');
+						gradientDescentChoosedSelects = [];
+						gradientDescentChoosedInputs = [];
+						hasSomeValueEmpty = true;
+						return false;
+					}
+					gradientDescentChoosedSelects[index] = this.getAttribute("data-id") + " = " + this.value;
+				});
+			}
+
+			if (hasSomeValueEmpty == false) {
+				$("#erro_save_params").empty();
+				$("#modalEditarParametrosEnsemble").modal('hide');
+			}
+
+		} else if (selectedClassifier == "supportVectorMachine") {
+
+			$('#editarParametros input[type="text"]').each(function(index) {
+				if (this.value == "") {
+					$("#erro_save_params").html('<div class="note note-error col-lg-12 col-md-12 col-sm-12 id="erro_select_tecnica" style="color:red; margin-left:25px">Verifique todos os campos acima!</div>');
+					svmChoosedInputs = [];
+					hasSomeValueEmpty = true;
+					return false;
+				}
+				svmChoosedInputs[index] = this.getAttribute("data-id") + " = " + this.value;
+			});
+
+			if (hasSomeValueEmpty == false) {
+				$('#editarParametros select').each(function(index) {
+					if (this.value == "") {
+						$("#erro_save_params").html('<div class="note note-error col-lg-12 col-md-12 col-sm-12 id="erro_select_tecnica" style="color:red; margin-left:25px">Verifique todos os campos acima!</div>');
+						svmChoosedSelects = [];
+						svmChoosedInputs = [];
+						hasSomeValueEmpty = true;
+						return false;
+					}
+					svmChoosedSelects[index] = this.getAttribute("data-id") + " = " + this.value;
+				});
+			}
+
+			if (hasSomeValueEmpty == false) {
+				$("#erro_save_params").empty();
+				$("#modalEditarParametrosEnsemble").modal('hide');
+			}
+
+		} else if (selectedClassifier == "perceptron") {
+
+			$('#editarParametros input[type="text"]').each(function(index) {
+				if (this.value == "") {
+					$("#erro_save_params").html('<div class="note note-error col-lg-12 col-md-12 col-sm-12 id="erro_select_tecnica" style="color:red; margin-left:25px">Verifique todos os campos acima!</div>');
+					perceptronChoosedInputs = [];
+					hasSomeValueEmpty = true;
+					return false;
+				}
+				perceptronChoosedInputs[index] = this.getAttribute("data-id") + " = " + this.value;
+			});
+
+			if (hasSomeValueEmpty == false) {
+				$('#editarParametros select').each(function(index) {
+					if (this.value == "") {
+						$("#erro_save_params").html('<div class="note note-error col-lg-12 col-md-12 col-sm-12 id="erro_select_tecnica" style="color:red; margin-left:25px">Verifique todos os campos acima!</div>');
+						perceptronChoosedSelects = [];
+						perceptronChoosedInputs = [];
+						hasSomeValueEmpty = true;
+						return false;
+					}
+					perceptronChoosedSelects[index] = this.getAttribute("data-id") + " = " + this.value;
+				});
+			}
+
+			if (hasSomeValueEmpty == false) {
+				$("#erro_save_params").empty();
+				$("#modalEditarParametrosEnsemble").modal('hide');
+			}
+
+		}
+
+	});
+
+
+	$(document).ready(function(){
+
+		$("#button_avançar_resultados").prop('disabled', true);
+
+	}); 
+
+	// Função para mostrar (treino_tam e teste_tam) ou (folds_tam), dependendo da escolha do parâmetro de divisão
+	$(document).on('change', 'select', function() {
+
+		var id_divisao = "#" + this.id;
+		var filhos = null;
+		var meu_id = null;
+
+		if ($(id_divisao).attr('data-id') == 'divisao') {
+
+			filhos = $('#parametros_classificador input[type="text"]');
+			
+			meu_id = [];
+			var posicao = 0;
+
+			for (var cont = 0; cont < filhos.length; cont++) {
+				
+				if (filhos[cont].id.match(/treino_tam|teste_tam|folds_tam/)) {
+					meu_id[posicao] = "#" + filhos[cont].id;
+					$(meu_id[posicao]).toggle();
+					$(meu_id[posicao]).parent().toggle();
+					posicao+=1;
+				}
+
+			}
+
+		}
+
+	});
+
+
+	//INÍCIO DA FUNÇÃO PARA AVANÇAR PARA A ABA RESULTADOS
+    $(document).on('submit', '#resultados', function(e) {
+
+    	var treino_tam;
+    	var teste_tam;
+
+    	//Mapa a ser enviado pro back, caso o classificador escolhido seja ensemble clássico e o método do mesmo seja VOTING
+    	var dicionario_classificadores_ensemble = new Map();
+
+    	//Lista a ser enviada pro back, se o classificador escolhido for ensemble clássico e o método do mesmo seja ADABOOST OU BAGGING
+    	var lista_classificador_ensemble = [];
+
+    	//Lista dos parâmetros do ensemble clássico a ser enviada pro back, que vão variar de acordo com o método escolhido pelo usuário
+    	var lista_parametros_ensemble = [];
+
+    	var lista_ensemble_dinamico_or_voting = [];
+
+    	// Obtendo o elemento de seleção da técnica do treinamento em questão
+		classificadorPrevia = document.getElementById("classifik");
+
+    	// Selecionando o classificador escolhido e colocando no data-classificador, para enviar tal informação para o back end
+		classificador = classificadorPrevia.options[classificadorPrevia.selectedIndex].innerHTML;
+		$('#wid-id-10').attr('data-classificador', classificador);
+		// Selecionando o classificador escolhido e colocando no data-classificador, para enviar tal informação para o back end
+
+		var choosedInputs = "";
+		var choosedSelects = "";
+
+		// Selecionando os inputs e selects do classificador escolhido, tais quais serão passados para o backend
+		choosedInputs = $('#parametros_classificador input[type="text"]');
+		choosedSelects =  $('#parametros_classificador select');
+
+		// Criando o Hash map, que será tratado e passará suas informações para a lista também criada abaixo, que será enviada para o backend
+		var dicionario_parametros = new Map();
+		var listaDeParametros = []
+		var erroValidacao = false;
+
+		// Separando os parâmetros tipo input em chave e valor
+		for (var i = 0; i < choosedInputs.length; i++) {
+
+			// Armazenando os valores de "treino_tam" e "teste_tam" para fazer a validação depois
+			if(choosedInputs[i].getAttribute("data-id") == "treino_tam") {
+				treino_tam = parseFloat(choosedInputs[i].value);
+			} else if (choosedInputs[i].getAttribute("data-id") == "teste_tam") {
+				teste_tam = parseFloat(choosedInputs[i].value);
+			} 
+
+			// Se a ténica for "Árvore de decisão", ou "Random Forest", e o atributo max_depth não atender o valor None ou um inteiro
+			if(choosedInputs[i].getAttribute("data-id") == "max_depth" && (choosedInputs[i].value != "None" && isNaN(choosedInputs[i].value))) {
+				erroValidacao = true;
+			}
+
+			// Se a ténica for "Bernoulli", ou "Multinomial NB", e o atributo alpha não for um inteiro
+			if(choosedInputs[i].getAttribute("data-id") == "alpha" && $.isNumeric(choosedInputs[i].value==false || $.isNumeric(choosedInputs[i].value)==false)) { 
+				erroValidacao = true;
+			}
+
+			// Se a ténica for "KNN" e o atributo k não for um número maior ou igual a 1
+			if(choosedInputs[i].getAttribute("data-id") == "k" && (choosedInputs[i].value < 1)) { 
+				erroValidacao = true;
+			}
+
+			// Se a ténica for "Random FOrest" e o atributo k não for um número maior ou igual a 1
+			if(choosedInputs[i].getAttribute("data-id") == "n_estimators" && (choosedInputs[i].value < 1)) { 
+				erroValidacao = true;
+			}
+
+			dicionario_parametros.set(choosedInputs[i].getAttribute("data-id"), choosedInputs[i].value);
+		}
+
+		//console.log(dicionario_parametros);
+
+
+		// Se a soma de "treino_tam" e "teste_tam" der superior a "1.00", o código não pode prosseguir
+		if ((treino_tam + teste_tam) > 1.00 ){
+
+			if ($('#parametros_classificador').text().indexOf('A soma de "treino_tam" e "teste_tam" deve ser menor ou igual a 1!') == -1) { 
+
+				$("#parametros_classificador").append('<div class="note note-error col-lg-12 col-md-12 col-sm-12 id="erro_select_tecnica" style="color:red; margin-left:15px">A soma de "treino_tam" e "teste_tam" deve ser menor ou igual a 1!</div>');
+
+			}
+
+			e.preventDefault();
+
+			return false;
+		} else {
+
+			if ($('#parametros_classificador').text().indexOf('A soma de "treino_tam" e "teste_tam" deve ser menor ou igual a 1!') != -1) { 
+
+				$("#parametros_classificador .note-error").remove();
+
+			}
+
+		}
+
+		// Verifica algum erro de validação dos parâmetros (Se existe alguma string ao invés de Inteiro, etc)
+		if (erroValidacao == true){
+
+			if ($('#parametros_classificador').text().indexOf('Há um erro de validação em algum dos parâmetros acima, verifique!') == -1) {
+
+				$("#parametros_classificador").append('<div class="note note-error col-lg-12 col-md-12 col-sm-12 id="erro_select_tecnica" style="color:red";>Há um erro de validação em algum dos parâmetros acima, verifique!</div>');
+
+			}
+				
+			e.preventDefault();
+
+			return false;
+		} else {
+
+			if ($('#parametros_classificador').text().indexOf('Há um erro de validação em algum dos parâmetros acima, verifique!') != -1) {
+
+				$("#parametros_classificador .note-error").remove();
+
+			}
+				
+
+		}
+
+		// Separando os parâmetros tipo select em chave e valor
+		for (var i = 0; i < choosedSelects.length; i++) {
+			dicionario_parametros.set(choosedSelects[i].getAttribute("data-id"), choosedSelects[i].value);
+		}
+
+		// Passando os parâmetros do hash map para a lista
+		for (var [chave, valor] of dicionario_parametros) {
+		  listaDeParametros.push(chave + "=" + valor)
+		}
+
+
+		// ABAIXO, INSERINDO VALORES DEFAULT NA LISTA DO ALGORITMO ESCOLHIDO, CASO O USUÁRIO NÃO EDITE OS PARÂMETROS DO MESMO (VÁLIDO PARA ADABOOST E BAGGING)
+		if (classificador == "Static Ensemble Selection") {
+			if (myMethod == "adaboost") {
+
+				if($("#adaboostClassifiers option:selected").val() == "decisionTree") {
+
+					if (decisionTreeChoosedInputs.length == 0) {
+						decisionTreeChoosedInputs[0] = "max_depth = None";
+						decisionTreeChoosedSelects[0] = "criterion = gini";
+						decisionTreeChoosedSelects[1] = "splitter = best";
+					}
+
+				} else if ($("#adaboostClassifiers option:selected").val() == "bernoulli") {
+					if (bernoulliChoosedInputs.length == 0) {
+						bernoulliChoosedInputs[0] = "alpha = 1";
+					}
+
+				} else if ($("#adaboostClassifiers option:selected").val() == "knn") {
+					if (knnChoosedInputs.length == 0) {
+						knnChoosedInputs[0] = "k = 5";
+						knnChoosedSelects[0] = "metrica = euclidean";
+					}
+
+				} else if ($("#adaboostClassifiers option:selected").val() == "linearSVM") {
+					if (linearSvmChoosedInputs.length == 0) {
+						linearSvmChoosedInputs[0] = "c = 1";
+						linearSvmChoosedSelects[0] = "penalty = l2";
+						linearSvmChoosedSelects[1] = "loss = squared_hinge";
+					}
+
+				} else if ($("#adaboostClassifiers option:selected").val() == "multilayerPerceptron") {
+					if (multilayerPerceptronChoosedInputs.length == 0) {
+						multilayerPerceptronChoosedInputs[0] = "hidden_layer_sizes = 100";
+						multilayerPerceptronChoosedInputs[1] = "learning_rate_init = 0.001";
+						multilayerPerceptronChoosedSelects[0] = "activation = relu";
+						multilayerPerceptronChoosedSelects[1] = "solver = adam";
+						multilayerPerceptronChoosedSelects[2] = "learning_rate = constant";
+					}
+
+				} else if ($("#adaboostClassifiers option:selected").val() == "multinomialNaiveBayes") {
+					if (multinomialNbChoosedInputs.length == 0) {
+						multinomialNbChoosedInputs[0] = "alpha = 1";
+						multinomialNbChoosedSelects[0] = "fit_prior = True";
+					}
+
+				} else if ($("#adaboostClassifiers option:selected").val() == "randomForest") {
+					if (randomForestChoosedInputs.length == 0) {
+						randomForestChoosedInputs[0] = "n_estimators = 10";
+						randomForestChoosedInputs[1] = "max_depth = None";
+						randomForestChoosedSelects[0] = "criterion = gini";
+					}
+
+				} else if ($("#adaboostClassifiers option:selected").val() == "logisticRegression") {
+					if (logisticRegressionChoosedInputs.length == 0) {
+						logisticRegressionChoosedInputs[0] = "c = 1";
+						logisticRegressionChoosedSelects[0] = "penalty = l2";
+						logisticRegressionChoosedSelects[1] = "solver = liblinear";
+					}
+
+				} else if ($("#adaboostClassifiers option:selected").val() == "sgd") {
+					if (gradientDescentChoosedInputs.length == 0) {
+						gradientDescentChoosedInputs[0] = "max_iter = 1000";
+						gradientDescentChoosedSelects[0] = "loss = hinge";
+						gradientDescentChoosedSelects[1] = "penalty = l2";
+					}
+
+				} else if ($("#adaboostClassifiers option:selected").val() == "supportVectorMachine") {
+					if (svmChoosedInputs.length == 0) {
+						svmChoosedInputs[0] = "gamma = auto";
+						svmChoosedInputs[1] = "c = 1";
+						svmChoosedSelects[0] = "kernel = rbf";
+					}
+
+				}
+
+
+			} else if (myMethod == "bagging") {
+
+				if($("#baggingClassifiers option:selected").val() == "decisionTree") {
+
+					if (decisionTreeChoosedInputs.length == 0) {
+						decisionTreeChoosedInputs[0] = "max_depth = None";
+						decisionTreeChoosedSelects[0] = "criterion = gini";
+						decisionTreeChoosedSelects[1] = "splitter = best";
+					}
+
+				} else if ($("#baggingClassifiers option:selected").val() == "bernoulli") {
+					if (bernoulliChoosedInputs.length == 0) {
+						bernoulliChoosedInputs[0] = "alpha = 1";
+					}
+
+				} else if ($("#baggingClassifiers option:selected").val() == "knn") {
+					if (knnChoosedInputs.length == 0) {
+						knnChoosedInputs[0] = "k = 5";
+						knnChoosedSelects[0] = "metrica = euclidean";
+					}
+
+				} else if ($("#baggingClassifiers option:selected").val() == "linearSVM") {
+					if (linearSvmChoosedInputs.length == 0) {
+						linearSvmChoosedInputs[0] = "c = 1";
+						linearSvmChoosedSelects[0] = "penalty = l2";
+						linearSvmChoosedSelects[1] = "loss = squared_hinge";
+					}
+
+				} else if ($("#baggingClassifiers option:selected").val() == "multilayerPerceptron") {
+					if (multilayerPerceptronChoosedInputs.length == 0) {
+						multilayerPerceptronChoosedInputs[0] = "hidden_layer_sizes = 100";
+						multilayerPerceptronChoosedInputs[1] = "learning_rate_init = 0.001";
+						multilayerPerceptronChoosedSelects[0] = "activation = relu";
+						multilayerPerceptronChoosedSelects[1] = "solver = adam";
+						multilayerPerceptronChoosedSelects[2] = "learning_rate = constant";
+					}
+
+				} else if ($("#baggingClassifiers option:selected").val() == "multinomialNaiveBayes") {
+					if (multinomialNbChoosedInputs.length == 0) {
+						multinomialNbChoosedInputs[0] = "alpha = 1";
+						multinomialNbChoosedSelects[0] = "fit_prior = True";
+					}
+
+				} else if ($("#baggingClassifiers option:selected").val() == "randomForest") {
+					if (randomForestChoosedInputs.length == 0) {
+						randomForestChoosedInputs[0] = "n_estimators = 10";
+						randomForestChoosedInputs[1] = "max_depth = None";
+						randomForestChoosedSelects[0] = "criterion = gini";
+					}
+
+				} else if ($("#baggingClassifiers option:selected").val() == "logisticRegression") {
+					if (logisticRegressionChoosedInputs.length == 0) {
+						logisticRegressionChoosedInputs[0] = "c = 1";
+						logisticRegressionChoosedSelects[0] = "penalty = l2";
+						logisticRegressionChoosedSelects[1] = "solver = liblinear";
+					}
+
+				} else if ($("#baggingClassifiers option:selected").val() == "sgd") {
+					if (gradientDescentChoosedInputs.length == 0) {
+						gradientDescentChoosedInputs[0] = "max_iter = 1000";
+						gradientDescentChoosedSelects[0] = "loss = hinge";
+						gradientDescentChoosedSelects[1] = "penalty = l2";
+					}
+
+				} else if ($("#baggingClassifiers option:selected").val() == "supportVectorMachine") {
+					if (svmChoosedInputs.length == 0) {
+						svmChoosedInputs[0] = "gamma = auto";
+						svmChoosedInputs[1] = "c = 1";
+						svmChoosedSelects[0] = "kernel = rbf";
+					}
+
+				}
+
+			}
+
+		}
+
+
+		if ((myMethod == "voting" || isDynamicEnsemble == true) && (classificador == "Static Ensemble Selection" || classificador == "Dynamic Ensemble Selection")) {
+			// VERIFICANDO QUAIS DOS ALGORITMOS FOI SELECIONADO PELO USUÁRIO (VÁLIDO PARA VOTING E ENSEMBLE DINÂMICO)
+    		$("input[type='checkbox'].votingClassifiers").each(function() {
+    			// SE O ALGORITMO FOI SELECIONADO, O CÓDIGO VAI VERIFICAR SE O USUÁRIO EDITOU OS PARÂMETROS OU NÃO. CASO NÃO TENHA EDITADO, O PRÓPRIO CÓDIGO INSERE OS VALORES DEFAULT NA LISTA INTERMEDIÁRIA DA LISTA QUE VAI PRO BACKEND
+	    		if (this.checked) {
+
+	    			if (this.id == "votingDecisionTree") {
+	    				if (decisionTreeChoosedInputs.length == 0) {
+	    					decisionTreeChoosedInputs[0] = "max_depth = None";
+							decisionTreeChoosedSelects[0] = "criterion = gini";
+							decisionTreeChoosedSelects[1] = "splitter = best";
+	    				}
+	    				dicionario_classificadores_ensemble.set(this.id.replace("voting",""), decisionTreeChoosedInputs.concat(decisionTreeChoosedSelects));
+	    			} else if (this.id == "votingBernoulli") {
+	    				if (bernoulliChoosedInputs.length == 0) {
+	    					bernoulliChoosedInputs[0] = "alpha = 1";
+	    				}
+	    				dicionario_classificadores_ensemble.set(this.id.replace("voting",""), bernoulliChoosedInputs.concat(bernoulliChoosedSelects));
+	    			} else if (this.id == "votingKNN") {
+	    				if (knnChoosedInputs.length == 0) {
+	    					knnChoosedInputs[0] = "k = 5";
+							knnChoosedSelects[0] = "metrica = euclidean";
+	    				}
+	    				dicionario_classificadores_ensemble.set(this.id.replace("voting",""), knnChoosedInputs.concat(knnChoosedSelects));
+	    			} else if (this.id == "votingLinearSVM") {
+	    				if (linearSvmChoosedInputs.length == 0) {
+	    					linearSvmChoosedInputs[0] = "c = 1";
+							linearSvmChoosedSelects[0] = "penalty = l2";
+							linearSvmChoosedSelects[1] = "loss = squared_hinge";
+	    				}
+	    				dicionario_classificadores_ensemble.set(this.id.replace("voting",""), linearSvmChoosedInputs.concat(linearSvmChoosedSelects));
+	    			} else if (this.id == "votingMultilayerPerceptron") {
+	    				if (multilayerPerceptronChoosedInputs.length == 0) {
+	    					multilayerPerceptronChoosedInputs[0] = "hidden_layer_sizes = 100";
+							multilayerPerceptronChoosedInputs[1] = "learning_rate_init = 0.001";
+							multilayerPerceptronChoosedSelects[0] = "activation = relu";
+							multilayerPerceptronChoosedSelects[1] = "solver = adam";
+							multilayerPerceptronChoosedSelects[2] = "learning_rate = constant";
+	    				}
+	    				dicionario_classificadores_ensemble.set(this.id.replace("voting",""), multilayerPerceptronChoosedInputs.concat(multilayerPerceptronChoosedSelects));
+	    			} else if (this.id == "votingMultinomialNB") {
+	    				if (multinomialNbChoosedInputs.length == 0) {
+	    					multinomialNbChoosedInputs[0] = "alpha = 1";
+							multinomialNbChoosedSelects[0] = "fit_prior = True";
+	    				}
+	    				dicionario_classificadores_ensemble.set(this.id.replace("voting",""),multinomialNbChoosedInputs.concat(multinomialNbChoosedSelects));
+	    			} else if (this.id == "votingRandomForest") {
+	    				if (randomForestChoosedInputs.length == 0) {
+	    					randomForestChoosedInputs[0] = "n_estimators = 10";
+							randomForestChoosedInputs[1] = "max_depth = None";
+							randomForestChoosedSelects[0] = "criterion = gini";
+	    				}
+	    				dicionario_classificadores_ensemble.set(this.id.replace("voting",""), randomForestChoosedInputs.concat(randomForestChoosedSelects));
+	    			} else if (this.id == "votingLogisticRegression") {
+	    				if (logisticRegressionChoosedInputs.length == 0) {
+	    					logisticRegressionChoosedInputs[0] = "c = 1";
+							logisticRegressionChoosedSelects[0] = "penalty = l2";
+							logisticRegressionChoosedSelects[1] = "solver = liblinear";
+	    				}
+	    				dicionario_classificadores_ensemble.set(this.id.replace("voting",""), logisticRegressionChoosedInputs.concat(logisticRegressionChoosedSelects));
+	    			} else if (this.id == "votingSGD") {
+	    				if (gradientDescentChoosedInputs.length == 0) {
+	    					gradientDescentChoosedInputs[0] = "max_iter = 1000";
+							gradientDescentChoosedSelects[0] = "loss = hinge";
+							gradientDescentChoosedSelects[1] = "penalty = l2";
+	    				}
+	    				dicionario_classificadores_ensemble.set(this.id.replace("voting",""), gradientDescentChoosedInputs.concat(gradientDescentChoosedSelects));
+	    			} else if (this.id == "votingSVM") {
+	    				if (svmChoosedInputs.length == 0) {
+	    					svmChoosedInputs[0] = "gamma = auto";
+							svmChoosedInputs[1] = "c = 1";
+							svmChoosedSelects[0] = "kernel = rbf";
+	    				}
+	    				dicionario_classificadores_ensemble.set(this.id.replace("voting",""), svmChoosedInputs.concat(svmChoosedSelects));
+	    			}
+
+	    			else if (this.id == "noVotingPerceptron") {
+	    				if (perceptronChoosedInputs.length == 0) {
+	    					perceptronChoosedInputs[0] = "alpha = 0.0001";
+							perceptronChoosedSelects[0] = "penalty = l2";
+	    				}
+	    				dicionario_classificadores_ensemble.set(this.id.replace("noVoting",""), perceptronChoosedInputs.concat(perceptronChoosedSelects));
+	    			}	
+
+	    		}
+
+			});
+
+	    	// ENVIAR O MAP "dicionario_classificadores_ensemble" PARA O BACK-END, CASO O CLASSIFICADOR ESCOLHIDO SEJA ENSEMBLE CLÁSSICO E O MÉTODO SEJA UM DOS QUE ACEITEM UM OU MAIS CLASSIFICADORES ESCOLHIDOS PELO USUÁRIO
+	    	//console.log(dicionario_classificadores_ensemble);
+
+	    	// Passando os parâmetros do hash map do ensemble clássico (voting), ou do ensemble dinâmico, para a lista
+			for (var [chave, valor] of dicionario_classificadores_ensemble) {
+				lista_ensemble_dinamico_or_voting.push(chave + ": " + valor);
+			}
+
+			// Verifica se a lista de classificador(es) de voting (ensemble clássico), ou do ensemble dinâmico, está vazia
+			if (lista_ensemble_dinamico_or_voting.length == 0){
+
+				if ($('#ensembleClassicoParametros').text().indexOf('Escolha ao menos um classificador!') == -1) {
+
+					$("#ensembleClassicoParametros").append('<div class="note note-error col-lg-12 col-md-12 col-sm-12 id="erro_select_tecnica" style="color:red";>Escolha ao menos um classificador!</div>');
+
+				}
+					
+				e.preventDefault();
+
+				return false;
+			} else {
+
+				if ($('#ensembleClassicoParametros').text().indexOf('Escolha ao menos um classificador!') != -1) {
+
+					$("#ensembleClassicoParametros .note-error").remove();
+
+				}
+
+			}
+
+    	} else if (myMethod == "adaboost" || myMethod == "bagging") {
+
+    		if (selectedClassifier == "decisionTree") {
+
+				lista_classificador_ensemble = decisionTreeChoosedInputs.concat(decisionTreeChoosedSelects);
+
+			} else if (selectedClassifier == "bernoulli") {
+
+				lista_classificador_ensemble = bernoulliChoosedInputs.concat(bernoulliChoosedSelects);
+
+
+			} else if (selectedClassifier == "knn") {
+
+				lista_classificador_ensemble = knnChoosedInputs.concat(knnChoosedSelects);
+
+				
+			} else if (selectedClassifier == "linearSVM") {
+
+				lista_classificador_ensemble = linearSvmChoosedInputs.concat(linearSvmChoosedSelects);
+		
+
+			} else if (selectedClassifier == "multilayerPerceptron") {
+
+				lista_classificador_ensemble = multilayerPerceptronChoosedInputs.concat(multilayerPerceptronChoosedSelects);
+	
+
+			} else if (selectedClassifier == "multinomialNaiveBayes") {
+
+				lista_classificador_ensemble = multinomialNbChoosedInputs.concat(multinomialNbChoosedSelects);
+
+
+			} else if (selectedClassifier == "randomForest") {
+
+				lista_classificador_ensemble =  randomForestChoosedInputs.concat(randomForestChoosedSelects);
+
+
+			} else if (selectedClassifier == "logisticRegression") {
+
+				lista_classificador_ensemble = logisticRegressionChoosedInputs.concat(logisticRegressionChoosedSelects);
+
+
+			} else if (selectedClassifier == "sgd") {
+
+				lista_classificador_ensemble = gradientDescentChoosedInputs.concat(gradientDescentChoosedSelects);
+
+
+			} else if (selectedClassifier == "supportVectorMachine") {
+
+				lista_classificador_ensemble = svmChoosedInputs.concat(svmChoosedSelects);
+
+			}
+
+			// ENVIAR A LISTA DE PARÂMETROS DO CLASSIFICADOR ESCOLHIDO "lista_classificador_ensemble" PARA O BACK-END, CASO O CLASSIFICADOR ESCOLHIDO SEJA ENSEMBLE CLÁSSICO E O MÉTODO SEJA ADABOOST OU BAGGING
+			//console.log(lista_classificador_ensemble);
+
+			// Verifica se a lista de classificador(es) de voting (ensemble clássico), ou do ensemble dinâmico, está vazia
+			if (lista_classificador_ensemble.length == 0){
+
+				if ($('#ensembleClassicoParametros').text().indexOf('Escolha um classificador!') == -1) {
+
+					$("#ensembleClassicoParametros").append('<div class="note note-error col-lg-12 col-md-12 col-sm-12 id="erro_select_tecnica" style="color:red";>Escolha um classificador!</div>');
+
+				}
+					
+				e.preventDefault();
+
+				return false;
+			} else {
+
+				if ($('#ensembleClassicoParametros').text().indexOf('Escolha um classificador!') != -1) {
+
+					$("#ensembleClassicoParametros .note-error").remove();
+
+				}
+
+			}
+
+    	}
+
+    	$("#ensembleClassicoParametros input[type='text'], #ensembleClassicoParametros select").each(function(index) {
+
+    		lista_parametros_ensemble[index] = this.getAttribute("data-id") + "=" + this.value;
+
+    	});
+    	//Enviar para o back a Lista dos parâmetros do ensemble clássico a ser enviada pro back, que vão variar de acordo com o método escolhido pelo usuário
+    	//console.log(lista_parametros_ensemble)
+
+		var carrega_url = this.id;
+
+		//Colocando a lista de parâmetros no data-parametros, para depois obter estes parâmetros deste data e enviá-los para a view
+		$('#wid-id-10').attr('data-parametros', listaDeParametros);
+
+		$('#loading').modal({backdrop: 'static', show: true});
+
+		e.preventDefault();
+
+		if (classificador == "Dynamic Ensemble Selection") {
+
+			lista_parametros_ensemble = lista_parametros_ensemble.toString();
+			lista_ensemble_dinamico_or_voting = JSON.stringify(lista_ensemble_dinamico_or_voting);
+
+    		$.ajax({
+				type: 'POST',
+				url: "ensembleDinamico/",
+				data: {
+					etiquetas_escolhidas_global: $('#wid-id-10').attr('data-etiquetas'),
+					lista_de_parametros: $('#wid-id-10').attr('data-parametros'),
+					classificador: $('#wid-id-10').attr('data-classificador'),
+					nome_da_base: mainBaseName,
+					periodo: periodo,
+					dicionario_classificadores_ensemble: lista_ensemble_dinamico_or_voting,
+					csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+
+				}, 
+				success: function(data) {
+					$('#loading').modal('hide');
+					$('#tab4').html(data);
+				}
+
+			});
+			
+		} else if (classificador == "Static Ensemble Selection") {
+
+			lista_classificador_ensemble = lista_classificador_ensemble.toString();
+			lista_parametros_ensemble = lista_parametros_ensemble.toString();
+			lista_ensemble_dinamico_or_voting = JSON.stringify(lista_ensemble_dinamico_or_voting);
+	
+			$.ajax({
+				type: 'POST',
+				url: "ensembleClassico/",
+				data: {
+					etiquetas_escolhidas_global: $('#wid-id-10').attr('data-etiquetas'),
+					lista_de_parametros: $('#wid-id-10').attr('data-parametros'),
+					classificador: $('#wid-id-10').attr('data-classificador'),
+					nome_da_base: mainBaseName,
+					periodo: periodo,
+					lista_classificador_ensemble: lista_classificador_ensemble,
+					lista_parametros_ensemble: lista_parametros_ensemble,
+					dicionario_classificadores_ensemble: lista_ensemble_dinamico_or_voting,
+					myMethod: myMethod,
+					csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+				}, 
+				success: function(data) {
+					$('#loading').modal('hide');
+					$('#tab4').html(data);
+				}
+			});
+
+		} else {
+
+			$.ajax({
+				type: 'POST',
+				url: carrega_url + "/",
+				data: {
+					etiquetas_escolhidas_global: $('#wid-id-10').attr('data-etiquetas'),
+					lista_de_parametros: $('#wid-id-10').attr('data-parametros'),
+					classificador: $('#wid-id-10').attr('data-classificador'),
+					nome_da_base: mainBaseName,
+					periodo: periodo,
+					csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+				}, 
+				success: function(data) {
+					$('#loading').modal('hide');
+					$('#tab4').html(data);
+				}
+			});
+
+		}
+
+
+		document.getElementById("tab4").className = "tab-pane active";
+		document.getElementById("tab3").className = "tab-pane fade";
+		document.getElementById("aba3").className = "tab-pane";
+		document.getElementById("aba4").className = "tab-pane active";
+
+
+	});
+
+//FIM DA FUNÇÃO PARA AVANÇAR PARA A ABA RESULTADOS
+
+</script>

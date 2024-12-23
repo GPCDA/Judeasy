@@ -1,0 +1,11 @@
+Arquivos para alterar o diretório no servidor da Kurier:
+
+Criar.py
+FilesFunctions.py
+PreprocessamentoNovo.py
+views.py
+Import.py
+ImportValidacao.py
+RC.py
+
+COMENTÁRIO: # TROCAR ESTE DIRETÓRIO PELO DA KURIER

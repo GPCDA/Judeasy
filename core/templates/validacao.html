@@ -1,0 +1,217 @@
+<!-- INÍCIO DA TAB "VALIDAÇÃO" -->
+
+<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+	{% if message %}
+		<div class='alert alert-danger'><span style='color: #FFBF00; font-size: 16px;'><i class='fa fa-warning'></i></span> {{ message }}</div>
+	{% endif %}
+	<div id="errointernet"></div>
+	<div class="jarviswidget col-lg-6 col-md-6 col-xs-6" id="wid-id-6" data-caminho_base_treinada="{{caminho_base_treinada}}">
+		<header><h2> <strong>Carregamento</strong> </h2></header>
+
+		<div class="row" style="height: 170px">
+			
+			<form method="post" action="../" enctype="multipart/form-data" id="validar_diario">
+
+				{% csrf_token %}
+
+				<div class="widget-body">
+
+					<div class="row">
+
+						<div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
+							<span class="btn btn-default btn-md fileinput-button">
+								<i class="fa fa-lg fa-upload"></i>
+								<input id="upload_txt" type="file" name="files" multiple="False">
+							</span>
+						</div>
+
+						<!-- The global progress bar -->
+						 <div align="left" id="progress_validacao" class="progress col-xs-9 col-sm-9 col-md-9 col-lg-9">
+							<div class="progress-bar progress-bar-success"></div>
+						</div>
+
+					</div>
+					<hr>
+					<div class="row">
+						<div id="erroVal" class="col-xs-12 col-sm-12 col-md-12 col-lg-12"></div>
+					</div>
+
+					<div align="right" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						<button id="botaoValidarDiario" type="submit" disabled="disabled" class="btn btn-info" value="upload">Validar</button>
+					</div>
+				</div>
+
+
+
+			</form>
+
+		</div>
+
+		
+
+	</div>
+
+	<div class="jarviswidget col-lg-6 col-md-6 col-xs-6" >
+		<header><h2> <strong>Motor de inferência</strong> </h2></header>
+
+		<div class="row" style="height: 170px">
+			<div class="col-lg-12">	
+			<!-- TABELA ABAIXO -->		
+
+				<table id='table-1' class="table table-bordered table-condensed table-hover dataTables">
+
+					<thead>
+						<tr>
+							<th class="col-xs-3 col-sm-3 col-md-3 col-lg-3">Características</th>
+							<th class="col-xs-6 col-sm-6 col-md-6 col-lg-6">Descrição</th>
+						</tr>
+					</thead> 
+
+					<tbody style="font-weight: normal;">
+						<tr>
+							<td>Diário</td>
+							<td id="diario">{{nome_da_base}}</td>
+						</tr>	
+						<tr>
+							<td>Período</td>
+							<td id="timeRange2">{{periodo}}</td>
+						</tr>
+						<tr>
+							<td>Classificador</td>
+							<td id="classifiedChoosed">{{classificador}}</td>
+						</tr>
+					</tbody>
+
+				</table>
+
+			</div>
+		</div>		
+
+	</div>
+
+	<div class="row">
+		<div class="col-xs-6 col-sm-6 col-md-6">
+			<a onclick="voltarResultados()" href="#" aria-expanded="true"> <button id="voltar-validacao" type="button" class="btn btn-primary">Voltar</button> </a>
+
+		</div>
+		<div align="right" class="col-xs-6 col-sm-6 col-md-6">
+			<a href="#" aria-expanded="true"> <button id="historico" type="submit" class="btn btn-primary btn_carrega_conteudo" disabled="disabled">Avançar</button> </a>
+		</div>
+
+	</div>
+
+</article>
+
+
+
+<!-- FIM DA TAB "VALIDAÇÃO" -->
+
+
+<script type="text/javascript">
+
+	$(document).ready(function(){
+		if(!mainBaseName){
+		 document.getElementById("historico").disabled = true;
+		 document.getElementById("voltar-validacao").disabled = true;
+		 document.getElementById("upload_txt").disabled = true;
+		 document.getElementById("botaoValidarDiario").disabled = true;
+
+		 }
+	});
+
+$(document).ready(function(){
+	setInterval(function(){
+							var online = navigator.onLine;
+							if(online == false){
+								document.getElementById("errointernet").className = "alert alert-danger";
+								$("#errointernet").html("<span style='color: #FFBF00; font-size: 16px;'><i class='fa fa-warning'></i></span> Atenção! A conexão com a internet foi perdida.");
+							}else{
+								document.getElementById("errointernet").className = "";
+								$("#errointernet").html(" ")
+							}
+						}, 1000);
+});
+
+	// Fazer upload do arquivo a ser classificado
+	$(function () {
+	    'use strict';
+	    // Change this to the location of your server-side upload handler:
+	    $('#upload_txt').fileupload({
+	        url: '/validacao/',
+	        dataType: 'text',
+	        done: function (e, data) {
+	            $.each(data.result.files, function (index, file) {
+	                $('<p/>').text(file.name).appendTo('#nameFiles');
+	                alert("ok 1");
+	            });
+	        },
+	        progressall: function (e, data) {
+	        	var progress = 0;
+	            progress = parseInt(data.loaded / data.total * 100, 10);
+	            $('#progress_validacao .progress-bar').css(
+	                'width',
+	                progress + '%',
+	            );
+	            if (progress==100) {
+	            	//if(mainBaseName){
+	            		$('#botaoValidarDiario').prop('disabled', false);
+	            	//}else{
+	            		//$("#erroVal").html("<p style='color: #a90329'>Volte ao Início e clique em 'Validação', para seguir as etapas corretamente.</p>");
+
+	            	//}
+
+				}
+	        }
+	    }).prop('disabled', !$.support.fileInput)
+	        .parent().addClass($.support.fileInput ? undefined : 'enabled');
+	});
+
+
+	// Código para validar um diário via ajax
+	$(document).on('submit', '#validar_diario', function(e) {
+		e.preventDefault();
+
+		$("#loading").modal({backdrop: 'static', show: true});
+
+		$.ajax({
+			type: 'POST',
+			url: '/validarArquivo/',
+			data: {
+				diario: $('#diario').html(),
+				periodo: $('#timeRange2').html(),
+				classifiedChoosed: $('#classifiedChoosed').html(),
+				caminho_base_treinada: $('#wid-id-6').attr('data-caminho_base_treinada'),
+				csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+			},
+
+			success: function() {
+				$('#loading').modal('hide');
+				$("#historico").prop("disabled", false);
+			}
+		});
+	});
+
+
+	//Ao clicar em avançar, carregar a tela de Histórico
+	$("#historico").click(function() {
+
+		var carrega_url = this.id;
+
+        $.ajax({
+            url: carrega_url,
+
+            //Incluindo o conteúdo na div
+            success: function(data){
+                $('#tab6').html(data);
+            }
+        });
+
+        document.getElementById("tab6").className = "tab-pane active";
+		document.getElementById("tab5").className = "tab-pane fade";
+		document.getElementById("aba5").className = "tab-pane";
+		document.getElementById("aba6").className = "tab-pane active";
+
+	});
+	//Ao clicar em avançar, carregar a tela de Histórico
+
+</script>

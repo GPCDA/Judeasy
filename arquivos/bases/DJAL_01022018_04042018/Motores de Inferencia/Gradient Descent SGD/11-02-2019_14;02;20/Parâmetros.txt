@@ -1,0 +1,1 @@
+max_iter=1000,treino_tam=0.66,teste_tam=0.33,folds_tam=5,loss=hinge,penalty=l2,divisao=percent_split,vec_tipo=countvec

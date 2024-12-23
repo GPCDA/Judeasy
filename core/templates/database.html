@@ -1,0 +1,685 @@
+<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+	{% if message %}
+		<div class='alert alert-danger'><span style='color: #FFBF00; font-size: 16px;'><i class='fa fa-warning'></i></span> {{ message }}</div>
+	{% endif %}
+	<div id="errointernet"></div>
+	<div class="jarviswidget" id="wid-id-77">
+		<header><h2><strong>Filtro</strong></h2></header>
+		<div class="widget-body">
+			<div class="row">
+				<div class="col-md-6">
+					<label for="baseBusca">Nome</label>
+					<input type="search" id="baseBusca" class="form-control" placeholder="">
+				</div>
+			</div>
+		</div>
+	</div>
+</article>
+
+<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+	<div class="jarviswidget" id="wid-id-2">
+		<header><h2><strong>Informações</strong></h2>
+			<div align="right" href="#" class="ajuda" title="Ajuda" id="ajuda-database" >
+				<i class="fa fa-question-circle fa-md"></i>
+			</div>
+		</header>
+		<div class="widget-body">
+			<a href="#" onclick="abrirNovaBase()" title="Nova Base" class="btn btn-success">Cadastrar<a><hr>
+			<div class="row">
+				<div class="col-lg-12 col-md-12 table-responsive">	
+				<!-- TABELA ABAIXO -->			
+					<table id='table-1' class="table table-bordered table-condensed table-hover dataTables smart-form ">
+						<thead>
+							<tr>
+								<th><i id="noone_radio"></i></th>
+								<th>Nome</th>
+								<th>Período</th>
+								<th>Quantidade de Processos</th>
+								<th>Pré-Processada</th>
+								<th>Ações</th>
+							</tr>
+						</thead> 
+						<tbody>
+							{% for base in bases %} 
+							<tr>
+								<td><input id="{{ base.name }}" type="radio" name="choose_base" class="choose_base" data-nome="{{ base.name }}" data-inicio="{{ base.inicio }}" data-fim="{{ base.fim }}" data-quantidade_processos = "{{base.quantidade_de_processos}}" data-etiquetas="{{ base.nomes_das_etiquetas }}" data-quantidade_instancias="{{ base.quantidade_de_instancias }}" data-tamanho_arquivos="{{ base.tamanho_dos_arquivos }}"></td>
+								<td id="nomeDaBase">{{ base.name }}</td>
+								<td id="periodo">{{ base.inicio }} - {{ base.fim }}</td>
+								<td>{{base.quantidade_de_processos}}</td>
+
+								{% if base.pre_processada != None %}
+								<td>Sim</td>
+								{% else %}
+								<td>Não</td>
+								{% endif %}
+
+								<td>
+									<div style="display:inline" data-nome="{{ base.name }}"data-processos="{{ base.quantidade_de_processos }}" class="visualizar_base">
+										<button name="btn_editar" disabled id="btn_{{ base.name }}" title="Editar" class="btn btn-default btn-xs dados_base_editar"><span class="fa fa-lg fa-edit"></span></button>
+									</div>
+
+									<button title="Excluir" class="btn btn-default btn-xs dados_base_excluir" name="" style="display:inline" data-nome="{{ base.name }}" data-inicio="{{ base.inicio }}" data-fim="{{ base.fim }}"><span class="excluir fa fa-lg fa-trash-o"></span></button>
+								</td>
+							</tr>
+							{% empty %}
+							<tr>
+								<td colspan="7" style='font-style:italic;'> Nenhuma base cadastrada.</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+					<!-- FIM DA TABELA -->
+					<!-- ADICIONANDO CONTEÚDO DE ERRO AO NÃO SELECIONAR BASE -->
+					<div class="note note-error" id="erro_select_base"></div>	
+					<!-- ADICIONANDO CONTEÚDO DE ERRO AO NÃO SELECIONAR BASE -->
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-xs-6 col-sm-6 col-md-6">
+				<a onclick="voltarInicio()" href="#" aria-expanded="true"> <button type="button" class="btn btn-primary">Voltar</button> </a>
+			</div>
+
+			<div align="right" class="col-xs-6 col-sm-6 col-md-6">
+				<a href="#" aria-expanded="true"> <button id="pp" type="submit" class="btn btn-primary btn_carrega_conteudo" style="margin-left: 10px">Avançar</button> </a>
+			</div>
+		</div>
+	</article>
+
+
+<!-- INÍCIO MODAL NOVA BASE-->
+<div class="modal fade" id="novabase_info" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<!-- <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button> -->
+				<h4 class="modal-title" id="myModalLabel">Cadastrar Base</h4>
+			</div>
+
+			<div class="modal-body">
+
+				<form method="post" action="../" enctype="multipart/form-data" id="transformar_base">
+
+					{% csrf_token %}
+
+					<div class="row">
+						<div class="col-md-12">
+							<label for="nomeDigitado"> Nome da base </label> 
+							<input type="text" id="nomeDigitado" name="nomeDigitado" class="form-control" required='required' disabled="true" placeholder="">		
+						</div>
+					</div>
+					<hr>
+					<div class="row">
+
+						<button style="margin-left:16px;" id="upload_arquivos" class="btn btn-info fileinput-button">
+					        <i class="glyphicon glyphicon-plus"></i>
+					        <span>Upload</span>
+					        <!-- The file input field used as target for the file upload widget -->
+					        <input id="fileupload" type="file" name="files" multiple="multiple">
+					    </button>
+
+					    <hr>
+
+					    <!-- The global progress bar -->
+					     <div style="margin: 16px;" id="progress" class="progress">
+					        <div class="progress-bar progress-bar-success"></div>
+					    </div>
+
+					   <!--  <hr> -->
+
+					    <!-- The container for the uploaded files -->
+					    <!-- <div style="margin: 16px" id="namefiles" class="files"></div> -->
+
+					</div>	
+				
+
+				
+					<div class="modal-footer">
+						<button id="botaoCancelarUpload" type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+						<button id="botaoCadastrarBase" type="submit" disabled="disabled" class="btn btn-info" value="upload">Cadastrar</button>
+					</div>	
+
+				</form>
+
+			</div>
+		</div>
+	</div>
+</div>
+<!-- FIM MODAL NOVA BASE -->
+
+<div class="modal fade" id="ajuda_database" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+				<h4 class="modal-title">Ajuda</h4>
+			</div>
+
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-lg-11">
+						<h4>Carregamento de Base</h4><br>
+						<p>Nesta tela, você tem as opções:</p>
+						<strong>1. Filtro:</strong>
+						<p>No filtro você pode buscar por uma base de dados específica dentre todas as que já foram
+						carregadas previamente, digitando termos contidos em seu nome.</p>
+
+						<strong>2. Cadastrar:</strong>
+						<p>Com o botão cadastrar, você pode inserir uma nova base de dados à aplicação.
+						Para tanto, após clicar neste botão, uma nova janela será aberta. </p>
+						<p>Nesta nova janela, clique em "Upload" e após isso, arraste as pastas que contem os arquivos que deseja carregar.
+						Aguarde o carregamento do arquivo, dependendo da quantidade, as transformações podem levar um tempo.
+						Após os arquivos serem carregados, digite o nome desta base e clique em cadastrar.</p>
+
+						<strong>3. Escolher base para prosseguir:</strong>
+						<p>Na sub-divisão "Informações" você encontrará todas as bases que estão cadastradas no sistema,
+							escolha com qual deseja trabalhar através do Radio Button que está do lado esquerdo.
+							Neste ponto, você encontra mais dois botões para cada base: Editar e Excluir.</p>
+						<p>Com o botão Editar, você pode escolher quais etiquetas deve entrar no treinamento dos algoritmos
+						nas fases posteriores, escolhendoas através do checkbox, na nova janela que abrirá. Caso a
+						base de dados já tenha sido pré-processada anteriormente, a aplicação informará e você deve
+						decidir se deseja realizar um novo pré-processamento com outras configurações ou se vai reaproveitar
+						o pré-processamento anterior.</p>
+						<p>Com o botão Excluir, você exclui uma base de dados da aplicação.</p>
+
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button id="" class="btn btn-primary" data-dismiss="modal">
+					OK
+				</button>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<!-- INÍCIO MODAL DAS ETIQUETAS QUE NÃO TEM MAIS DE UMA CLASSE PRESENTE-->
+		<div class="modal fade" id="etiquetas_excluidas" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+						<h4 class="modal-title">Atenção</h4>
+					</div>
+					{% if listaEtiquetasRemovidas %}
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-md-12">As etiquetas: <br>
+								{% for etiqueta in listaEtiquetasRemovidas %}
+								<span class="semi-bold">{{ etiqueta }}, </span>
+								{% endfor %}
+								não foram incluídas na base de dados, pois elas possuem apenas uma classe.
+							</div>
+						</div>
+					</div>
+					{% else %}
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-md-12">Base transformada com sucesso.</div>
+						</div>
+					</div>
+					{% endif %}
+					
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<!-- FIM MODAL DAS ETIQUETAS QUE NÃO TEM MAIS DE UMA CLASSE PRESENTE-->
+
+<script type="text/javascript">
+
+$("#ajuda-database").click(function(){
+  $("#ajuda_database").modal();
+});
+
+$(document).ready(function(){
+	setInterval(function(){
+							var online = navigator.onLine;
+							if(online == false){
+								document.getElementById("errointernet").className = "alert alert-danger";
+								$("#errointernet").html("<span style='color: #FFBF00; font-size: 16px;'><i class='fa fa-warning'></i></span> Atenção! A conexão com a internet foi perdida.");
+							}else{
+								document.getElementById("errointernet").className = "";
+								$("#errointernet").html(" ")
+							}
+						}, 1000);
+
+	$("input[name='choose_base']").click(function(){
+	  idradio = this.id;
+	  if(document.getElementById(idradio).disabled==true){
+	  	document.getElementById('btn_'+idradio).disabled=true;
+	  	$("#checkTodos").prop("checked", true);
+	  }else{
+	  	document.getElementById('btn_'+idradio).disabled=false;
+	  }
+	});
+});
+
+	// Fazer uploads de arquivos
+	$(function () {
+	    'use strict';
+	    // Change this to the location of your server-side upload handler:
+	    $('#fileupload').fileupload({
+	        url: '/database/',
+	        dataType: 'text',
+	        done: function (e, data) {
+	            $.each(data.result.files, function (index, file) {
+	                $('<p/>').text(file.name).appendTo('#nameFiles');
+	                alert("ok 1");
+	            });
+	        },
+	        progressall: function (e, data) {
+	        	var progress = 0;
+	            progress = parseInt(data.loaded / data.total * 100, 10);
+	            $('#progress .progress-bar').css(
+	                'width',
+	                progress + '%',
+	            );
+	            if (progress==100) {
+					document.getElementById('botaoCadastrarBase').disabled=false;
+					document.getElementById('nomeDigitado').disabled=false;
+					$('#nomeDigitado').attr('placeholder', 'Exemplo: DJRO_Federal');
+					document.getElementById('nomeDigitado').focus();
+				} else {
+					document.getElementById('botaoCadastrarBase').disabled=true;
+					document.getElementById('nomeDigitado').disabled=true;
+					$('#nomeDigitado').attr('placeholder', '');
+				}
+				if (progress>0) {
+					document.getElementById('botaoCancelarUpload').disabled=true;
+				} 
+	        }
+	    }).prop('disabled', !$.support.fileInput)
+	        .parent().addClass($.support.fileInput ? undefined : 'enabled');
+	});
+	// // Fazer uploads de arquivos
+
+
+	$(function() {
+		$(".data-hide_this").remove();
+	});
+
+
+
+	function abrirVisualizar(){
+
+		//Obtendo a informação que diz se a base já foi pré-processada
+		var is_pre_processada = jQuery("input[name=choose_base]:checked").parent().next().next().next().next().html();
+
+		if (is_pre_processada == 'Sim' && pp_or_treinamento != 'pp') {
+			//Exibindo o modal
+			$("#avançar_ja_pre_processada").modal({backdrop: 'static', show: true});
+
+			preProcessarNovamente(mainBaseName);
+		}
+
+		if (pp_or_treinamento == "pp" || (pp_or_treinamento == '' && is_pre_processada == 'Não')) {
+
+		    //Modificando o nome da Modal selecionada
+			document.getElementById("nomeDaModal").innerText = mainBaseName;
+
+			// if (mainBaseName == baseName) {
+			$("#visualizar_info").modal({backdrop: 'static', show: true});
+			// }
+			
+		}	
+		
+	}
+
+	//Função para verificar se a base clicada é igual a base selecionada pelo radio button
+	$(".visualizar_base").click(function(){
+
+		//Obtendo a informação que diz se a base já foi pré-processada
+		var is_pre_processada = jQuery("input[name=choose_base]:checked").parent().next().next().next().next().html();
+
+		var allElems = document.getElementsByTagName('input');
+		for (i = 0; i < allElems.length; i++) {
+		    if (allElems[i].type == 'radio' && allElems[i].checked) {
+		        mainBaseName = allElems[i].parentNode.parentNode.childNodes[3].innerText;
+		        qtdDeProcessos = parseInt(allElems[i].parentNode.parentNode.childNodes[7].innerText);
+		        //Modificando o nome da Modal selecionada
+		        $("#nomeDaModal").text(mainBaseName);
+		    }
+		}
+		
+		//var base_clicada = this.getAttribute("data-nome");
+		var quantidade_processos_base_clicada = parseInt(this.getAttribute("data-processos"));
+
+		if (is_pre_processada == 'Sim' && pp_or_treinamento != 'pp' && qtdDeProcessos == quantidade_processos_base_clicada) {
+			//Exibindo o modal
+			$("#avançar_ja_pre_processada").modal({backdrop: 'static', show: true});
+
+			preProcessarNovamente(mainBaseName);
+		}
+
+		if (pp_or_treinamento != "treinamento" || (pp_or_treinamento == '' && is_pre_processada == 'Não')) {
+
+			if (qtdDeProcessos == quantidade_processos_base_clicada) {
+				$("#visualizar_info").modal({backdrop: 'static', show: true});
+			}
+
+		}
+
+	});
+	//Função para verificar se a base clicada é igual a base selecionada pelo radio button
+
+
+	// Filtrar a base de dados
+	$(function(){
+	    $("#baseBusca").keyup(function(){       
+	        var index = 1;
+	        var nth = "#table-1 td:nth-child("+(index+1).toString()+")";
+	        var valor = $(this).val().toUpperCase();
+	        $("#table-1 tbody tr").show();
+	        $(nth).each(function(){
+	            if($(this).text().toUpperCase().indexOf(valor) < 0){
+	                $(this).parent().hide();
+	            }
+	        });
+	    });
+	 
+	    $("#baseBusca").blur(function(){
+	        $(this).val("");
+	    });
+	});
+	// Filtrar a base de dados    
+
+	// Código para excluir uma base via ajax
+	$(".dados_base_excluir").click(function() {
+
+		$("#excluir_info").modal({backdrop: 'static', show: true});
+		baseName = this.getAttribute("data-nome");
+		inicio = this.getAttribute("data-inicio");
+		fim = this.getAttribute("data-fim");
+		
+	});
+
+	$(document).on('submit', '#excluir_base', function(e) {
+		e.preventDefault();
+
+		$.ajax({
+			type: 'POST',
+			url: '/excluirBase/',
+			data: {
+				nome_da_base:baseName,
+				inicio:inicio,
+				fim:fim,
+				csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+			}, 
+			success: function(data) {
+				$("#excluir_info").fadeOut();
+				$("#excluir_info").modal('hide');
+				$('#tab1').html(data);
+			}
+		});
+	});
+	// Código para excluir uma base via ajax
+
+
+	function preProcessarNovamente(nomeBase) {
+
+		//Se o usuário escolher pré-processar de novo, vai para a tela de pré-processamento
+		$("#pre_processar_denovo").click(function(){
+
+			pp_or_treinamento = "pp"
+
+			$("#avançar_ja_pre_processada").modal('hide');
+
+			radioIsChecked = true;
+
+			$("#nomeDaModal").text(nomeBase);
+
+			$("#visualizar_info").modal({backdrop: 'static', show: true});
+
+		});
+
+		//Se o usuário escolher não pré-processar de novo, vai para a tela de treinamento
+		$("#ir_direto_treinamento").click(function(){
+
+			pp_or_treinamento = "treinamento"
+
+			$("#avançar_ja_pre_processada").modal('hide');
+
+			radioIsChecked = true;
+
+	        var carrega_url = 'treinamento/';
+	    
+	        $.ajax({
+	        	type: 'POST',
+	            url: carrega_url,
+	            data: {
+					nome_da_base: mainBaseName,
+					periodo: periodo,
+					csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+				}, 
+	            //Incluindo o conteúdo na div
+	            success: function(data){
+	                $('#tab3').html(data);
+	            }
+	        });
+
+	        document.getElementById("tab3").className = "tab-pane active";
+			document.getElementById("tab1").className = "tab-pane fade";
+			document.getElementById("aba1").className = "tab-pane";
+			document.getElementById("aba3").className = "tab-pane active";	
+
+			return false;
+		});
+
+	}
+
+
+	// Código para cadastrar uma base via ajax
+	$(document).on('submit', '#transformar_base', function(e) {
+		e.preventDefault();
+		
+		document.getElementById('upload_arquivos').disabled=true;
+		document.getElementById("fileupload").style.display = "none";
+		document.getElementById("nomeDigitado").disabled = true;
+		document.getElementById('botaoCadastrarBase').disabled=true;
+		$('#novabase_info').fadeOut();
+		$('#novabase_info').modal('hide');
+		$("#loading").modal({backdrop: 'static', show: true, keyboard: false});
+
+		$.ajax({
+			type: 'POST',
+			url: '/transformarBase/',
+			data: {
+				nome_base_digitado:$('#nomeDigitado').val(),
+				csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+			}, 
+
+			success: function(data) {
+				$('#loading').fadeOut();
+				$('#loading').modal('hide');
+				$('#tab1').html(data);
+				$("#etiquetas_excluidas").modal({backdrop: 'static', show: true});
+
+			}
+		});
+	});
+
+
+	//Essa parte abaixo é a função ao clicar no radioButton
+	$(".choose_base").click(function(){
+
+		//Zerando a string verificadora, quando o usuário clicar em outro radio button, mesmo depois de já ter visto o modal referente à string verificadora abaixo
+		// if(pp_or_treinamento == "pp") {
+		// 	pp_or_treinamento = "";
+		// }
+
+		//Esvaziando o modal de etiquetas, caso tenha algo;
+		$("#info_etiquetas").empty();
+		$("#checkTodos").prop("checked", false);
+
+		var nome_da_base = this.getAttribute("data-nome");
+		var inicio = this.getAttribute("data-inicio");
+		var fim = this.getAttribute("data-fim");
+		var etiquetas = this.getAttribute("data-etiquetas");
+		var quantidade_instancias = this.getAttribute("data-quantidade_instancias");
+		var tamanho_arquivos = this.getAttribute("data-tamanho_arquivos");
+
+		mainBaseName = nome_da_base;
+
+		etiquetas = etiquetas.split("/");
+		quantidade_instancias = quantidade_instancias.split("/");
+		tamanho_arquivos = tamanho_arquivos.split("/");
+
+		var info_etiquetas_dinamic;
+
+		for (var cont = 0; cont < (etiquetas.length)-1; cont++) {
+
+			info_etiquetas_dinamic += "<tr>";
+			info_etiquetas_dinamic += "<td><input type='checkbox' name='checkboxEtiquetas'></td>";
+			info_etiquetas_dinamic += "<td>" + etiquetas[cont] + "</td>";
+			info_etiquetas_dinamic += "<td>" + quantidade_instancias[cont] + "</td>";
+			info_etiquetas_dinamic += "<td>" + tamanho_arquivos[cont] + " KB" + "</td>";
+			info_etiquetas_dinamic += "</tr>";
+
+		}
+
+		$("#info_etiquetas").html(info_etiquetas_dinamic);
+
+		periodo = inicio + " - " + fim;
+		qtdDeProcessos = this.getAttribute("data-quantidade_processos");
+
+	});
+	//Essa parte acima é a função de montar as etiquetas corretas ao clicar no radioButton
+
+
+	//FUNÇÃO PARA SALVAR AS ETIQUETAS ESCOLHIDAS PELO USUÁRIO, APÓS CLICAR EM OK
+	$('#modalEtiquetasOk').click(function(){
+
+		etiquetas_escolhidas_global = [];
+
+		var etiquetas_escolhidas_local = document.getElementsByName("checkboxEtiquetas");
+
+		for (var cont = 0; cont < etiquetas_escolhidas_local.length; cont++) {
+		    if (etiquetas_escolhidas_local[cont].checked == true) {
+		        etiquetas_escolhidas_global.push(etiquetas_escolhidas_local[cont].parentNode.nextSibling.innerHTML);
+		    }
+		}
+
+		clicouNoOk = true;
+
+	});
+	//FUNÇÃO PARA SALVAR AS ETIQUETAS ESCOLHIDAS PELO USUÁRIO, APÓS CLICAR EM OK
+
+
+	// AJAX PARA DAR INCLUDE NA TELA DE PRÉ-PROCESSAMENTO
+
+	$('#pp').click(function(){ 
+
+		//Obtendo a informação que diz se a base já foi pré-processada
+		var is_pre_processada = jQuery("input[name=choose_base]:checked").parent().next().next().next().next().html();
+	
+		//Variáveis que pegam as divs onde serão colocadas os erros
+		var div_erro_etiqueta = document.getElementById("erro_select_etiqueta"); 
+		var div_erro_base = document.getElementById("erro_select_base");
+		var div_erro_tecnica = document.getElementById("erro_select_tecnica");
+		var radio = document.getElementById("noone_radio");
+	
+		var radioIsChecked = jQuery("input[name=choose_base]:checked").val();
+		var checkTodosIsChecked = jQuery("input[name=checkTodos]:checked").val();
+		var checkboxIsChecked = jQuery("input[name=checkboxEtiquetas]:checked").val();
+
+	
+		//Verificando os radio buttons
+		if (!radioIsChecked) {
+			if ($('#erro_select_base').is(':empty')) {
+			    //creating a new paragraph
+				var erro = document.createElement("erro");
+				var node = document.createTextNode("Selecione alguma base!");
+				//adding the text to the paragraph
+				erro.appendChild(node);
+	
+				//adding the paragraph to the div
+				div_erro_base.appendChild(erro);
+				div_erro_base.style.color = 'red';
+	
+				//Colocando a exclamação ao não selecionar alguma base
+				radio.className = "glyphicon glyphicon-exclamation-sign";
+				radio.style.color = 'red';
+			} 
+			return false;
+	
+		} 
+		//Verificando os checkbuttons
+		else if ((!checkTodosIsChecked && !checkboxIsChecked) || (clicouNoOk == false)) {
+	
+			if($.trim($('#erro_select_base').html()) != '') {
+				//Abaixo poderia apenas mudar o innerHTML da div_erro_base para = ''
+				div_erro_base.parentNode.removeChild(div_erro_base);
+				radio.className = "";
+			}
+	
+			abrirVisualizar();
+	
+			if ($('#erro_select_etiqueta').is(':empty')) {
+			    //creating a new paragraph
+				var erro = document.createElement("erro");
+				var node = document.createTextNode("Selecione alguma etiqueta!");
+				//adding the text to the paragraph
+				erro.appendChild(node);
+	
+				//adding the paragraph to the div
+				div_erro_etiqueta.appendChild(erro);
+				div_erro_etiqueta.style.color = 'red';
+			} 
+	    	return false;	
+		}
+	
+		//Validação concluída 
+		else {
+	
+			//Se a base já foi pré-processada, exibir o modal e segue as instruções do mesmo
+			if(is_pre_processada == 'Sim' && pp_or_treinamento != 'pp'){
+	
+				//Exibindo o modal
+				$("#avançar_ja_pre_processada").modal({backdrop: 'static', show: true});
+	
+			} 
+			
+			else {//Se a base ainda não foi pré-processada, seguir normalmente para a tela de pré-processamento 
+				
+				pp_or_treinamento = "pp"
+	
+				radioIsChecked = true;
+	
+	            var carrega_url = 'pp';
+	        
+	            $.ajax({
+	
+	                url: carrega_url,
+	
+	                //Incluindo o conteúdo na div
+	                success: function(data){
+	                    $('#tab2').html(data);
+	                }
+	            });
+	
+	            document.getElementById("tab2").className = "tab-pane active";
+				document.getElementById("tab1").className = "tab-pane fade";
+				document.getElementById("aba1").className = "tab-pane";
+				document.getElementById("aba2").className = "tab-pane active";	
+	
+			}	
+		
+		}
+	
+	});
+
+	// AJAX PARA DAR INCLUDE DA TELA DE PRÉ-PROCESSAMENTO
+
+
+</script>
+

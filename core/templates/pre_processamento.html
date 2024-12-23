@@ -1,0 +1,366 @@
+<!-- INÍCIO DA TAB "PRÉ-PROCESSAMENTO" -->
+	<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+		{% if message %}
+			<div class='alert alert-danger'><span style='color: #FFBF00; font-size: 16px;'><i class='fa fa-warning'></i></span> {{ message }}</div>
+		{% endif %}
+		<div id="errointernet"></div>
+		<div class="jarviswidget" id="wid-id-3">
+			<header><h2><strong>Informações</strong></h2></header>
+			<div class="widget-body">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="content-info-box">
+							<span class="content-info-title">Nome</span>
+							<p style="font-size: 16px;" id="nome">&nbsp</p>
+						</div>
+						<div class="content-info-box">
+							<span class="content-info-title">Período</span>
+							<p id="timeRange">&nbsp;&nbsp</p>
+						</div>
+						<div class="content-info-box">
+							<span class="content-info-title">Quantidade de Processos</span>
+							<p id="qtdDeProcessos">&nbsp;&nbsp</p>
+						</div>
+						<div class="content-info-box">
+							<span class="content-info-title">Etiquetas</span>
+							<p id="listaEtiquetas"> &nbsp</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</article>
+
+	<form id="pre_processar_arquivos"> 
+		{% csrf_token %}
+		<article class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+			<div class="jarviswidget" id="wid-id-4">
+				<header><h2><strong>Opções</strong></h2>
+					<div align="right" href="#" class="ajuda" title="Ajuda" id="ajuda-preprocessamento" >
+						<i class="fa fa-question-circle fa-md"></i>
+					</div>
+				</header>
+				<div class="widget-body">
+					<div class="row">
+					
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 smart-form table-responsive">
+					
+								<table id='table-2' class="table table-striped table-bordered table-condensed table-hover dataTables">
+
+									<thead>
+										<tr>
+											<th><input type="checkbox" id="checkTodos2" name="checkTodos2"></th>
+											<th>Técnicas</th>
+										</tr>
+									</thead> 
+
+									<tbody id="tecnicas">
+
+										<tr id="lematizacao">
+											<td><input type="checkbox" name="checkboxTecnicas" id="lematIsChecked"></td>
+											<td>Lematização</td>
+										</tr>
+										<tr id="redes_complexas">
+											<td><input type="checkbox" name="checkboxTecnicas" id="redesComplexasIsChecked"></td>
+											<td>Redes Complexas</td>
+										</tr>
+										<tr id="remov_acentos">
+											<td><input type="checkbox" name="checkboxTecnicas" id="removPontuacaoIsChecked"></td>
+											<td>Remover pontuação</td>
+										</tr>
+										<tr id="remov_numeros">
+											<td><input type="checkbox" name="checkboxTecnicas" id="removNumIsChecked"></td>
+											<td>Remover números</td>
+										</tr>
+										<tr id="stemming">
+											<td><input type="checkbox" name="checkboxTecnicas" id="stemmingIsChecked"></td>
+											<td>Stemming</td>
+										</tr>
+										<tr id="stopWords">
+											<td><input type="checkbox" name="checkboxTecnicas" id="stopwordsIsChecked"></td>
+											<td>Stop Words</td>
+										</tr>	
+										<tr id="tokenizacao">
+											<td><input type="checkbox" name="checkboxTecnicas" id="tokenizerIsChecked"></td>
+											<td>Tokenização</td>
+										</tr>
+											
+									</tbody>
+
+								</table>			
+
+							<!-- ADICIONANDO CONTEÚDO DE ERRO AO NÃO SELECIONAR ALGUMA TÉCNICA -->
+							<div class="note note-error" id="erro_select_tecnica"></div>	
+							<!-- ADICIONANDO CONTEÚDO DE ERRO AO NÃO SELECIONAR ALGUMA TÉCNICA -->
+						
+						</div>
+						
+					</div>
+				</div>
+			</div>
+			<div class="row">
+			<div class="col-xs-6 col-sm-6 col-md-6">
+				<a onclick="voltarDatabase()" href="#" aria-expanded="true"> <button id="voltar-pp" type="button" class="btn btn-primary">Voltar</button> </a>
+			</div>
+
+			<div align="right" class="col-xs-6 col-sm-6 col-md-6 ">
+				<a href="" aria-expanded="true"> <button id="treinamento" type="submit" class="btn btn-primary btn_carrega_conteudo">Avançar</button> </a>
+			</div>
+
+		</div>
+		</article>
+
+
+	</form>
+
+<div class="modal fade" id="ajuda_preprocessamento" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+				<h4 class="modal-title">Ajuda</h4>
+			</div>
+
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-lg-11">
+						<h4>Pré-processamento</h4><br>
+						<p>Nesta tela, você deve escolher quais técnicas de preprocessamento aplicará à base de dados,
+						para tanto, deve escolher entre as mesmas através do checkbox localizado na coluna esquerda da tabela.</p>
+						<p>As possíveis opções para pré-processar a base são:</p>
+						<strong>1. Lematização:</strong>
+						<p> Este processo consiste em representar as palavras através de seu morfema.
+							Deflexionando as palavras, o que significa retirar a conjungação verbal, caso seja um
+							verbo, e alterar os substantivos e adjativos para o singular masculino, de maneira
+							a reduzir a palavra até sua forma de dicionário.</p>
+
+						<strong>2. Redes Complexas :</strong>
+						<p>As redes complexas (RC) referem-se aos grafos que apresentam estrutura topográfica
+							não trivial, composto por um conjunto de vértices (nós) que são interligados por meio de arestas.
+						Com esta técnica, uma rede de palavras é montada, a partir das relações entre estas, dentro do texto,
+						com o objetivo de quantificar a relevância de cada palavra para determinada etiqueta, dado o contexto do diário estudado.</p>
+
+						<strong>3. Remover pontuação:</strong>
+						<p>Essa técnica remove todas as pontuações do texto a ser pré-processado.</p>
+
+						<strong>4. Remover Números:</strong>
+						<p>Essa técnica remove os números do texto a ser pré-processado.</p>
+
+						<strong>5. Stemming: </strong>
+						<p>Também conhecido como radicalização, este processo consiste em
+							reduzir a palavra à sua raiz (sem levar em conta a classe gramatical). O stemming
+							permite a utilização de vocábulos primitivos anteriores às variações, como plurais
+							e inflexões verbais.</p>
+
+						<strong>6. Stop Words: </strong>
+						<p>Palavras que não possuem valor semântico para o texto são conhecidas como
+							stopwords e podem ser de diferentes classes gramaticais, como por exemplo:
+							preposições, artigos, conjunções, verbos, adjetivos e advérbios. Para facilitar
+							o processamento do texto, estas tornam-se dispensáveis e podem ser removidas através
+							da técnica de remoção de Stop Words.</p>
+
+						<strong>7. Tokenização: </strong>
+						<p>Também conhecida como Atomização, a tokenização consiste em dividir o fluxo
+							contínuo de caracteres nas unidades mínimas do texto, as palavras,
+							que são conhecidas como tokens.</p>
+
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button id="" class="btn btn-primary" data-dismiss="modal">
+					OK
+				</button>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+
+<script type="text/javascript">
+
+$("#ajuda-preprocessamento").click(function(){
+  $("#ajuda_preprocessamento").modal();
+});
+
+$(document).ready(function(){
+	setInterval(function(){
+							var online = navigator.onLine;
+							if(online == false){
+								document.getElementById("errointernet").className = "alert alert-danger";
+								$("#errointernet").html("<span style='color: #FFBF00; font-size: 16px;'><i class='fa fa-warning'></i></span> Atenção! A conexão com a internet foi perdida.");
+							}else{
+								document.getElementById("errointernet").className = "";
+								$("#errointernet").html(" ")
+							}
+						}, 1000);
+});
+
+    
+    $(document).ready(function(){
+    	//Inserindo as informações da tela de PP
+
+    	nomeBase = " "
+    	periodoBase = " "
+    	processosBase = " "
+    	if(mainBaseName) nomeBase = mainBaseName
+    	if(periodo) periodoBase = periodo
+    	if(qtdDeProcessos) processosBase = qtdDeProcessos
+
+    	if(nomeBase == " "){
+    		document.getElementById("voltar-pp").disabled = true;
+			document.getElementById("treinamento").disabled = true;
+			document.getElementById("checkTodos2").disabled = true;
+			document.getElementById("lematIsChecked").disabled = true;
+			document.getElementById("redesComplexasIsChecked").disabled = true;
+			document.getElementById("removPontuacaoIsChecked").disabled = true;
+			document.getElementById("removNumIsChecked").disabled = true;
+			document.getElementById("stemmingIsChecked").disabled = true;
+			document.getElementById("stopwordsIsChecked").disabled = true;
+			document.getElementById("tokenizerIsChecked").disabled = true;
+    	}
+
+	    document.getElementById('nome').innerHTML =  nomeBase;
+	    document.getElementById('timeRange').innerHTML =  periodoBase;
+	    document.getElementById('qtdDeProcessos').innerHTML = processosBase;
+	    //document.getElementById('listaEtiquetas').innerHTML = "Etiquetas escolhidas: ";
+
+	    // Seleciona todos os checkbox das técnicas (aba PP)
+		$("#checkTodos2").click(function(){
+		    $('input:checkbox').not(this).prop('checked', this.checked);
+		});
+		
+
+		// FUNÇÕES ABAIXO PARA TRATAR AS TÉCNICAS DE PRÉ-PROCESSAMENTO (Redes Complexas, Remover pontuação e Tokenização)
+		$('#removPontuacaoIsChecked').click(function() {
+
+			if($('#redesComplexasIsChecked').is(':checked') && $('#removPontuacaoIsChecked').is(':checked')) {
+				$('#redesComplexasIsChecked').prop('checked', false);
+				$('#tokenizerIsChecked').prop('checked', false);
+			}
+
+		});
+
+		$('#redesComplexasIsChecked').click(function() {
+
+			if($('#removPontuacaoIsChecked').is(':checked') && $('#redesComplexasIsChecked').is(':checked')) {
+				$('#removPontuacaoIsChecked').prop('checked', false);
+			}
+
+			if($('#redesComplexasIsChecked').is(':checked')) {
+				$('#tokenizerIsChecked').prop('checked', true);
+			} else {
+				$('#tokenizerIsChecked').prop('checked', false);
+			}
+
+		});
+		// FUNÇÕES ACIMA PARA TRATAR AS TÉCNICAS DE PRÉ-PROCESSAMENTO (Redes Complexas, Remover pontuação e Tokenização)
+
+
+
+
+	    //Variável que pega a div onde serão colocadas os erros
+	    var div_erro_tecnica = document.getElementById("erro_select_tecnica");
+
+    	// Função para separar os elementos da lista (etiquetas escolhidas) e colocá-los de forma correta na tela de PP
+    	for (var cont = 0; cont < etiquetas_escolhidas_global.length; cont++ ) {
+
+    		if (cont != (etiquetas_escolhidas_global.length-1)) {
+    			$("#listaEtiquetas").append(etiquetas_escolhidas_global[cont], ', ');
+    		} else {
+    			$("#listaEtiquetas").append(etiquetas_escolhidas_global[cont]);
+    		}
+
+    	}
+
+	    // Função para separar os elementos da lista (etiquetas escolhidas) e colocá-los de forma correta na tela de PP
+
+
+	    //INÍCIO DA FUNÇÃO PARA AVANÇAR PARA A ABA TREINAMENTO
+
+        $('#treinamento').click(function(){ 
+
+			var checkTodos2IsChecked = jQuery("input[name=checkTodos2]:checked").val();
+			var checkboxIsChecked = jQuery("input[name=checkboxTecnicas]:checked").val();
+
+			if (!checkTodos2IsChecked && !checkboxIsChecked) {
+
+				if ($('#erro_select_tecnica').is(':empty')) {
+
+				    //creating a new paragraph
+					var erro = document.createElement("erro");
+					var node = document.createTextNode("Selecione alguma técnica!");
+					//adding the text to the paragraph
+					erro.appendChild(node);
+
+					//adding the paragraph to the div
+					div_erro_tecnica.appendChild(erro);
+					div_erro_tecnica.style.color = 'red';
+				} 
+				
+			    return false;
+
+			} 
+			
+			else {
+
+				//Armazenando as técnicas de PP escolhidas
+				var allElems = document.getElementsByName('checkboxTecnicas');
+				for (i = 0; i < allElems.length; i++) {
+				    if (allElems[i].type == 'checkbox' && allElems[i].checked) {
+				       tecnicasPP[i] = allElems[i].parentNode.parentNode.childNodes[3].innerHTML;
+				    }
+				}
+				//Armazenando as técnicas de PP escolhidas
+
+				
+				var carrega_url = this.id;
+
+				div_erro_tecnica.innerHTML = ''
+
+
+				$(document).on('submit', '#pre_processar_arquivos', function(e) {
+					e.preventDefault();
+					$('#loading').modal({backdrop: 'static', show: true});
+
+					$.ajax({
+						type: 'POST',
+						url: carrega_url +"/",
+						data: {
+							lematizacao: $('#lematIsChecked').is(':checked'), 
+							redesComplexas: $('#redesComplexasIsChecked').is(':checked'), 
+							removePontuacao: $('#removPontuacaoIsChecked').is(':checked'),
+							removeNumeros: $('#removNumIsChecked').is(':checked'), 
+							stemming: $('#stemmingIsChecked').is(':checked'),
+							stopWords: $('#stopwordsIsChecked').is(':checked'),
+							tokenizer: $('#tokenizerIsChecked').is(':checked'),
+							nome_da_base: mainBaseName,
+							periodo: periodo,
+							etiquetas_escolhidas_global: $('#listaEtiquetas').text(),
+							csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+						}, 
+						success: function(data) {
+							$('#loading').modal('hide');
+							$('#tab3').html(data);
+							document.getElementById("tab3").className = "tab-pane active";
+							document.getElementById("tab2").className = "tab-pane fade";
+							document.getElementById("aba2").className = "tab-pane";
+							document.getElementById("aba3").className = "tab-pane active";
+						}
+					});
+				});   
+         
+			}
+		});
+	});
+
+	//FIM DA FUNÇÃO PARA AVANÇAR PARA A ABA TREINAMENTO
+
+
+
+</script>
+
+						
+<!-- FIM DA TAB "PRÉ-PROCESSAMENTO" -->

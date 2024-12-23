@@ -1,0 +1,40 @@
+.my_area {
+	border: 2px solid black;
+}
+
+.inicio_left {
+	font-size: 14px;
+	background-color: white;
+	float: left;
+}
+
+.inicio_right {
+	font-size: 14px;
+	background-color: white;
+	float: right;;
+	padding: 0 5px;
+}
+
+.fileUpload {
+    position: relative; 
+    overflow: hidden; 
+    margin-left: 2%;
+}
+.fileUpload input.upload { 
+    position: absolute; 
+    top: 0; 
+    right: 0; 
+    margin: 0; 
+    padding: 0; 
+    font-size: 20px; 
+    cursor: pointer; 
+    opacity: 0; 
+    filter: alpha(opacity=0); 
+}
+
+.ajuda{
+    color: #369cda;
+    cursor: pointer;
+    margin-right: 10px;
+
+}

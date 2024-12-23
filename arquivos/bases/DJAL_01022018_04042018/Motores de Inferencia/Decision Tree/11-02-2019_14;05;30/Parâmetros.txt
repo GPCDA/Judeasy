@@ -1,0 +1,1 @@
+max_depth=None,treino_tam=0.66,teste_tam=0.33,folds_tam=5,criterion=gini,splitter=best,divisao=percent_split,vec_tipo=countvec

@@ -1,0 +1,270 @@
+<!-- INÍCIO DA TAB "RESULTADOS" -->
+{% load static%}
+<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+	{% if message %}
+		<div class='alert alert-danger'><span style='color: #FFBF00; font-size: 16px;'><i class='fa fa-warning'></i></span> {{ message }}</div>
+	{% endif %}
+	<div id="errointernet"></div>
+	<div class="jarviswidget">
+		<header><h2> <strong>Informações</strong> </h2></header>
+
+		<div class="widget-body">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="content-info-box">
+						<span class="content-info-title">Nome</span>
+						<p style="font-size: 16px;">{{nome_da_base}} &nbsp;</p>
+					</div>
+					<div class="content-info-box">
+						<span class="content-info-title">Período</span>
+						<p>{{periodo}}&nbsp;</p>
+					</div>
+					<div class="content-info-box">
+						<span class="content-info-title">Classificador</span>
+						<p>{{classificador}}&nbsp;</p>
+					</div>
+					{% if myMethod %}
+						<div class="content-info-box">
+							<span class="content-info-title">Método</span>
+							<p>{{myMethod}}&nbsp;</p>
+						</div>
+					{% endif %}
+					{% if base_estimator %}
+						<div class="content-info-box">
+							<span class="content-info-title">Algoritmo</span>
+							<p>{{base_estimator}}&nbsp;</p>
+						</div>
+					{% endif %}
+					{% if algoritmo %}
+						<div class="content-info-box">
+							<span class="content-info-title">Algoritmo</span>
+							<p>{{base_estimator}}&nbsp;</p>
+						</div>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</div>
+</article>
+
+
+<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+	<div class="jarviswidget" id="resultados_tela" data-caminho_motor="{{pasta_motores}}" data-nome_diario="{{nome_da_base}}" data-periodo="{{periodo}}" data-classificador="{{classificador}}">
+
+		<header><h2><strong>Resultados</strong></h2>
+			<div align="right" href="#" class="ajuda" title="Ajuda" id="ajuda-resultados" >
+				<i class="fa fa-question-circle fa-md"></i>
+			</div>
+		</header>
+
+
+		<div class="widget-body">
+			<div class="row">
+				{% for etiqueta, resultados in par_etiqueta_resultados.items %}
+					<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+						<div class="row">
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+								<h3>{{ etiqueta|lower|capfirst|cut:"_pre-processado"|cut:".csv"|cut:"_rc"}}&nbsp;</h3>
+							</div>
+
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+								<div class="content-info-box">
+									<span class="content-info-title">Acurácia</span>
+									<p>{{ resultados.0 }}&nbsp</p>
+								</div>
+								<div class="content-info-box">
+									<span class="content-info-title">Precisão</span>
+									<p>{{ resultados.1 }}&nbsp</p>
+								</div>
+								<div class="content-info-box">
+									<span class="content-info-title">Recall</span>
+									<p>{{ resultados.2 }}&nbsp</p>
+								</div>
+								<div class="content-info-box">
+									<span class="content-info-title">F1</span>
+									<p>{{ resultados.3 }} &nbsp;</p>
+								</div>
+							</div>
+							{% if tamanho_da_lista > 4 %}
+								<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+									<div class="content-info-box">
+										<span class="content-info-title">Classification Report</span>
+										<p>{{ resultados.4|linebreaks }} &nbsp;</p>
+									</div>
+									<div class="content-info-box">
+										<span class="content-info-title">Matriz de Confusão</span>
+										<p>{{ resultados.5|linebreaks }}<br><br><br> &nbsp;</p>
+									</div>
+								</div>
+							{% endif %}
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+</article>
+	<div class="row">
+		<div class="col-xs-6 col-sm-6 col-md-6">
+			<a onclick="voltarTreinamento()" href="#" aria-expanded="true"> <button id="voltar-resultados" type="button" class="btn btn-primary">Voltar</button> </a>
+		</div>
+		<div align="right" class="col-xs-6 col-sm-6 col-md-6">
+			<a href="#" aria-expanded="true"> <button id="validacao" type="submit" class="btn btn-primary btn_carrega_conteudo">Avançar</button> </a>
+		</div>
+	</div>
+</article>
+
+
+
+
+<!-- FIM DA TAB "RESULTADOS" -->
+
+<div class="modal fade" id="ajuda_resultados" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+				<h4 class="modal-title">Ajuda</h4>
+			</div>
+
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-lg-11">
+						<h4>Resultados</h4><br>
+						<p>Esta tela é puramente para leitura dos relatórios acerca do treinamento de algoritmos.
+						Nela você encontrará as principais métricas citadas na literatura para avaliar quão eficiente
+						o algoritmo treinado foi para o cenário que foi submetido.</p>
+						<p>Como a base é dividida em diversas etiquetas, os resultados também serão dispostos neste formato.</p>
+						<p>As métricas são: </p>
+						<strong>1. Acurácia:</strong>
+						<div align="center" class="row">
+							<img width="70%" src="{% static "img/acuracia.png" %}"  alt="Acurácia" >
+						</div>
+						<br>
+						<strong>2. Precisão:</strong>
+						<div align="center" class="row">
+							<img width="70%" src="{% static "img/precisao.png" %}"  alt="Precisão" >
+						</div>
+						<br>
+						<strong>3. Recall:</strong>
+						<div align="center" class="row">
+							<img width="70%" src="{% static "img/recall.png" %}"  alt="Recall" >
+						</div>
+						<br>
+						<strong>4. F1:</strong>
+						<div align="center" class="row">
+							<img width="35%" src="{% static "img/f1.png" %}"  alt="F1" >
+						</div>
+						<br>
+						<strong>5. Classification Report:</strong>
+						<p>Relatório de texto mostrando as principais métricas de classificação para cada uma das classes
+							estudadas.</p>
+						<strong>6. Matriz de Confusão:</strong>
+						<p>Também conhecida como matriz de correspondência, cada linha desta matriz representa as instâncias
+						em uma classe prevista, enquanto cada coluna representa as instâncias em uma classe real (ou vice-versa).</p>
+
+
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button id="" class="btn btn-primary" data-dismiss="modal">
+					OK
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script type="text/javascript">
+	$("#ajuda-resultados").click(function(){
+	  $("#ajuda_resultados").modal();
+	});
+
+$(document).ready(function(){
+	setInterval(function(){
+							var online = navigator.onLine;
+							if(online == false){
+								document.getElementById("errointernet").className = "alert alert-danger";
+								$("#errointernet").html("<span style='color: #FFBF00; font-size: 16px;'><i class='fa fa-warning'></i></span> Atenção! A conexão com a internet foi perdida.");
+							}else{
+								document.getElementById("errointernet").className = "";
+								$("#errointernet").html(" ")
+							}
+						}, 1000);
+});
+
+	$(document).ready(function(){
+		if(!mainBaseName){
+		 document.getElementById("validacao").disabled = true;
+		 document.getElementById("voltar-resultados").disabled = true;
+		 }
+	});
+
+
+	// Função para mostrar Cl_report mais bonito no front
+	$(".clReport").on("click", function() {
+
+		var lista_cl_report = [];
+
+		lista_cl_report = $(this).data("resultado").replace(/\s+/g, '*').split("*");
+
+		lista_cl_report[15] = lista_cl_report[15] + " " + lista_cl_report[16]
+		lista_cl_report[16] = ""
+		lista_cl_report[21] = lista_cl_report[21] + " " + lista_cl_report[22]
+		lista_cl_report[22] = ""
+		lista_cl_report[27] = lista_cl_report[27] + " " + lista_cl_report[28]
+		lista_cl_report[28] = ""
+
+		for (var cont = 16; cont < 21; cont++) {
+			lista_cl_report[cont] = lista_cl_report[cont+1]
+		}
+		for (var cont = 21; cont < 26; cont++) {
+			lista_cl_report[cont] = lista_cl_report[cont+2]
+		}
+		for (var cont = 26; cont < 30; cont++) {
+			lista_cl_report[cont] = lista_cl_report[cont+3]
+		}
+
+		$("#table_cl_report tr td").each(function(index) {
+			$(this).html(lista_cl_report[index]);
+		});
+
+		$("#ver_cl_report").modal('show');
+
+	});
+
+	//INÍCIO DA FUNÇÃO PARA AVANÇAR PARA A ABA VALIDAÇÃO
+
+    $('#validacao').click(function(){ 
+
+		var carrega_url = this.id;
+        
+        $.ajax({
+        	type: 'POST',
+            url: carrega_url + "/",
+            data: {
+            	nome_da_base: $("#resultados_tela").attr("data-nome_diario"),
+            	periodo: $("#resultados_tela").attr("data-periodo"),
+            	classificador: $("#resultados_tela").attr("data-classificador"),
+				caminho_motor: $("#resultados_tela").attr("data-caminho_motor"),
+				is_upload: false,
+				csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+			}, 
+            //Incluindo o conteúdo na div
+            success: function(data){			      
+                $('#tab5').html(data);
+            }
+    	});
+
+        document.getElementById("tab5").className = "tab-pane active";
+		document.getElementById("tab4").className = "tab-pane fade";
+		document.getElementById("aba4").className = "tab-pane";
+		document.getElementById("aba5").className = "tab-pane active";
+		
+	});
+
+	//FIM DA FUNÇÃO PARA AVANÇAR PARA A ABA VALIDAÇÃO
+
+</script>

@@ -1,0 +1,56 @@
+{% for caminho_da_base, lista_info in info_bases_treinadas.items %}
+	<tr> 
+		{% for info in lista_info %}
+
+		{% if forloop.last %}
+
+		<td>
+			<a style="display:inline" title="Visualizar" class="btn btn-default btn-xs resultadosTreinamento" id="{{ info }}"><span class="fa fa-file"></span></a>
+
+			<a title="Excluir" class="btn btn-default btn-xs dados_treinamento_excluir" style="display:inline" id="{{ info }}"><span class="excluir fa fa-lg fa-trash-o"></span></a>
+		</td>
+		{% else %}
+		<td>{{ info }}</td>
+		{% endif %}
+
+		{% endfor %}
+	</tr>
+{% empty %}
+	<tr>
+		<td colspan="6" style='font-style:italic;'> Nenhum motor de inferência gerado.</td>
+	</tr>
+{% endfor %}
+
+
+<script type="text/javascript">
+
+	// Função para mostrar resultados da base treinada num arquivo .txt
+	$('.resultadosTreinamento').click(function(){ 
+
+		$.ajax({
+			type: 'POST',
+	        url: '/abrirTxtResultados/',
+	        data: {
+            	nome_arquivo_txt: this.id,
+				csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+			}, 
+	        success: function(){
+
+	        }
+	    });
+
+	});
+
+	var id_sibling_excluir = "";
+
+	// Início da função para excluir o arquivo .txt de um treinamento salvo
+	$('.dados_treinamento_excluir').click(function(){ 
+
+		$("#modal_excluir_treinamento").modal({backdrop: 'static', show: true});
+
+		id_sibling_excluir = this.id;
+
+	});
+	// Fim da função para excluir o arquivo .txt de um treinamento salvo
+
+</script>

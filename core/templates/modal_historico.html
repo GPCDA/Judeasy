@@ -1,0 +1,106 @@
+{% for caminho_da_base, lista_info in info_bases_treinadas.items %}
+	<tr>
+
+		<td><input type="radio" name="radioBaseTreinada" class="radioBaseTreinada" id="{{caminho_da_base}}" ></td>
+		{% for info in lista_info %}
+
+		{% if forloop.last %}
+		<td><a title="Visualizar resultados salvos do treinamento" class="btn btn-default btn-xs resultadosTreinamento" id="{{ info }}"><span class="fa fa-file"></span></a></td>
+		{% else %}
+		<td>{{ info }}</td>
+		{% endif %}
+
+		{% endfor %}
+		
+	</tr>
+{% empty %}
+	<tr>
+		<td colspan="7" style='font-style:italic;'> Nenhum motor de inferência gerado.</td>
+	</tr>
+{% endfor %}
+
+
+<!-- ADICIONANDO CONTEÚDO DE ERRO AO NÃO SELECIONAR BASE TREINADA -->
+<div class="note note-error" id="erro_select_base_treinada"></div>	
+<!-- ADICIONANDO CONTEÚDO DE ERRO AO NÃO SELECIONAR BASE TREINADA -->
+
+<script type="text/javascript">
+
+	var caminho_da_base_treinada = ""
+
+	$('.radioBaseTreinada').on('click', function() {
+		caminho_da_base_treinada = this.id;
+	});
+
+	// Botão que vai da tela de início direto para a tela de validação
+	$('#modalMotoresOk').click(function(){ 
+
+		if (caminho_da_base_treinada == "") {
+			if ($('#erro_select_base_treinada').is(':empty')) {
+				
+				//adding the paragraph to the div
+				$('#erro_select_base_treinada').append("Selecione uma base já treinada!");
+				$('#erro_select_base_treinada').css('color','red');
+	
+				//Colocando a exclamação ao não selecionar alguma base
+				$("#no_one_radio").addClass("glyphicon glyphicon-exclamation-sign");
+				$("#no_one_radio").css('color','red');
+			} 
+		} 
+
+		else {
+
+			$('#erro_select_base_treinada').empty();
+
+			$("#no_one_radio").removeClass("glyphicon glyphicon-exclamation-sign");
+
+			$.ajax({
+				type: 'POST',
+		        url: 'validacao/',
+		        data: {
+		        	is_validacao: true,
+					caminho_base_treinada: caminho_da_base_treinada,
+					nome_da_base: jQuery("input[name=radioBaseTreinada]:checked").parent().next().html(),
+					periodo_da_base: jQuery("input[name=radioBaseTreinada]:checked").parent().next().next().html(),
+					classificador: jQuery("input[name=radioBaseTreinada]:checked").parent().next().next().next().html(),
+					csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+				}, 
+		        //Incluindo o conteúdo na div
+		        success: function(data){
+		            $('#tab5').html(data);
+		        }
+		    });
+
+			stepByStep_or_validacao = "validacao"
+
+			$("#escolher_motor_validacao").fadeOut();
+			$("#escolher_motor_validacao").modal('hide');
+
+		    document.getElementById("tab5").className = "tab-pane active";
+			document.getElementById("tab0").className = "tab-pane fade";
+			document.getElementById("aba0").className = "tab-pane";
+			document.getElementById("aba5").className = "tab-pane active";	
+
+		}
+
+	});
+
+
+	// Função para mostrar resultados da base treinada num arquivo .txt
+	$('.resultadosTreinamento').click(function(){ 
+
+		$.ajax({
+			type: 'POST',
+	        url: '/abrirTxtResultados/',
+	        data: {
+            	nome_arquivo_txt: this.id,
+            	csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+			}, 
+	        success: function(){
+
+	        }
+	    });
+
+	});
+
+</script>

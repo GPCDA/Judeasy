@@ -1,0 +1,136 @@
+tag,conteudo,saida
+VARA,"['araujo': 0.0, 'desembargador': 0.11100832562442184, 'sob': 0.0, 'ser': 0.0, 'marcar': 0.004625346901017576, 'klever': 0.0, 'pedrar': 0.0, 'ordinaria': 0.004625346901017576, 'sessao': 0.1572617946345976, 'excelentissimo': 0.0, 'mero': 0.0, 'auditorio': 0.0, 'presidencia': 0.0, 'acioli': 0.0, 'regar': 0.0, 'nascimento': 0.0, 'm.': 0.0, 'justica': 0.0971322849213691, 'cahet': 0.0, 'reunir': 0.0, 'declarar': 0.0, 'mendonca': 0.0, 'aberto': 0.0, 'olavo': 0.0, 'presidente': 0.0, 'civel': 0.06290471785383904, 'loureiro': 0.0, 'haver': 0.0, 'marco': 0.0, 'augusto': 0.0, 'situar': 0.0, 'valente': 0.0, 'edificio': 0.0, 'exmo': 0.0037002775208140612, 'elisabeth': 0.0, 'atar': 0.004625346901017576, 'tribunal': 0.0, 'quorum': 0.0, 'sr': 0.0, 'limar': 0.0, 'des': 0.0, 'edgar': 0.0, 'n': 0.0, 'procurador': 0.0, 'carvalho': 0.0, 'presente': 0.0, 'aprovar': 0.0, 'camara': 0.06290471785383904]",0
+VARA,"['noto': 0.0, 'camara': 0.0, 'civel': 0.0, 'declaratoria': 0.0]",0
+VARA,"['criminal': 0.0, 'camara': 0.0]",0
+VARA,"['relator.des': 0.0, 'art': 0.0, 'juliano': 0.0, 'civil': 0.0, 'visto': 0.0, 'melar': 0.00023293733985557883, 'casar': 0.0, 'juizo': 0.08717679944095039, 'al': 0.0006988120195667365, 'airan': 0.00023293733985557883, 'camara': 0.0, 'oab': 0.006289308176100628, 'suscitante': 0.0, 'fazenda': 0.0026205450733752618, 'decorrer': 0.0, 'varar': 0.0, 'justica': 0.0, 'suscitar': 0.006289308176100628, 'informacoes': 0.0, 'capital': 0.0, 'lira': 0.0, 'juizado': 0.0, 'civel': 0.02795248078266946, 'tiago': 0.0, 'silvar': 0.0, 'barreto': 0.0, 'municipal': 0.0026205450733752618, 'estadual': 0.0, 'mandar': 0.0, 'publicar': 0.0, 'procurador': 0.0, 'advogar': 0.0, 'manifestacao': 0.0, 'termo': 0.0, 'souza': 0.0, 'tutmes': 0.00023293733985557883, 'geral': 0.0, 'relator': 0.0, 'municipio': 0.0, 'processar': 0.0, 'c': 0.0, 'n.': 0.0, 'maceio': 0.0, 'des': 0.0, 'dia': 0.0, 'oficiar': 0.03214535290006988, 'coutinho': 0.0, 'partir': 0.0026205450733752618, 'despachar': 0.0, 'abril': 0.0, 'procuradoria': 0.0, 'prestar': 0.0, 'codigo': 0.0, 'prazo': 0.02795248078266946, 'diogo': 0.0]",1
+VARA,"['relator.des': 0.0, 'art': 0.0, 'informacoes': 0.0, 'civil': 0.0, 'visto': 0.0, 'melar': 0.00024189646831156264, 'juizo': 0.09052975326560232, 'al': 0.000725689404934688, 'ferreiro': 0.0, 'camara': 0.0, 'oab': 0.001451378809869376, 'prazo': 0.02902757619738752, 'fazenda': 0.00272133526850508, 'bispar': 0.0, 'nataniel': 0.0, 'varar': 0.0, 'justica': 0.0, 'patricia': 0.0, 'suscitar': 0.006531204644412192, 'oliveira': 0.0, 'capital': 0.0, 'relator': 0.0, 'juizado': 0.0, 'civel': 0.02902757619738752, 'silvar': 0.001451378809869376, 'airan': 0.00024189646831156264, 'municipal': 0.00272133526850508, 'estadual': 0.0, 'mandar': 0.0, 'publicar': 0.0, 'procurador': 0.0, 'suscitante': 0.0, 'advogar': 0.0, 'manifestacao': 0.0, 'termo': 0.0, 'tutmes': 0.00024189646831156264, 'geral': 0.0, 'municipio': 0.0, 'processar': 0.0, 'c': 0.0, 'n.': 0.0, 'maceio': 0.0, 'des': 0.0, 'dia': 0.0, 'oficiar': 0.033381712626995644, 'coutinho': 0.0, 'partir': 0.00272133526850508, 'despachar': 0.0, 'abril': 0.0, 'procuradoria': 0.0, 'prestar': 0.0, 'codigo': 0.0, 'decorrer': 0.0, 'diogo': 0.0]",1
+VARA,"['intimacao': 0.0, 'varar': 0.0, 'advogar': 0.0, 'civel': 0.0, 'capital': 0.0]",0
+VARA,"['intimacao': 0.0, 'varar': 0.0, 'advogar': 0.0, 'civel': 0.0, 'capital': 0.0]",0
+VARA,"['intimacao': 0.0, 'varar': 0.0, 'advogar': 0.0, 'civel': 0.0, 'capital': 0.0]",0
+VARA,"['intimacao': 0.0, 'varar': 0.0, 'advogar': 0.0, 'civel': 0.0, 'capital': 0.0]",0
+VARA,"['intimacao': 0.0, 'varar': 0.0, 'advogar': 0.0, 'civel': 0.0, 'capital': 0.0]",0
+VARA,"['intimacao': 0.0, 'varar': 0.0, 'advogar': 0.0, 'civel': 0.0, 'capital': 0.0]",0
+VARA,"['intimacao': 0.0, 'varar': 0.0, 'advogar': 0.0, 'civel': 0.0, 'capital': 0.0]",0
+VARA,"['intimacao': 0.0, 'varar': 0.0, 'advogar': 0.0, 'civel': 0.0, 'capital': 0.0]",0
+VARA,"['intimacao': 0.0, 'varar': 0.0, 'advogar': 0.0, 'civel': 0.0, 'capital': 0.0]",0
+VARA,"['intimacao': 0.0, 'varar': 0.0, 'advogar': 0.0, 'civel': 0.0, 'capital': 0.0]",0
+VARA,"['intimacao': 0.0, 'varar': 0.0, 'advogar': 0.0, 'civel': 0.0, 'capital': 0.0]",0
+VARA,"['intimacao': 0.0, 'varar': 0.0, 'advogar': 0.0, 'civel': 0.0, 'capital': 0.0]",0
+VARA,"['intimacao': 0.0, 'varar': 0.0, 'advogar': 0.0, 'civel': 0.0, 'capital': 0.0]",0
+VARA,"['tanto': 0.0, 'pedrar': 0.0, 'unico': 0.0, 'depositar': 0.0, 'principal': 0.0, 'prazo': 0.2437881562881564, 'ocorrer': 0.0, 'rezar': 0.0, 'aplicar': 0.0, 'peno': 0.0, 'civel': 0.018626373626373628, 'independentemente': 0.0, 'tomar': 0.0, 'formar': 0.0, 'municipal': 0.0, 'cansancao': 0.0, 'varar': 0.018626373626373628, 'auto': 0.0, 'execucao': 0.06775641025641024, 'dever': 0.0, 'casar': 0.0, 'intimacao': 0.0, 'comerciar': 0.0336996336996337, 'dr': 0.0, 'd': 0.0, 'despesa': 0.0, 'dia': 0.0, 'partir': 0.0, 'cando': 0.017582417582417582, 'citacao': 0.0, 'citar': 0.0, 'presentar': 0.004731379731379733, 'advocaticios': 0.0, 'desfavor': 0.0, 'requerido': 0.0, 'dividir': 0.23736263736263735, 'conhecimento': 0.0347985347985348, 'extrajudicial': 0.0, 'verba': 0.0, 'fazenda': 0.0, 'fazer': 0.051648351648351645, 'honoraria': 0.0, 'capital': 0.018626373626373628, 'proceder': 0.0, 'virar': 0.0, 'med': 0.0, 'e.': 0.0, 'integralidade': 0.0, 'lei': 0.0, 'processual': 0.0, 'honorarios': 0.0, 'sob': 0.0, 'juizo': 0.10682234432234432, 'xado': 0.0, 'executar': 0.0, 'industriar': 0.0, 'ser': 0.06813186813186813, '..': 0.017216117216117217, 'cientifi': 0.0, 'afazer': 0.0, 'incerto': 0.0, 'chegar': 0.0, 'titulo': 0.0, 'cnpj': 0.0, 'saber': 0.16646825396825393, 'atos': 0.0, 'expedir': 0.0, 'tramitar': 0.0, 'embargo': 0.0, 'reduzir': 0.0, 'bem': 0.025274725274725275, 'local': 0.15934065934065933, 'melro': 0.0, 'penhorar': 0.04285714285714286, 'arrestar': 0.0, 'sera': 0.051648351648351645, 'brastex': 0.0, 'tres': 0.0, 'representacoes': 0.0, 'efetuar': 0.0, 'bastir': 0.0, 'contar': 0.0, 'direito': 0.0, 'juiz': 0.0, 'cartorarios': 0.0, 'produto': 0.0, 'nao': 0.08276862026862025, 'paulo': 0.0, 'satisfacao': 0.0, 'inscrever': 0.0, 'costumar': 0.0, 'ltda': 0.0336996336996337, 'terceiro': 0.0, 'edital': 0.31389499389499387, 'oferecer': 0.0, 'publicar': 0.0, 'jorge': 0.0, 'pagamento': 0.09745115995115995, 'caucao': 0.0, 'advogar': 0.0, 'exmo': 0.0, 'transcursar': 0.0, 'editar': 0.0, 'n.': 0.017216117216117217, 'texteis': 0.0, 'atualmente': 0.0]",1
+VARA,"['municipal': 0.0, 'varar': 0.0, 'fazenda': 0.0, 'juizo': 0.0, 'advogar': 0.0, 'direito': 0.0, 'capital': 0.0, 'intimacao': 0.0, 'civel': 0.0]",0
+VARA,"['varar': 0.0, 'fazenda': 0.0, 'estadual': 0.0, 'advogar': 0.0, 'capital': 0.0, 'intimacao': 0.0, 'civel': 0.0]",0
+VARA,"['varar': 0.0, 'fazenda': 0.0, 'estadual': 0.0, 'advogar': 0.0, 'capital': 0.0, 'intimacao': 0.0, 'civel': 0.0]",0
+VARA,"['varar': 0.0, 'fazenda': 0.0, 'estadual': 0.0, 'advogar': 0.0, 'capital': 0.0, 'intimacao': 0.0, 'civel': 0.0]",0
+VARA,"['fiscal': 0.0, 'estadual': 0.0, 'varar': 0.0, 'fazenda': 0.0, 'execucao': 0.0, 'juizo': 0.0, 'advogar': 0.0, 'direito': 0.0, 'capital': 0.0, 'intimacao': 0.0, 'civel': 0.0]",0
+VARA,"['varar': 0.0, 'sucessoes': 0.0, 'juizo': 0.0, 'advogar': 0.0, 'direito': 0.0, 'capital': 0.0, 'intimacao': 0.0, 'civel': 0.0]",0
+VARA,"['varar': 0.0, 'sucessoes': 0.0, 'advogar': 0.0, 'capital': 0.0, 'intimacao': 0.0, 'civel': 0.0]",0
+VARA,"['varar': 0.0, 'advogar': 0.0, 'familia': 0.0, 'capital': 0.0, 'intimacao': 0.0, 'civel': 0.0]",0
+VARA,"['varar': 0.0, 'advogar': 0.0, 'familia': 0.0, 'capital': 0.0, 'intimacao': 0.0, 'civel': 0.0]",0
+VARA,"['varar': 0.0, 'cartorarios': 0.0, 'atos': 0.0, 'familia': 0.0, 'capital': 0.0, 'editar': 0.0, 'civel': 0.0]",0
+VARA,"['varar': 0.0, 'advogar': 0.0, 'familia': 0.0, 'capital': 0.0, 'intimacao': 0.0, 'civel': 0.0]",0
+VARA,"['varar': 0.0, 'advogar': 0.0, 'familia': 0.0, 'capital': 0.0, 'intimacao': 0.0, 'civel': 0.0]",0
+VARA,"['intimacao': 0.0, 'varar': 0.0, 'advogar': 0.0, 'civel': 0.0, 'capital': 0.0]",0
+VARA,"['varar': 0.0, 'advogar': 0.0, 'familia': 0.0, 'capital': 0.0, 'intimacao': 0.0, 'civel': 0.0]",0
+VARA,"['rol': 0.0, 'comparecam': 0.0, 'teresa': 0.0, 'nao': 0.05227122649706324, 'menor': 0.00763157589870133, 'm.': 0.0, 'helio': 0.0, 'destituicao': 0.0, 'ver': 0.0, 'prazo': 0.05034928578876031, 'justica': 0.0, 'ignorancia': 0.0, 'monteiro': 0.0, 'ruir': 0.0, 'processar': 0.00763157589870133, 'civel': 0.02686893963090394, 'formar': 0.0, 'motivar': 0.0, 'republicar': 0.0, 'familiar': 0.0, 'feitosa': 0.0, 'alagoa': 0.0, 'dar': 0.0, 'intimacao': 0.0, 'pontar': 0.0, 'compareca': 0.0, 'dia': 4.170576582212491e-05, 'desde': 0.0, 'proprio': 0.0, 'pereira': 0.0, 'alexandre': 0.0, 'citar': 0.0, 'presentar': 0.01011364821186529, 'provar': 0.0, 'acao': 0.00763157589870133, 'j.': 0.0, 'respostar': 5.2132207277656134e-05, 'logo': 0.0, 'conhecimento': 0.0, 'dispor': 0.0, 'testemunhar': 0.0, 'fazer': 0.0994827326544561, 'estar': 0.0, 'capital': 0.03120336029313194, 'cartorio': 1.7377402425885377e-05, 'achar': 0.0, 'virar': 0.0, 'lei': 0.0, 'situar': 0.0, 'judiciar': 4.170576582212491e-05, 'costa': 0.0, 'oferecam': 0.0, 'santo': 0.0, 'a.': 0.0, 'c': 0.00763157589870133, 'brasil': 0.0, 'futurar': 0.0, 'adolescente': 0.0, 'residente': 0.0, 'doutorar': 4.170576582212491e-05, 'local': 0.0, 'itos': 0.0, 'biologico': 0.0, 'agrarios': 0.0, 'biologica': 0.0, 'marcela': 0.0, 'juiza': 0.008216035866958609, 'estatuto': 0.0, 'lucia': 0.0015609872350566757, 'civil': 0.0, 'juizo': 0.0, 'jesus': 0.0, 'conformidade': 0.0, 'xado': 0.0, 'ser': 0.0, 'citacao': 4.170576582212491e-05, '..': 0.00763157589870133, 'nascimento': 0.0, 'decorrer': 0.0, 'afazer': 0.0, 'incerto': 0.0, 'chegar': 0.0, 'adocao': 0.00763157589870133, 'poder': 0.022104055885726205, 'silvar': 0.0, 'saber': 0.009349042505126333, 'eduarda': 0.0, 'atos': 0.0, 'artigo': 0.0, 'crianca': 0.0, 'analista': 0.0, 'confl': 0.0, 'alegar': 0.0, 'lha': 0.0, 'maceio': 0.0, 'passar': 0.0, 'diario': 0.0, 'roberto': 0.0, 'n': 0.06727082102433993, 'direito': 0.008216035866958609, 'indicar': 0.0, 'sera': 0.0, 'escrito': 5.2132207277656134e-05, 'cidade': 0.0, 'declarar': 0.0, 'assistencia': 4.170576582212491e-05, 'barbosa': 0.0015609872350566757, 'doria': 0.0, 'juventude': 0.0008514927188683837, 'martim': 0.0, 'federativo': 0.0, 'dital': 4.170576582212491e-05, 'judiciario': 0.0, 'piraua': 0.0015609872350566757, 'cartorarios': 0.0, 'varar': 0.03120336029313194, 'k.': 0.0, 'cristina': 0.0, 'fatima': 0.0015609872350566757, 's.': 0.0, 'pai': 0.0, 'documento': 0.0, 'lugar': 0.0, 'francisco': 0.0, 'edital': 0.09888900473823833, 'oferecer': 0.0, 'publicar': 0.0, 'advogar': 0.0, 'regular': 0.0, 'pradines': 0.0, 'produzir': 0.0, 'infancia': 0.0008514927188683837, 'andamento': 0.0, 'editar': 0.0, 'maria': 0.1931526414479182, 'expedir': 0.01011364821186529, 'eletronico': 0.0, 'lho': 0.0, 'm': 0.0, 'ofereca': 0.0]",1
+VARA,"['varar': 0.0, 'juventude': 0.0, 'advogar': 0.0, 'capital': 0.0, 'intimacao': 0.0, 'infancia': 0.0, 'criminal': 0.0]",0
+VARA,"['intimacao': 0.0, 'varar': 0.0, 'criminal': 0.0, 'advogar': 0.0, 'capital': 0.0]",0
+VARA,"['intimacao': 0.0, 'varar': 0.0, 'criminal': 0.0, 'advogar': 0.0, 'capital': 0.0]",0
+VARA,"['intimacao': 0.0, 'varar': 0.0, 'criminal': 0.0, 'advogar': 0.0, 'capital': 0.0]",0
+VARA,"['intimacao': 0.0, 'varar': 0.0, 'criminal': 0.0, 'advogar': 0.0, 'capital': 0.0]",0
+VARA,"['tribunal': 0.0, 'varar': 0.0, 'advogar': 0.0, 'juri': 0.0, 'capital': 0.0, 'intimacao': 0.0, 'criminal': 0.0]",0
+VARA,"['tribunal': 0.0, 'criminal': 0.0, 'edital': 0.0, 'varar': 0.0, 'cartorarios': 0.0, 'atos': 0.0, 'prazo': 0.0, 'dia': 0.0, 'juri': 0.0, 'capital': 0.0, 'intimacao': 0.0, 'editar': 0.0]",0
+VARA,"['tribunal': 0.0, 'varar': 0.0, 'advogar': 0.0, 'juri': 0.0, 'capital': 0.0, 'intimacao': 0.0, 'criminal': 0.0]",0
+VARA,"['tribunal': 0.0, 'varar': 0.0, 'advogar': 0.0, 'juri': 0.0, 'capital': 0.0, 'intimacao': 0.0, 'criminal': 0.0]",0
+VARA,"['intimacao': 0.0, 'varar': 0.0, 'criminal': 0.0, 'advogar': 0.0, 'capital': 0.0]",0
+VARA,"['intimacao': 0.0, 'varar': 0.0, 'criminal': 0.0, 'advogar': 0.0, 'capital': 0.0]",0
+VARA,"['varar': 0.0, 'juizo': 0.0, 'advogar': 0.0, 'direito': 0.0, 'auditoria': 0.0, 'capital': 0.0, 'intimacao': 0.0, 'criminal': 0.0, 'militar': 0.0]",0
+VARA,"['c': 0.0, 'criminal': 0.0, 'idoso': 0.0, 'varar': 0.0, 'transitar': 0.0, 'adolescente': 0.0, 'juizo': 0.0, 'advogar': 0.0, 'crianca': 0.0, 'direito': 0.0, 'capital': 0.0, 'intimacao': 0.0, 'crime': 0.0]",0
+VARA,"['juiz': 0.0, 'varar': 0.0, 'advogar': 0.0, 'entorpecente': 0.0, 'capital': 0.0, 'intimacao': 0.0, 'criminal': 0.0]",0
+VARA,"['criminal': 0.0, 'juiz': 0.0, 'varar': 0.0, 'cartorarios': 0.0, 'atos': 0.0, 'entorpecente': 0.0, 'capital': 0.0, 'editar': 0.0]",0
+VARA,"['intimacao': 0.0, 'varar': 0.0, 'criminal': 0.0, 'advogar': 0.0, 'capital': 0.0]",0
+VARA,"['criminal': 0.0, 'varar': 0.0, 'cartorarios': 0.0, 'atos': 0.0, 'capital': 0.0, 'editar': 0.0]",0
+VARA,"['cjus': 0.0, 'advogar': 0.0, 'itos': 0.0, 'solucao': 0.0, 'intimacao': 0.0, 'judiciario': 0.0, 'centrar': 0.0, 'confl': 0.0]",0
+VARA,"['especial': 0.0, 'juizado': 0.0, 'advogar': 0.0, 'capital': 0.0, 'intimacao': 0.0, 'criminal': 0.0, 'civel': 0.0]",0
+VARA,"['especial': 0.0, 'juizado': 0.0, 'advogar': 0.0, 'capital': 0.0, 'intimacao': 0.0, 'criminal': 0.0, 'civel': 0.0]",0
+VARA,"['especial': 0.0, 'juizado': 0.0, 'advogar': 0.0, 'capital': 0.0, 'intimacao': 0.0, 'criminal': 0.0, 'civel': 0.0]",0
+VARA,"['especial': 0.0, 'juizado': 0.0, 'advogar': 0.0, 'capital': 0.0, 'intimacao': 0.0, 'criminal': 0.0, 'civel': 0.0]",0
+VARA,"['especial': 0.0, 'juizado': 0.0, 'advogar': 0.0, 'capital': 0.0, 'intimacao': 0.0, 'criminal': 0.0, 'civel': 0.0]",0
+VARA,"['municipal': 0.0, 'estadual': 0.0, 'fazenda': 0.0, 'publicar': 0.0, 'juizo': 0.0, 'advogar': 0.0, 'direito': 0.0, 'intimacao': 0.0, 'juizado': 0.0]",0
+VARA,"['varar': 0.0, 'aguar': 0.0, 'unico': 0.0, 'oficiar': 0.0, 'advogar': 0.0, 'branco': 0.0, 'intimacao': 0.0]",0
+VARA,"['identifi': 0.0, 'cadas': 0.0, 'unico': 0.0005322094420669867, 'especifi': 0.0, 'sessao': 0.015195309175154992, 'reu': 0.18653452117939467, 'ferreiro': 0.0, 'heleno': 0.0, 'oportunamente': 0.0, 'apresentar': 0.0, 'prazo': 0.025661490457305328, 'justica': 0.04618736383442266, 'local': 0.0, 'ca': 0.011437908496732025, 'tomar': 0.0, 'formar': 0.01776348923407747, 'varar': 0.0005322094420669867, 'auto': 0.07456000245215928, 'vitima.cicero': 0.0, 'de': 0.0, 'autor': 0.0, 'alagoa': 0.0, 'intimacao': 0.005355960838050214, 'dr': 0.0, 'd': 0.0, 'tatajuba': 0.0, 'determinar': 0.0, 'dia': 0.011074915086416224, 'partir': 0.011873638344226578, 'tipifi': 0.0, 'desde': 0.0, 'promover': 0.0, 'virar': 0.0, 'lugar': 0.0, 'art': 0.0, 'presentar': 0.012861292665214234, 'acao': 0.05122365247572657, 'edmilson': 0.0, 'intermediar': 0.0, 'contar': 0.0, 'logo': 0.0, 'conhecimento': 0.023529411764705882, 'filipe': 0.0, 'cp': 0.0, 'obstante': 0.0, 'nomear': 0.0, 'provimento': 0.0, 'fazer': 0.03496732026143791, 'estar': 0.0, 'designar': 0.0, 'e.': 0.0, 'lho': 0.0, 'jose': 0.0, 'lei': 0.01322282111497797, 'preclusivo': 0.0, 'juri': 0.05725212993503026, 'santo': 0.0017429193899782135, 'plenaria': 0.0, 'acima': 0.029623978246269264, 'considerar': 0.0, 'residente': 0.0, 'oficiar': 0.0005322094420669867, 'sitiar': 0.0, 'claro': 0.0, 'ciente': 0.0, 'pirrolo': 0.0, 'remessar': 0.0, 'juizo': 0.06895424836601308, 'intimar': 0.0, 'xado': 0.0, 'transcursar': 0.0, 'defensoria': 0.0, 'comparecer': 0.0, 'acaso': 0.0, 'cado': 0.0, '..': 0.0, 'aguar': 0.07939271967730156, 'dezembro': 0.0, 'afazer': 0.0, 'incerto': 0.0, 'chegar': 0.0, 'tela': 0.0, 'digitalizacao': 0.0, 'barro': 0.0, 'consonancia': 0.0, 'saber': 0.046286474507174054, 'abril': 0.0, 'atos': 0.0, 'expedir': 0.0, 'tramitar': 0.0, 'munguba': 0.0, 'geral': 0.0, 'processar': 0.07372926274887065, 'tribunal': 0.015195309175154992, 'ser': 0.0, 'bem': 0.023529411764705882, 'limar': 0.0, 'n': 0.07103096056990307, 'encontrar': 0.0, 'sera': 0.0, 'penal': 0.0, 'zonar': 0.0, 'epigrafar': 0.0, 'al': 0.0, 'iv': 0.0, 'lei.agua': 0.0, 'direito': 0.03164383509395043, 'senha': 0.0, 'consulto': 0.0, 'cacao': 0.0, 'competencia': 0.0, 'defeso': 0.0, 'cartorarios': 0.0, 'visto': 0.0, 'nao': 0.07789115341577453, 'cristina': 0.0, 'branco': 0.14798210717191776, 'mediante': 0.0, 'ausentar': 0.0, 'costumar': 0.0, 'faco': 0.0, 'terceiro': 0.0, 'dispor': 0.0, 'especial': 0.01777440605871979, 'edital': 0.1253710378973562, 'publicar': 0.05226959919770377, 'advogar': 0.0, 'manifestacao': 0.0, 'representante': 0.0, 'atar': 0.0, 'editar': 0.0, 'juiz': 0.002426333278409403, 'eletronica': 0.0, 'm': 0.0, 'corregedoria': 0.0, 'rural': 0.0, 'atualmente': 0.0]",1
+VARA,"['anadia': 0.0, 'varar': 0.0, 'unico': 0.0, 'oficiar': 0.0, 'advogar': 0.0, 'intimacao': 0.0]",0
+VARA,"['anadia': 0.0, 'varar': 0.0, 'cartorarios': 0.0, 'atos': 0.0, 'unico': 0.0, 'oficiar': 0.0, 'editar': 0.0]",0
+VARA,"['varar': 0.0, 'exec': 0.0, 'advogar': 0.0, 'arapiraca': 0.0, 'intimacao': 0.0, 'infancia': 0.0, 'criminal': 0.0]",0
+VARA,"['varar': 0.0, 'fazenda': 0.0, 'publicar': 0.0, 'advogar': 0.0, 'intimacao': 0.0, 'arapiraca': 0.0]",0
+VARA,"['varar': 0.0, 'residual': 0.0, 'advogar': 0.0, 'intimacao': 0.0, 'arapiraca': 0.0, 'civel': 0.0]",0
+VARA,"['varar': 0.0, 'sucessoes': 0.0, 'advogar': 0.0, 'familia': 0.0, 'intimacao': 0.0, 'arapiraca': 0.0]",0
+VARA,"['neto': 0.0, 'andre': 0.0, 'manso': 0.0, 'jose': 0.0, 'edwirges': 0.0, 'prazo': 0.01967513154884466, 'cavalcanti': 0.0, 'monteiro': 0.0, 'ruir': 0.0, 'peno': 0.0, 'juizado': 0.0, 'local': 0.0, '<': 0.0, 'tomar': 0.0, 'formar': 0.0, 'varar': 0.0006013661470078767, 'auto': 0.0, 'cep': 0.0, 'intimacao': 0.0692725866370341, 'dr': 0.0, 'mod': 0.0, 'dia': 0.01967513154884466, 'email': 0.0, 'partir': 0.0, 'promover': 0.0, 'citacao': 0.0, 'orlar': 0.0, 'presentar': 0.002478456493556013, '\\\\\\': 0.0, 'varaarapiraca': 0.0, 'antecipacao': 0.0, 'requerido': 0.0, 'conhecimento': 0.02104781514527568, 'estagiario': 0.0, 'marcia': 0.0, 'rito': 0.0, 'fazer': 0.0, 'cartorio': 0.0, 'publicar': 0.0, 'virar': 0.0, 'e.': 0.0, 'lei': 0.0, 'santo': 0.0, 'forum': 0.0, 'possiveis': 0.0, 'arapiraca': 0.0409697029120502, 'ordinario': 0.0, 'sob': 0.0, 'juizo': 0.056556743035809626, 'xado': 0.0, 'tjal.jus.br': 0.0, '..': 0.0, 'afazer': 0.0, 'chegar': 0.0, 'poder': 0.0, 'samaritano': 0.0, 'saber': 0.0, 'sucessoes': 0.0006013661470078767, 'atos': 0.0, 'expedir': 0.0, 'tramitar': 0.0, 'familia': 0.0006013661470078767, 'criminal': 0.0, 'interessar': 0.0, 'toress': 0.0, 'civel': 0.0, 'limar': 0.0, 'des': 0.0, 'peixoto': 0.0, 'sera': 0.0, 'barbosa': 0.0, 'melar': 0.0, 'al': 0.0, 'hosana': 0.0, 'direito': 0.019921887766774518, 'geda': 0.0, 'juiz': 0.003935026309768932, 'contestacao': 0.0, 'cartorarios': 0.0, 'bispar': 0.0, 'costumar': 0.0, 'terceiro': 0.0, 'tutelar': 0.026853939928751177, 'francisco': 0.004118050789293068, 'edital': 0.034899391007833014, 'revelir': 0.0, 'iraci': 0.0, 'apresentacao': 0.0, 'advogar': 0.0, 'exmo': 0.0, 'nomeacao': 0.0, 'editar': 0.0, 'n.': 0.0, 'maximo': 0.0, 'digitar': 0.0]",1
+VARA,"['varar': 0.0, 'unico': 0.0, 'oficiar': 0.0, 'advogar': 0.0, 'atalaia': 0.0, 'intimacao': 0.0]",0
+VARA,"['varar': 0.0, 'unico': 0.0, 'oficiar': 0.0, 'advogar': 0.0, 'batalhar': 0.0, 'intimacao': 0.0]",0
+VARA,"['varar': 0.0, 'cartorarios': 0.0, 'atos': 0.0, 'juizo': 0.0, 'unico': 0.0, 'oficiar': 0.0, 'batalhar': 0.0, 'editar': 0.0, 'direito': 0.0]",0
+VARA,"['varar': 0.0, 'bocar': 0.0, 'unico': 0.0, 'oficiar': 0.0, 'advogar': 0.0, 'matar': 0.0, 'intimacao': 0.0]",0
+VARA,"['varar': 0.0, 'unico': 0.0, 'oficiar': 0.0, 'advogar': 0.0, 'intimacao': 0.0, 'cacimbinhas': 0.0]",0
+VARA,"['varar': 0.0, 'cartorarios': 0.0, 'atos': 0.0, 'unico': 0.0, 'oficiar': 0.0, 'editar': 0.0, 'cacimbinhas': 0.0]",0
+VARA,"['varar': 0.0, 'juizo': 0.0, 'unico': 0.0, 'oficiar': 0.0, 'advogar': 0.0, 'cajueiro': 0.0, 'direito': 0.0, 'intimacao': 0.0]",0
+VARA,"['varar': 0.0, 'juizo': 0.0, 'unico': 0.0, 'oficiar': 0.0, 'advogar': 0.0, 'campar': 0.0, 'alegrar': 0.0, 'direito': 0.0, 'intimacao': 0.0]",0
+VARA,"['varar': 0.0, 'juizo': 0.0, 'unico': 0.0, 'oficiar': 0.0, 'advogar': 0.0, 'direito': 0.0, 'capela': 0.0, 'intimacao': 0.0]",0
+VARA,"['varar': 0.0, 'colonia': 0.0, 'unico': 0.0, 'oficiar': 0.0, 'advogar': 0.0, 'intimacao': 0.0, 'leopoldina': 0.0]",0
+VARA,"['varar': 0.0, 'colonia': 0.0, 'atos': 0.0, 'unico': 0.0, 'oficiar': 0.0, 'cartorarios': 0.0, 'leopoldina': 0.0, 'editar': 0.0]",0
+VARA,"['intimacao': 0.0, 'varar': 0.0, 'coruripe': 0.0, 'oficiar': 0.0, 'advogar': 0.0]",0
+VARA,"['intimacao': 0.0, 'varar': 0.0, 'coruripe': 0.0, 'oficiar': 0.0, 'advogar': 0.0]",0
+VARA,"['coruripe': 0.0, 'varar': 0.0, 'cartorarios': 0.0, 'atos': 0.0, 'oficiar': 0.0, 'editar': 0.0]",0
+VARA,"['gouveio': 0.0, 'varar': 0.0, 'delmiro': 0.0, 'advogar': 0.0, 'juventude': 0.0, 'intimacao': 0.0, 'infancia': 0.0]",0
+VARA,"['gouveio': 0.0, 'varar': 0.0, 'cartorarios': 0.0, 'atos': 0.0, 'delmiro': 0.0, 'juizo': 0.0, 'direito': 0.0, 'juventude': 0.0, 'infancia': 0.0, 'editar': 0.0]",0
+VARA,"['gouveio': 0.0, 'varar': 0.0, 'delmiro': 0.0, 'advogar': 0.0, 'entopercentes': 0.0, 'intimacao': 0.0]",0
+VARA,"['varar': 0.0, 'girau': 0.0, 'unico': 0.0, 'oficiar': 0.0, 'advogar': 0.0, 'ponciano': 0.0, 'intimacao': 0.0]",0
+VARA,"['varar': 0.0, 'cartorarios': 0.0, 'girau': 0.0, 'unico': 0.0, 'oficiar': 0.0, 'ponciano': 0.0, 'atos': 0.0, 'editar': 0.0]",0
+VARA,"['varar': 0.0, 'ofi': 0.0, 'unico': 0.0, 'advogar': 0.0, 'igaci': 0.0, 'ciar': 0.0, 'intimacao': 0.0]",0
+VARA,"['novo': 0.0, 'varar': 0.0, 'igreja': 0.0, 'unico': 0.0, 'oficiar': 0.0, 'advogar': 0.0, 'intimacao': 0.0]",0
+VARA,"['varar': 0.0, 'unico': 0.0, 'oficiar': 0.0, 'gomar': 0.0, 'joaquim': 0.0, 'intimacao': 0.0, 'advogar': 0.0]",0
+VARA,"['varar': 0.0, 'unico': 0.0, 'oficiar': 0.0, 'advogar': 0.0, 'intimacao': 0.0, 'junqueiro': 0.0]",0
+VARA,"['major': 0.0, 'varar': 0.0, 'unico': 0.0, 'oficiar': 0.0, 'advogar': 0.0, 'intimacao': 0.0, 'izidoro': 0.0]",0
+VARA,"['major': 0.0, 'izidoro': 0.0, 'varar': 0.0, 'cartorarios': 0.0, 'atos': 0.0, 'unico': 0.0, 'oficiar': 0.0, 'editar': 0.0]",0
+VARA,"['varar': 0.0, 'maragogi': 0.0, 'juizo': 0.0, 'unico': 0.0, 'oficiar': 0.0, 'advogar': 0.0, 'direito': 0.0, 'intimacao': 0.0]",0
+VARA,"['varar': 0.0, 'unico': 0.0, 'maravilhar': 0.0, 'oficiar': 0.0, 'advogar': 0.0, 'intimacao': 0.0]",0
+VARA,"['varar': 0.0, 'marechal': 0.0, 'advogar': 0.0, 'juventude': 0.0, 'intimacao': 0.0, 'infancia': 0.0, 'criminal': 0.0, 'civel': 0.0, 'deodoro': 0.0]",0
+VARA,"['varar': 0.0, 'marechal': 0.0, 'advogar': 0.0, 'intimacao': 0.0, 'criminal': 0.0, 'civel': 0.0, 'deodoro': 0.0]",0
+VARA,"['maribondo': 0.0, 'varar': 0.0, 'juizo': 0.0, 'unico': 0.0, 'oficiar': 0.0, 'advogar': 0.0, 'direito': 0.0, 'intimacao': 0.0]",0
+VARA,"['varar': 0.0, 'unico': 0.0, 'oficiar': 0.0, 'advogar': 0.0, 'grande': 0.0, 'intimacao': 0.0, 'matar': 0.0]",0
+VARA,"['varar': 0.0, 'murici': 0.0, 'unico': 0.0, 'oficiar': 0.0, 'advogar': 0.0, 'intimacao': 0.0]",0
+VARA,"['varar': 0.0, 'unico': 0.0, 'oficiar': 0.0, 'advogar': 0.0, 'olhar': 0.0, 'intimacao': 0.0, 'dagua': 0.0, 'florir': 0.0]",0
+VARA,"['dagua': 0.0, 'varar': 0.0, 'cartorarios': 0.0, 'atos': 0.0, 'unico': 0.0, 'oficiar': 0.0, 'olhar': 0.0, 'editar': 0.0, 'florir': 0.0]",0
+VARA,"['indios': 0.0, 'varar': 0.0, 'advogar': 0.0, 'palmeiro': 0.0, 'intimacao': 0.0, 'infancia': 0.0]",0
+VARA,"['indios': 0.0, 'varar': 0.0, 'advogar': 0.0, 'palmeiro': 0.0, 'intimacao': 0.0, 'civel': 0.0]",0
+VARA,"['indios': 0.0, 'varar': 0.0, 'advogar': 0.0, 'palmeiro': 0.0, 'intimacao': 0.0, 'civel': 0.0]",0
+VARA,"['indios': 0.0, 'varar': 0.0, 'cartorarios': 0.0, 'atos': 0.0, 'palmeiro': 0.0, 'editar': 0.0, 'civel': 0.0]",0
+VARA,"['indios': 0.0, 'varar': 0.0, 'advogar': 0.0, 'palmeiro': 0.0, 'intimacao': 0.0, 'criminal': 0.0]",0
+VARA,"['varar': 0.0, 'acucar': 0.0, 'unico': 0.0, 'oficiar': 0.0, 'advogar': 0.0, 'intimacao': 0.0, 'pao': 0.0]",0
+VARA,"['varar': 0.0, 'unico': 0.0, 'oficiar': 0.0, 'advogar': 0.0, 'paripueira': 0.0, 'intimacao': 0.0]",0
+VARA,"['camaragibe': 0.0, 'varar': 0.0, 'unico': 0.0, 'oficiar': 0.0, 'advogar': 0.0, 'intimacao': 0.0, 'passar': 0.0]",0
+VARA,"['varar': 0.0, 'advogar': 0.0, 'juventude': 0.0, 'intimacao': 0.0, 'infancia': 0.0, 'penedo': 0.0, 'civel': 0.0]",0
+VARA,"['intimacao': 0.0, 'varar': 0.0, 'penedo': 0.0, 'civel': 0.0, 'advogar': 0.0]",0
+VARA,"['criminal': 0.0, 'varar': 0.0, 'cartorarios': 0.0, 'atos': 0.0, 'penedo': 0.0, 'editar': 0.0]",0
+VARA,"['varar': 0.0, 'piacabucu': 0.0, 'unico': 0.0, 'oficiar': 0.0, 'advogar': 0.0, 'intimacao': 0.0]",0
+VARA,"['varar': 0.0, 'pilar': 0.0, 'unico': 0.0, 'oficiar': 0.0, 'advogar': 0.0, 'intimacao': 0.0]",0
+VARA,"['varar': 0.0, 'cartorarios': 0.0, 'atos': 0.0, 'pilar': 0.0, 'juizo': 0.0, 'unico': 0.0, 'oficiar': 0.0, 'direito': 0.0, 'editar': 0.0]",0
+VARA,"['varar': 0.0, 'juizo': 0.0, 'unico': 0.0, 'piranha': 0.0, 'advogar': 0.0, 'direito': 0.0, 'oficiar': 0.0, 'intimacao': 0.0]",0
+VARA,"['varar': 0.0, 'cartorarios': 0.0, 'atos': 0.0, 'juizo': 0.0, 'unico': 0.0, 'piranha': 0.0, 'direito': 0.0, 'oficiar': 0.0, 'editar': 0.0]",0
+VARA,"['varar': 0.0, 'calvar': 0.0, 'portar': 0.0, 'oficiar': 0.0, 'advogar': 0.0, 'intimacao': 0.0]",0
+VARA,"['real': 0.0, 'varar': 0.0, 'portar': 0.0, 'unico': 0.0, 'oficiar': 0.0, 'advogar': 0.0, 'intimacao': 0.0, 'colegio': 0.0]",0
+VARA,"['varar': 0.0, 'unico': 0.0, 'oficiar': 0.0, 'advogar': 0.0, 'intimacao': 0.0, 'quebrangulo': 0.0]",0
+VARA,"['varar': 0.0, 'largar': 0.0, 'rir': 0.0, 'advogar': 0.0, 'intimacao': 0.0, 'civel': 0.0]",0
+VARA,"['varar': 0.0, 'cartorarios': 0.0, 'atos': 0.0, 'largar': 0.0, 'rir': 0.0, 'editar': 0.0, 'civel': 0.0]",0
+VARA,"['varar': 0.0, 'largar': 0.0, 'rir': 0.0, 'advogar': 0.0, 'intimacao': 0.0, 'criminal': 0.0]",0
+VARA,"['jose': 0.0, 'sao': 0.0, 'varar': 0.0, 'unico': 0.0, 'oficiar': 0.0, 'advogar': 0.0, 'intimacao': 0.0, 'lage': 0.0]",0
+VARA,"['tapera': 0.0, 'sao': 0.0, 'varar': 0.0, 'juizo': 0.0, 'unico': 0.0, 'oficiar': 0.0, 'advogar': 0.0, 'direito': 0.0, 'jose': 0.0, 'intimacao': 0.0]",0
+VARA,"['quitunde': 0.0, 'unica': 0.0, 'sao': 0.0, 'varar': 0.0, 'advogar': 0.0, 'luiz': 0.0, 'intimacao': 0.0]",0
+VARA,"['sao': 0.0, 'varar': 0.0, 'campo': 0.0, 'advogar': 0.0, 'miguel': 0.0, 'juventude': 0.0, 'intimacao': 0.0, 'infancia': 0.0, 'civel': 0.0]",0
+VARA,"['sao': 0.0, 'varar': 0.0, 'cartorarios': 0.0, 'titulos': 0.0, 'execucoes': 0.0, 'campo': 0.0, 'miguel': 0.0, 'atos': 0.0, 'editar': 0.0, 'extrajudicial': 0.0]",0
+VARA,"['sao': 0.0, 'varar': 0.0, 'unico': 0.0, 'oficiar': 0.0, 'advogar': 0.0, 'intimacao': 0.0, 'sebastiao': 0.0]",0
+VARA,"['luzir': 0.0, 'varar': 0.0, 'norte': 0.0, 'unico': 0.0, 'oficiar': 0.0, 'advogar': 0.0, 'santo': 0.0, 'intimacao': 0.0]",0
+VARA,"['varar': 0.0, 'juizo': 0.0, 'unico': 0.0, 'oficiar': 0.0, 'teotonio': 0.0, 'direito': 0.0, 'intimacao': 0.0, 'vilela': 0.0, 'advogar': 0.0]",0
+VARA,"['varar': 0.0, 'traipu': 0.0, 'unico': 0.0, 'oficiar': 0.0, 'advogar': 0.0, 'intimacao': 0.0]",0
+VARA,"['varar': 0.0, 'cartorarios': 0.0, 'atos': 0.0, 'palmar': 0.0, 'editar': 0.0, 'uniao': 0.0, 'civel': 0.0]",0
+VARA,"['varar': 0.0, 'palmar': 0.0, 'advogar': 0.0, 'intimacao': 0.0, 'criminal': 0.0, 'uniao': 0.0]",0
+VARA,"['varar': 0.0, 'unico': 0.0, 'oficiar': 0.0, 'advogar': 0.0, 'intimacao': 0.0, 'vicosa': 0.0]",0
